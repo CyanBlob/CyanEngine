@@ -277,6 +277,7 @@ void display(void)
 		glVertex3fv(&ctrlpoints2[i][0]);
 	glEnd();
 
+	glColor3f(player.color[0], player.color[1], player.color[2]);
 	glBegin(GL_POLYGON);
 	for (i = 0; i < (sizeof player.mainRect / sizeof player.mainRect[0]); i++)
 	{

@@ -13,17 +13,24 @@
 class Player
 {
 public:
-	GLfloat speedForward;
-	GLfloat speedBack;
-	GLfloat speedLeft;
-	GLfloat speedRight;
-
 	GLfloat xOffset;
 	GLfloat yOffset;
 
+	GLfloat color[3] = {0.0, 1.0, 1.0};
+	GLfloat flashColor[3] = {1.0, 0.0, 0.0};
 	// Rect coordinates
 	GLfloat mainRect[4][3];
 
 	void playerAction(bool*);
+	void copyGLfloatArray(GLfloat*, GLfloat*);
 	Player();
+
+private:
+	GLfloat speedForward;
+	GLfloat speedBack;
+	GLfloat speedLeft;
+	GLfloat speedRight;
+	bool playerAttacking = false;
+	void attack();
+	void stopAttack();
 };

@@ -13,6 +13,23 @@ Player::Player() : mainRect{ // Only works in C++11
 	speedRight = 0.1f;
 	speedLeft = -0.1f;
 }
+void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
+{
+	int i;
+	int j;
+
+	for (i = 0; i <= (sizeof array1 / sizeof array1[0]); i++)
+	{
+		if (i <= (sizeof array2 / sizeof array2[0]))
+		{
+			array2[i] = array1[i];
+		}
+		else
+		{
+			return;
+		}
+	}
+}
 
 void Player::playerAction(bool* keyStates)
 {
@@ -54,4 +71,34 @@ void Player::playerAction(bool* keyStates)
 		xOffset -= speedRight;
 	}
 
+	if (keyStates[32])
+	{
+		// TODO: Implement a timer here (check time difference)
+		if (playerAttacking)
+		{
+			stopAttack();
+		}
+		else
+		{
+			attack();
+		}
+	}
+
 }
+
+void Player::stopAttack()
+{
+	playerAttacking = false;
+	GLfloat tmpColor[3] = {color[0], color[1], color[2]};
+	copyGLfloatArray(flashColor, color);
+	copyGLfloatArray(tmpColor, flashColor);
+}
+
+void Player::attack()
+{
+	playerAttacking = true;
+	GLfloat tmpColor[3] = {color[0], color[1], color[2]};
+	copyGLfloatArray(flashColor, color);
+	copyGLfloatArray(tmpColor, flashColor);
+}
+
