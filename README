@@ -1,2 +1,5 @@
 Work in progress
 CyanBlob's basic game engine, using OpenGL and Freeglut3
+
+Compilation
+ g++ *.cpp -o CyanEngine.out -lGL -lGLU -lglut -std=c++11 && ./CyanEngine.out
