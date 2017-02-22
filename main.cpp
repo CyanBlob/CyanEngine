@@ -26,8 +26,11 @@
 #include <stdlib.h>
 #include <iostream>
 #include <cmath>
+#include <list>
 
 #include "Player.h"
+#include "Room.h"
+#include "Wall.h"
 
 using namespace std;
 
@@ -68,6 +71,9 @@ GLfloat yOffset = 0.0;
 //Rotaion variables
 static float xRot = 0;
 static float yRot = 0;
+
+list<Wall*> wallList;
+Wall *wall;
 
 void init(void)
 {
@@ -283,7 +289,20 @@ void display(void)
 	{
 		glVertex3fv(&player.mainRect[i][0]);
 	}
+
 	glEnd();
+
+	// TODO: Research C++ iterators
+	for (std::list<Wall*>::iterator it=wall->wallList.begin(); it !=wall->wallList.end(); ++it)
+	{
+	glColor3f((*it)->color[0],(*it)->color[1],(*it)->color[2]);
+	glBegin(GL_POLYGON);
+		for (i = 0; i < (sizeof (*it)->coords / sizeof (*it)->coords[0]); i++)
+		{
+			glVertex3fv(&(*it)->coords[i][0]);
+		}
+	glEnd();
+	}
 
 	/*r_topLeft[0] += .1;
 	r_topRight[0] += .1;
@@ -429,7 +448,33 @@ void keyboard(unsigned char key, int x, int y)
 
 int main(int argc, char** argv)
 {
-	//player = new Player();
+	int i, j, k;
+	GLfloat newWallCoords[4][3] = {
+		{-3.0, -1.0, 0.0},
+		{-1.0, -1.0, 0.0},
+		{-1.0, -3.0, 0.0},
+		{-3.0, -3.0, 0.0}};
+	/*wall = new Wall(newWallCoords);
+	wall->addToList(wall);*/
+
+	Wall *wallArray[100];
+	GLfloat tmpWallCoords[4][3];
+
+	for (i = 0; i < sizeof wallArray / sizeof wallArray[0]; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			tmpWallCoords[j][0] = newWallCoords[j][0] + (i * 2.0);
+			tmpWallCoords[j][1] = newWallCoords[j][1];
+			tmpWallCoords[j][2] = 0.0;
+		}
+		wallArray[i] = new Wall(tmpWallCoords);
+		wall->addToList(wallArray[i]);
+		//cout<<"i: "<<i<<endl;
+	}
+	//wallList.push_front(wall);
+
+	//wallList = wall->wallList;
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
