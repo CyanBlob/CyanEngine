@@ -30,7 +30,7 @@
 
 #include "Player.h"
 #include "Room.h"
-#include "Wall.h"
+//#include "Wall.h"
 
 using namespace std;
 
@@ -199,7 +199,7 @@ void mouseMotion(int x,int y)
 	case 5:
 		p5[0] = ox;
 		p5[1] = oy;
-		break;    
+		break;
 	case 6:
 		p6[0] = ox;
 		p6[1] = oy;
@@ -209,20 +209,20 @@ void mouseMotion(int x,int y)
 	}
 
 	//Temp control points, to be copied over regular control points
-	GLfloat tmpctrlpoints[4][3] = 
+	GLfloat tmpctrlpoints[4][3] =
 	{
-		{p0[0], p0[1], p0[2]}, 
-		{p1[0], p1[1], p1[2]}, 
-		{p2[0], p2[1], p2[2]}, 
+		{p0[0], p0[1], p0[2]},
+		{p1[0], p1[1], p1[2]},
+		{p2[0], p2[1], p2[2]},
 		{p3[0], p3[1], p3[2]}
 	};
 
 
-	GLfloat tmpctrlpoints2[4][3] = 
+	GLfloat tmpctrlpoints2[4][3] =
 	{
-		{p3[0], p3[1], p3[2]}, 
-		{p4[0], p4[1], p4[2]}, 
-		{p5[0], p5[1], p5[2]}, 
+		{p3[0], p3[1], p3[2]},
+		{p4[0], p4[1], p4[2]},
+		{p5[0], p5[1], p5[2]},
 		{p6[0], p6[1], p6[2]}
 	};
 
@@ -256,7 +256,7 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(1.0, 1.0, 0.0);
 	glBegin(GL_LINE_STRIP);
-	for (i = 0; i <= numPoints; i++) 
+	for (i = 0; i <= numPoints; i++)
 		glEvalCoord1f((GLfloat) i/numPoints);
 	glEnd();
 
@@ -264,7 +264,7 @@ void display(void)
 	glPointSize(5.0);
 	glColor3f(1.0, 1.0, 0.0);
 	glBegin(GL_POINTS);
-	for (i = 0; i < 4; i++) 
+	for (i = 0; i < 4; i++)
 		glVertex3fv(&ctrlpoints[i][0]);
 	glEnd();
 
@@ -475,6 +475,11 @@ int main(int argc, char** argv)
 	//wallList.push_front(wall);
 
 	//wallList = wall->wallList;
+
+	GLfloat roomLowerLeft[2] = {-8.0, -8.0};
+	GLfloat roomTopRight[2] = {8.0, 8.0};
+
+	Room *room = new Room(roomLowerLeft, roomTopRight, 2);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
