@@ -2,13 +2,13 @@
 
 using namespace std;
 
-list<Wall*> init()
+list<Wall*> initList()
 {
 	list<Wall*> tmp;
 	return tmp;
 }
 
-list <Wall*> Wall::wallList(init());
+list <Wall*> Wall::wallList(initList());
 
 Wall::Wall(GLfloat _coords[][3])
 {
