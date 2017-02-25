@@ -27,6 +27,7 @@
 #include <iostream>
 #include <cmath>
 #include <list>
+#include <time.h>
 
 #include "Player.h"
 #include "Room.h"
@@ -61,7 +62,7 @@ static GLfloat ctrlpoints2[4][3] = {
 	{p5[0], p5[1], p5[2]},
 	{p6[0], p6[1], p6[2]}};
 
-static float zoom = 10; //Zoom level
+static float zoom = 20; //Zoom level
 static bool left_button_down = false; //Whether the LMB is pressed
 
 //Translation variables
@@ -250,17 +251,18 @@ void display(void)
 	glRotatef(xRot, 1, 0, 0);
 	glRotatef(yRot, 0, 1, 0);
 
-	//Draw first curve
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	/*//Draw first curve
 	glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, 4, &ctrlpoints[0][0]);
 
-	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(1.0, 1.0, 0.0);
 	glBegin(GL_LINE_STRIP);
 	for (i = 0; i <= numPoints; i++)
 		glEvalCoord1f((GLfloat) i/numPoints);
 	glEnd();
 
-	/* The following code displays the control points as dots. */
+	/* The following code displays the control points as dots. *//*
 	glPointSize(5.0);
 	glColor3f(1.0, 1.0, 0.0);
 	glBegin(GL_POINTS);
@@ -273,15 +275,15 @@ void display(void)
 
 	glColor3f(0.0, 1.0, 1.0);
 	glBegin(GL_LINE_STRIP);
-	for (i = 0; i <=numPoints; i++) 
+	for (i = 0; i <=numPoints; i++)
 		glEvalCoord1f((GLfloat) i/numPoints);
 	glEnd();
 	glPointSize(5.0);
 	glColor3f(0.0, 1.0, 1.0);
 	glBegin(GL_POINTS);
-	for (i = 0; i < 4; i++) 
+	for (i = 0; i < 4; i++)
 		glVertex3fv(&ctrlpoints2[i][0]);
-	glEnd();
+	glEnd();*/
 
 	glColor3f(player.color[0], player.color[1], player.color[2]);
 	glBegin(GL_POLYGON);
@@ -304,10 +306,6 @@ void display(void)
 	glEnd();
 	}
 
-	/*r_topLeft[0] += .1;
-	r_topRight[0] += .1;
-	r_bottomRight[0] += .1;
-	r_bottomLeft[0] += .1;*/
 	glPopMatrix();
 	glutSwapBuffers();
 
@@ -333,10 +331,10 @@ void reshape(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	if (w <= h)
-		glOrtho(-zoom, zoom, -zoom*(GLfloat)h/(GLfloat)w, 
+		glOrtho(-zoom, zoom, -zoom*(GLfloat)h/(GLfloat)w,
 			zoom*(GLfloat)h/(GLfloat)w, -25.0, 25.0);
 	else
-		glOrtho(-zoom*(GLfloat)w/(GLfloat)h, 
+		glOrtho(-zoom*(GLfloat)w/(GLfloat)h,
 			zoom*(GLfloat)w/(GLfloat)h, -zoom, zoom, -25.0, 25.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -344,7 +342,6 @@ void reshape(int w, int h)
 
 void menu(int value)
 {
-	int i;
 	switch(value)
 	{
 	case 'z':
@@ -368,7 +365,7 @@ void menu(int value)
 		if(xRot < 0)
 			xRot = 0;
 		glutPostRedisplay();
-		break; 
+		break;
 	case 'y':
 		yRot += 2;
 		if(yRot > 90)
@@ -381,35 +378,6 @@ void menu(int value)
 			yRot = 0;
 		glutPostRedisplay();
 		break;
-	/*case 'd':
-		for (i = 0; i < 4; i++)
-		{
-			mainRect[i][0] += 0.1f;
-		}
-		glutPostRedisplay();
-		break;
-	case 'a':
-		for (i = 0; i < 4; i++)
-		{
-			mainRect[i][0] -= 0.1f;
-		}
-		glutPostRedisplay();
-		break;
-	case 's':
-		glutPostRedisplay();
-		for (i = 0; i < 4; i++)
-		{
-			mainRect[i][1] -= 0.1f;
-		}
-		break;
-	case 'w':
-		//yOffset++;
-		for (i = 0; i < 4; i++)
-		{
-			mainRect[i][1] += 0.1f;
-		}
-		glutPostRedisplay();
-		break;*/
 	case 27:
 		exit(0);
 	}
@@ -446,45 +414,29 @@ void keyboard(unsigned char key, int x, int y)
 	keyStates[key] = true;
 }
 
-int main(int argc, char** argv)
+void buildRooms()
 {
-	int i, j, k;
-	GLfloat newWallCoords[4][3] = {
-		{-3.0, -1.0, 0.0},
-		{-1.0, -1.0, 0.0},
-		{-1.0, -3.0, 0.0},
-		{-3.0, -3.0, 0.0}};
-	/*wall = new Wall(newWallCoords);
-	wall->addToList(wall);*/
-
-	Wall *wallArray[100];
-	GLfloat tmpWallCoords[4][3];
-
-	for (i = 0; i < sizeof wallArray / sizeof wallArray[0]; i++)
-	{
-		for (j = 0; j < 4; j++)
-		{
-			tmpWallCoords[j][0] = newWallCoords[j][0] + (i * 2.0);
-			tmpWallCoords[j][1] = newWallCoords[j][1];
-			tmpWallCoords[j][2] = 0.0;
-		}
-		wallArray[i] = new Wall(tmpWallCoords);
-		wall->addToList(wallArray[i]);
-		//cout<<"i: "<<i<<endl;
-	}
-	//wallList.push_front(wall);
-
-	//wallList = wall->wallList;
-
 	GLfloat roomLowerLeft[2] = {-8.0, -8.0};
 	GLfloat roomTopRight[2] = {8.0, 8.0};
 
 	Room *room = new Room(roomLowerLeft, roomTopRight, 2);
 
+	GLfloat roomLowerLeft2[2] = {-16.0, 8.0};
+	GLfloat roomTopRight2[2] = {16.0, 20.0};
+
+	room = new Room(roomLowerLeft2, roomTopRight2, 2);
+}
+
+int main(int argc, char** argv)
+{
+	time_t timeSeed = time(NULL);
+	srand(timeSeed);
+	cout<<"Running game with seed: "<<timeSeed<<endl;
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowSize (500, 500);
-	glutInitWindowPosition (100, 100);
+	glutInitWindowSize (1000, 1000);
+	//glutInitWindowPosition (100, 100);
 	glutCreateWindow (argv[0]);
 	createMenu();
 	init ();
@@ -494,8 +446,12 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keyboardUp);
 	glutMouseFunc(mouse);
-	glutMotionFunc(mouseMotion); 
-	glutPassiveMotionFunc(passiveMouseMotion); 
+	glutMotionFunc(mouseMotion);
+	glutPassiveMotionFunc(passiveMouseMotion);
+
+	buildRooms();
+
 	glutMainLoop();
+
 	return 0;
 }
