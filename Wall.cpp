@@ -2,13 +2,13 @@
 
 using namespace std;
 
-list<Wall*> initList()
+list<Wall*> initWallList()
 {
 	list<Wall*> tmp;
 	return tmp;
 }
 
-list <Wall*> Wall::wallList(initList());
+list <Wall*> Wall::wallList(initWallList());
 void randomColor(GLfloat _color[]);
 
 Wall::Wall(GLfloat _coords[][3])

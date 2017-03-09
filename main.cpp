@@ -414,17 +414,27 @@ void keyboard(unsigned char key, int x, int y)
 	keyStates[key] = true;
 }
 
+//TODO: Don't add rooms to roomList if they didn't fit
 void buildRooms()
 {
 	GLfloat roomLowerLeft[2] = {-8.0, -8.0};
 	GLfloat roomTopRight[2] = {8.0, 8.0};
 
 	Room *room = new Room(roomLowerLeft, roomTopRight, 2);
+	room->addToList(room);
 
 	GLfloat roomLowerLeft2[2] = {-16.0, 8.0};
 	GLfloat roomTopRight2[2] = {16.0, 20.0};
 
 	room = new Room(roomLowerLeft2, roomTopRight2, 2);
+	room->addToList(room);
+
+
+	GLfloat roomLowerLeft3[2] = {-16.0, 18.0};
+	GLfloat roomTopRight3[2] = {16.0, 40.0};
+
+	room = new Room(roomLowerLeft3, roomTopRight3, 2);
+	room->addToList(room);
 }
 
 int main(int argc, char** argv)
