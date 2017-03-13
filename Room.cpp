@@ -1,11 +1,11 @@
 #include "Room.h"
 
-list<Room*> initRoomList()
+list<Room*> initopRightoomList()
 {
 	list<Room*> tmp;
 	return tmp;
 }
-list <Room*> Room::roomList(initRoomList());
+list <Room*> Room::roomList(initopRightoomList());
 
 Room::Room(GLfloat _lowerLeft[], GLfloat _topRight[], GLfloat wallSize)
 {
@@ -59,30 +59,94 @@ Room::Room(GLfloat _lowerLeft[], GLfloat _topRight[], GLfloat wallSize)
 }
 void Room::addToList(Room *room)
 {
-	cout<<"Adding room from: "<<room->lowerLeft[0]<<", "<<room->lowerLeft[1]
-		<<", to "<<room->topRight[0]<<", "<<room->topRight[1]<<endl;
-	Room::roomList.push_front(room);
+	if (roomBuilt)
+	{
+		cout<<"Adding room from: "<<room->lowerLeft[0]<<", "<<room->lowerLeft[1]
+			<<", to "<<room->topRight[0]<<", "<<room->topRight[1]<<endl;
+		Room::roomList.push_front(room);
+	}
 }
 
+// TODO: Simplify tests
 bool Room::checkIfFits()
 {
-	int i;
-
 	// TODO: Research C++ iterators
 	for (std::list<Room*>::iterator it=roomList.begin(); it !=roomList.end(); ++it)
 	{
 		cout<<"Checking room against: "<<(*it)->lowerLeft[0]<<", "<<(*it)->lowerLeft[1]
 			<<", to "<<(*it)->topRight[0]<<", "<<(*it)->topRight[1]<<endl;
 
-		if ((lowerLeft[0] == (*it)->lowerLeft[0]) && !(lowerLeft[1] >= (*it)->topRight[1]))
+		// lowerLeft
+		// Bottom wall
+		if ((lowerLeft[1] == (*it)->lowerLeft[1])
+		    && ((lowerLeft[0] > (*it)->lowerLeft[0])
+			&& (lowerLeft[0] < (*it)->topRight[0])))
+		{
+			cout<<"Room does NOT fit. lowerLeft on bottom wall of another room"<<endl;
+			return false;
+		}
+
+		// Left wall
+		if ((lowerLeft[0] == (*it)->lowerLeft[0])
+		    && ((lowerLeft[1] > (*it)->lowerLeft[1])
+			&& (lowerLeft[1] < (*it)->topRight[1])))
 		{
 			cout<<"Room does NOT fit. lowerLeft on left wall of another room"<<endl;
 			return false;
 		}
 
-		if ((topRight[1] == (*it)->topRight[1]) && !(topRight[0] <= (*it)->lowerLeft[0]))
+		// Top wall
+		if ((lowerLeft[1] == (*it)->topRight[1])
+		    && ((lowerLeft[0] > (*it)->lowerLeft[0])
+			&& (lowerLeft[0] < (*it)->topRight[0])))
+		{
+			cout<<"Room does NOT fit. lowerLeft on top wall of another room"<<endl;
+			return false;
+		}
+
+		// Right wall
+		if ((lowerLeft[0] == (*it)->lowerLeft[0])
+		    && ((lowerLeft[1] > (*it)->lowerLeft[1])
+			&& (lowerLeft[1] < (*it)->topRight[1])))
+		{
+			cout<<"Room does NOT fit. lowerLeft on right wall of another room"<<endl;
+			return false;
+		}
+
+		// topRight
+		// Bottom wall
+		if ((topRight[1] == (*it)->lowerLeft[1])
+		    && ((topRight[0] > (*it)->lowerLeft[0])
+			&& (topRight[0] < (*it)->topRight[0])))
+		{
+			cout<<"Room does NOT fit. topRight on bottom wall of another room"<<endl;
+			return false;
+		}
+
+		// Left wall
+		if ((topRight[0] == (*it)->lowerLeft[0])
+		    && ((topRight[1] > (*it)->lowerLeft[1])
+			&& (topRight[1] < (*it)->topRight[1])))
+		{
+			cout<<"Room does NOT fit. topRight on left wall of another room"<<endl;
+			return false;
+		}
+
+		// Top wall
+		if ((topRight[1] == (*it)->topRight[1])
+		    && ((topRight[0] > (*it)->lowerLeft[0])
+			&& (topRight[0] < (*it)->topRight[0])))
 		{
 			cout<<"Room does NOT fit. topRight on top wall of another room"<<endl;
+			return false;
+		}
+
+		// Right wall
+		if ((topRight[0] == (*it)->lowerLeft[0])
+		    && ((topRight[1] > (*it)->lowerLeft[1])
+			&& (topRight[1] < (*it)->topRight[1])))
+		{
+			cout<<"Room does NOT fit. topRight on right wall of another room"<<endl;
 			return false;
 		}
 
@@ -97,5 +161,6 @@ bool Room::checkIfFits()
 		}
 	}
 	cout<<"Room fits!"<<endl;
+	roomBuilt = true;
 	return true;
 }

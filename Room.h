@@ -16,4 +16,5 @@ private:
 	// Look through roomList, checking if current room will fit (physically)
 	// should likely be called by constructor
 	bool checkIfFits();
+	bool roomBuilt = false;
 };
