@@ -7,7 +7,7 @@ list<Room*> initopRightoomList()
 }
 list <Room*> Room::roomList(initopRightoomList());
 
-Room::Room(GLfloat _lowerLeft[], GLfloat _topRight[], GLfloat wallSize)
+Room::Room(int _lowerLeft[], int _topRight[], GLfloat wallSize)
 {
 	GLfloat x;
 

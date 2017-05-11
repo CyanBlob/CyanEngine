@@ -423,26 +423,28 @@ void buildRooms()
 	srand(time(0));
 
 	for (i = 0; i < MAXROOMS; i++) {
-		GLfloat _roomLowerLeft[2] = {rand() % 200, rand() % 200};
-		GLfloat _roomTopRight[2] = {rand() % 200, rand() % 200};
+		int _roomLowerLeft[2] = {4 + rand() % 100 * 2,
+					 4 + rand() % 100 * 2};
+		int _roomTopRight[2] = {4 + rand() % 20 * 2 + _roomLowerLeft[0],
+					4 + rand() % 20 * 2 + _roomLowerLeft[1]};
 		Room *_room = new Room(_roomLowerLeft, _roomTopRight, 2);
 		_room->addToList(_room);
 	}
-	GLfloat roomLowerLeft[2] = {-8.0, -8.0};
-	GLfloat roomTopRight[2] = {8.0, 8.0};
+	int roomLowerLeft[2] = {-8, -8};
+	int roomTopRight[2] = {8, 8};
 
 	Room *room = new Room(roomLowerLeft, roomTopRight, 2);
 	room->addToList(room);
 
-	GLfloat roomLowerLeft2[2] = {-16.0, 8.0};
-	GLfloat roomTopRight2[2] = {16.0, 20.0};
+	int roomLowerLeft2[2] = {-16, 8};
+	int roomTopRight2[2] = {16, 20};
 
 	room = new Room(roomLowerLeft2, roomTopRight2, 2);
 	room->addToList(room);
 
 
-	GLfloat roomLowerLeft3[2] = {-16.0, 18.0};
-	GLfloat roomTopRight3[2] = {16.0, 40.0};
+	int roomLowerLeft3[2] = {-16, 18};
+	int roomTopRight3[2] = {16, 40};
 
 	room = new Room(roomLowerLeft3, roomTopRight3, 2);
 	room->addToList(room);
