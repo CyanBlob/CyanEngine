@@ -106,7 +106,7 @@ int findClosestPoint(float x, float y, float z)
 	{
 		if(dists[i] < closestDist)
 		{
-			closestDist = dists[i]; 
+			closestDist = dists[i];
 			closest = i;
 		}
 	}
@@ -178,7 +178,7 @@ void mouseMotion(int x,int y)
 		p1[1] = oy;
 		break;
 	case 2:
-		p4[0] = p4[0] + (p2[0] - ox); 
+		p4[0] = p4[0] + (p2[0] - ox);
 		p4[1] = p4[1] + (p2[1] - oy);
 		p2[0] = ox;
 		p2[1] = oy;

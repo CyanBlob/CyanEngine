@@ -18,9 +18,9 @@ void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
 	int i;
 	int j;
 
-	for (i = 0; i <= (sizeof array1 / sizeof array1[0]); i++)
+	for (i = 0; i <= (sizeof array1[0] / sizeof array1[0]); i++)
 	{
-		if (i <= (sizeof array2 / sizeof array2[0]))
+		if (i <= (sizeof array2[0] / sizeof array2[0]))
 		{
 			array2[i] = array1[i];
 		}
