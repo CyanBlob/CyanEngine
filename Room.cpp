@@ -24,19 +24,22 @@ Room::Room(GLfloat _lowerLeft[], GLfloat _topRight[], GLfloat wallSize)
 		return;
 	}
 
+	GLfloat color[3];
+	Wall::randomColor(color);
+
 	// right and left
 	for (x = lowerLeft[1]; x <= topRight[1]; x += wallSize)
 	{
 		// right wall
 		GLfloat tmpWallCoords[3] = {topRight[0], x, 0.0};
 
-		Wall *wall = new Wall(tmpWallCoords, wallSize);
+		Wall *wall = new Wall(tmpWallCoords, wallSize, color);
 		wall->addToList(wall);
 
 		// left wall
 		GLfloat tmpWallCoordsLL[3] = {lowerLeft[0], x, 0.0};
 
-		wall = new Wall(tmpWallCoordsLL, wallSize);
+		wall = new Wall(tmpWallCoordsLL, wallSize, color);
 		wall->addToList(wall);
 
 	}
@@ -47,13 +50,13 @@ Room::Room(GLfloat _lowerLeft[], GLfloat _topRight[], GLfloat wallSize)
 		// bottom wall
 		GLfloat tmpWallCoords[3] = {x, lowerLeft[1], 0.0};
 
-		Wall *wall = new Wall(tmpWallCoords, wallSize);
+		Wall *wall = new Wall(tmpWallCoords, wallSize, color);
 		wall->addToList(wall);
 
 		// top wall
 		GLfloat tmpWallCoordsLL[3] = {x, topRight[1], 0.0};
 
-		wall = new Wall(tmpWallCoordsLL, wallSize);
+		wall = new Wall(tmpWallCoordsLL, wallSize, color);
 		wall->addToList(wall);
 	}
 }

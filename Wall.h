@@ -26,10 +26,10 @@ public:
 	Wall(GLfloat[][3]);
 
 	// Pass in LL coordinate + size of wall
-	Wall(GLfloat[3], GLfloat wallSize);
+	Wall(GLfloat[3], GLfloat wallSize, GLfloat[3]);
 
 	void addToList(Wall*);
 
-	//void randomColor(GLfloat[]);
+	static void randomColor(GLfloat[]);
 private:
 };

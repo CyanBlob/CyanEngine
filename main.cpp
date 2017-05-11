@@ -417,6 +417,17 @@ void keyboard(unsigned char key, int x, int y)
 //TODO: Don't add rooms to roomList if they didn't fit
 void buildRooms()
 {
+	int i;
+	int MAXROOMS = 10;
+
+	srand(time(0));
+
+	for (i = 0; i < MAXROOMS; i++) {
+		GLfloat _roomLowerLeft[2] = {rand() % 200, rand() % 200};
+		GLfloat _roomTopRight[2] = {rand() % 200, rand() % 200};
+		Room *_room = new Room(_roomLowerLeft, _roomTopRight, 2);
+		_room->addToList(_room);
+	}
 	GLfloat roomLowerLeft[2] = {-8.0, -8.0};
 	GLfloat roomTopRight[2] = {8.0, 8.0};
 

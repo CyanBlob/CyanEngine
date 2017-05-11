@@ -29,10 +29,14 @@ Wall::Wall(GLfloat _coords[][3])
 	//wallList.push_front(this);
 }
 
-Wall::Wall(GLfloat lowerLeft[], GLfloat wallSize)
+Wall::Wall(GLfloat lowerLeft[], GLfloat wallSize, GLfloat _color[3])
 {
 
-	randomColor(color);
+	//randomColor(color);
+	color[0] = _color[0];
+	color[1] = _color[1];
+	color[2] = _color[2];
+
 	coords[0][0] = lowerLeft[0];
 	coords[0][1] = lowerLeft[1];
 	coords[0][2] = lowerLeft[2];
@@ -51,7 +55,7 @@ Wall::Wall(GLfloat lowerLeft[], GLfloat wallSize)
 	//wallList.push_front(this);
 }
 
-void randomColor(GLfloat _color[])
+void Wall::randomColor(GLfloat _color[])
 {
 	_color[0] = (GLfloat) rand() / RAND_MAX;
 	_color[1] = (GLfloat) rand() / RAND_MAX;
