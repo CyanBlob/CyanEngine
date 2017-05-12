@@ -9,7 +9,7 @@ public:
 	GLfloat lowerLeft[2];
 	GLfloat topRight[2];
 	list<Wall*> wallList;
-	Room(int*,int*, GLfloat);
+	Room(int*, int*, GLfloat);
 	void addToList(Room*);
 
 private:

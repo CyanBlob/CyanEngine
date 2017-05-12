@@ -86,34 +86,6 @@ void init(void)
 //Cursor x, y, and z values
 static GLdouble ox=0.0,oy=0.0,oz=0.0;
 
-//Find the point closest to the cursor
-int findClosestPoint(float x, float y, float z)
-{
-	int i;
-	int closest;
-	float dists[7];
-	float closestDist = 10000;
-
-	dists[0] = ((x - p0[0]) * (x - p0[0])) + ((y - p0[1]) * (y - p0[1])); //+ ((z - p0[2]) * (z - p0[2]));
-	dists[1] = ((x - p1[0]) * (x - p1[0])) + ((y - p1[1]) * (y - p1[1])); //+ ((z - p1[2]) * (z - p1[2]));
-	dists[2] = ((x - p2[0]) * (x - p2[0])) + ((y - p2[1]) * (y - p2[1])); //+ ((z - p2[2]) * (z - p2[2]));
-	dists[3] = ((x - p3[0]) * (x - p3[0])) + ((y - p3[1]) * (y - p3[1])); //+ ((z - p3[2]) * (z - p3[2]));
-	dists[4] = ((x - p4[0]) * (x - p4[0])) + ((y - p4[1]) * (y - p4[1])); //+ ((z - p4[2]) * (z - p4[2]));
-	dists[5] = ((x - p5[0]) * (x - p5[0])) + ((y - p5[1]) * (y - p5[1])); //+ ((z - p5[2]) * (z - p5[2]));
-	dists[6] = ((x - p6[0]) * (x - p6[0])) + ((y - p6[1]) * (y - p6[1])); //+ ((z - p6[2]) * (z - p6[2]));
-
-	for (i = 0; i < 7; i++)
-	{
-		if(dists[i] < closestDist)
-		{
-			closestDist = dists[i];
-			closest = i;
-		}
-	}
-
-	return closest;
-}
-
 //Check which mouse button was pressed
 void mouse(int button, int state, int x, int y)
 {
@@ -137,106 +109,6 @@ void passiveMouseMotion(int x, int y)
 //Check mouse movements, moving points as necessary
 void mouseMotion(int x,int y) 
 {
-
-	if(!left_button_down)
-	{
-		return;
-	}
-
-	glutSetCursor(GLUT_CURSOR_NONE); 
-
-	GLint viewport[4];
-	GLdouble modelview[16],projection[16];
-	GLfloat wx=x,wy,wz;
-
-	int closest;
-	int i;
-	int j;
-
-	glGetIntegerv(GL_VIEWPORT,viewport);
-	y=viewport[3]-y;
-	wy=y;
-	glGetDoublev(GL_MODELVIEW_MATRIX,modelview);
-	glGetDoublev(GL_PROJECTION_MATRIX,projection);
-	glReadPixels(x,y,1,1,GL_DEPTH_COMPONENT,GL_FLOAT,&wz);
-	gluUnProject(wx,wy,wz,modelview,projection,viewport,&ox,&oy,&oz);
-
-	oz += 5;
-	ox -= xOffset;
-	oy -= yOffset;
-	closest = findClosestPoint(ox, oy, oz);
-
-	//Move the closest point, enforcing collinearity for P2, P3, and P4
-	switch (closest)
-	{
-	case 0:
-		p0[0] = ox;
-		p0[1] = oy;
-		break;
-	case 1:
-		p1[0] = ox;
-		p1[1] = oy;
-		break;
-	case 2:
-		p4[0] = p4[0] + (p2[0] - ox);
-		p4[1] = p4[1] + (p2[1] - oy);
-		p2[0] = ox;
-		p2[1] = oy;
-		break;
-	case 3:
-		p2[0] = p2[0] - (p3[0] - ox);
-		p2[1] = p2[1] - (p3[1] - oy);
-		p4[0] = p4[0] - (p3[0] - ox);
-		p4[1] = p4[1] - (p3[1] - oy);
-		p3[0] = ox;
-		p3[1] = oy;
-		break;
-	case 4:
-		p2[0] =p2[0] + (p4[0] - ox);
-		p2[1] =p2[1] + (p4[1] - oy);
-		p4[0] = ox;
-		p4[1] = oy;
-		break;
-	case 5:
-		p5[0] = ox;
-		p5[1] = oy;
-		break;
-	case 6:
-		p6[0] = ox;
-		p6[1] = oy;
-		break;
-	default:
-		break;
-	}
-
-	//Temp control points, to be copied over regular control points
-	GLfloat tmpctrlpoints[4][3] =
-	{
-		{p0[0], p0[1], p0[2]},
-		{p1[0], p1[1], p1[2]},
-		{p2[0], p2[1], p2[2]},
-		{p3[0], p3[1], p3[2]}
-	};
-
-
-	GLfloat tmpctrlpoints2[4][3] =
-	{
-		{p3[0], p3[1], p3[2]},
-		{p4[0], p4[1], p4[2]},
-		{p5[0], p5[1], p5[2]},
-		{p6[0], p6[1], p6[2]}
-	};
-
-	for(i = 0; i < 4; i++)
-	{
-		for(j = 0; j < 3; j++)
-		{
-			ctrlpoints[i][j] = tmpctrlpoints[i][j];
-			ctrlpoints2[i][j] = tmpctrlpoints2[i][j];
-		}
-	}
-
-	glutPostRedisplay();
 }
 
 void display(void)
@@ -252,38 +124,6 @@ void display(void)
 	glRotatef(yRot, 0, 1, 0);
 
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	/*//Draw first curve
-	glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, 4, &ctrlpoints[0][0]);
-
-	glColor3f(1.0, 1.0, 0.0);
-	glBegin(GL_LINE_STRIP);
-	for (i = 0; i <= numPoints; i++)
-		glEvalCoord1f((GLfloat) i/numPoints);
-	glEnd();
-
-	/* The following code displays the control points as dots. *//*
-	glPointSize(5.0);
-	glColor3f(1.0, 1.0, 0.0);
-	glBegin(GL_POINTS);
-	for (i = 0; i < 4; i++)
-		glVertex3fv(&ctrlpoints[i][0]);
-	glEnd();
-
-	//Draw second curve
-	glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, 4, &ctrlpoints2[0][0]);
-
-	glColor3f(0.0, 1.0, 1.0);
-	glBegin(GL_LINE_STRIP);
-	for (i = 0; i <=numPoints; i++)
-		glEvalCoord1f((GLfloat) i/numPoints);
-	glEnd();
-	glPointSize(5.0);
-	glColor3f(0.0, 1.0, 1.0);
-	glBegin(GL_POINTS);
-	for (i = 0; i < 4; i++)
-		glVertex3fv(&ctrlpoints2[i][0]);
-	glEnd();*/
 
 	glColor3f(player.color[0], player.color[1], player.color[2]);
 	glBegin(GL_POLYGON);
@@ -418,13 +258,11 @@ void keyboard(unsigned char key, int x, int y)
 void buildRooms()
 {
 	int i;
-	int MAXROOMS = 10;
-
-	srand(time(0));
+	int MAXROOMS = 50000;
 
 	for (i = 0; i < MAXROOMS; i++) {
-		int _roomLowerLeft[2] = {4 + rand() % 100 * 2,
-					 4 + rand() % 100 * 2};
+		int _roomLowerLeft[2] = {(4 + rand() % 100 * 2) - 50,
+					 (4 + rand() % 100 * 2) - 50};
 		int _roomTopRight[2] = {4 + rand() % 20 * 2 + _roomLowerLeft[0],
 					4 + rand() % 20 * 2 + _roomLowerLeft[1]};
 		Room *_room = new Room(_roomLowerLeft, _roomTopRight, 2);
@@ -436,7 +274,7 @@ void buildRooms()
 	Room *room = new Room(roomLowerLeft, roomTopRight, 2);
 	room->addToList(room);
 
-	int roomLowerLeft2[2] = {-16, 8};
+	/*int roomLowerLeft2[2] = {-16, 8};
 	int roomTopRight2[2] = {16, 20};
 
 	room = new Room(roomLowerLeft2, roomTopRight2, 2);
@@ -447,7 +285,7 @@ void buildRooms()
 	int roomTopRight3[2] = {16, 40};
 
 	room = new Room(roomLowerLeft3, roomTopRight3, 2);
-	room->addToList(room);
+	room->addToList(room);*/
 }
 
 int main(int argc, char** argv)
