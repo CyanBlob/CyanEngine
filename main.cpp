@@ -62,7 +62,7 @@ static GLfloat ctrlpoints2[4][3] = {
 	{p5[0], p5[1], p5[2]},
 	{p6[0], p6[1], p6[2]}};
 
-static float zoom = 20; //Zoom level
+static float zoom = 40; //Zoom level
 static bool left_button_down = false; //Whether the LMB is pressed
 
 //Translation variables
@@ -107,14 +107,13 @@ void passiveMouseMotion(int x, int y)
 }
 
 //Check mouse movements, moving points as necessary
-void mouseMotion(int x,int y) 
+void mouseMotion(int x,int y)
 {
 }
 
 void display(void)
 {
 	int i;
-	int numPoints = 100;
 
 	glPushMatrix();
 
@@ -127,7 +126,8 @@ void display(void)
 
 	glColor3f(player.color[0], player.color[1], player.color[2]);
 	glBegin(GL_POLYGON);
-	for (i = 0; i < (sizeof player.mainRect / sizeof player.mainRect[0]); i++)
+	for (i = 0; i < (int) (sizeof player.mainRect / sizeof player.mainRect[0]);
+	     i++)
 	{
 		glVertex3fv(&player.mainRect[i][0]);
 	}
@@ -135,11 +135,13 @@ void display(void)
 	glEnd();
 
 	// TODO: Research C++ iterators
-	for (std::list<Wall*>::iterator it=wall->wallList.begin(); it !=wall->wallList.end(); ++it)
+	for (std::list<Wall*>::iterator it=wall->wallList.begin();
+	     it !=wall->wallList.end(); ++it)
 	{
 	glColor3f((*it)->color[0],(*it)->color[1],(*it)->color[2]);
 	glBegin(GL_POLYGON);
-		for (i = 0; i < (sizeof (*it)->coords / sizeof (*it)->coords[0]); i++)
+		for (i = 0; i < (int) (sizeof (*it)->coords / sizeof (*it)->coords[0]);
+		     i++)
 		{
 			glVertex3fv(&(*it)->coords[i][0]);
 		}

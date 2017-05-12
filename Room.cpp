@@ -64,8 +64,10 @@ void Room::addToList(Room *room)
 {
 	if (roomBuilt)
 	{
-		cout<<"Adding room from: "<<room->lowerLeft[0]<<", "<<room->lowerLeft[1]
-			<<", to "<<room->topRight[0]<<", "<<room->topRight[1]<<endl;
+		cout<<"Adding room from: "<<room->lowerLeft[0]<<
+			", "<<room->lowerLeft[1]<<
+			", to "<<room->topRight[0]<<
+			", "<<room->topRight[1]<<endl;
 		Room::roomList.push_front(room);
 	}
 }
@@ -86,7 +88,8 @@ bool pointEnclosed(GLfloat point[2], GLfloat _lowerLeft[2], GLfloat _topRight[2]
 bool Room::checkIfFits()
 {
 	// TODO: Research C++ iterators
-	for (std::list<Room*>::iterator it=roomList.begin(); it !=roomList.end(); ++it)
+	for (std::list<Room*>::iterator it=roomList.begin(); it !=roomList.end();
+	     ++it)
 	{
 		/*cout<<"Checking room against: "<<(*it)->lowerLeft[0]<<", "<<(*it)->lowerLeft[1]
 			<<", to "<<(*it)->topRight[0]<<", "<<(*it)->topRight[1]<<endl;*/
@@ -169,17 +172,23 @@ bool Room::checkIfFits()
 		GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
 
 		//TODO: Add check for new room "enclosing" another room
-		if (pointEnclosed(lowerLeft, (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(topRight, (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(lowerRight, (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(topLeft, (*it)->lowerLeft, (*it)->topRight))
+		if (pointEnclosed(lowerLeft,
+				  (*it)->lowerLeft, (*it)->topRight)
+		    || pointEnclosed(topRight,
+				     (*it)->lowerLeft, (*it)->topRight)
+		    || pointEnclosed(lowerRight,
+				     (*it)->lowerLeft, (*it)->topRight)
+		    || pointEnclosed(topLeft,
+				     (*it)->lowerLeft, (*it)->topRight))
 		{
 			cout<<"Point enclosed by points"<<endl;
 			return false;
 		}
 
-		GLfloat _lowerRight[2] = {(*it)->topRight[0], (*it)->lowerLeft[1]};
-		GLfloat _topLeft[2] = {(*it)->lowerLeft[0], (*it)->topRight[1]};
+		GLfloat _lowerRight[2] = {(*it)->topRight[0],
+			(*it)->lowerLeft[1]};
+		GLfloat _topLeft[2] = {(*it)->lowerLeft[0],
+			(*it)->topRight[1]};
 
 		if (pointEnclosed((*it)->lowerLeft, lowerLeft, topRight)
 		    || pointEnclosed((*it)->topRight, lowerLeft, topRight)

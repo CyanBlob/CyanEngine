@@ -8,19 +8,18 @@ Player::Player() : mainRect{ // Only works in C++11
 		 {-1.0, -1.0, 0.0}}
 {
 	// Player speed
-	speedForward = 0.1f;
-	speedBack = -0.1f;
-	speedRight = 0.1f;
-	speedLeft = -0.1f;
+	speedForward = 0.2f;
+	speedBack = -0.2f;
+	speedRight = 0.2f;
+	speedLeft = -0.2f;
 }
 void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
 {
 	int i;
-	int j;
 
-	for (i = 0; i <= (sizeof array1[0] / sizeof array1[0]); i++)
+	for (i = 0; i <= (int) (sizeof array1[0] / sizeof array1[0]); i++)
 	{
-		if (i <= (sizeof array2[0] / sizeof array2[0]))
+		if (i <= (int) (sizeof array2[0] / sizeof array2[0]))
 		{
 			array2[i] = array1[i];
 		}
