@@ -211,6 +211,7 @@ void menu(int value)
 	case 'y':
 		yRot += 2;
 		if(yRot > 90)
+			yRot = 90;
 		glutPostRedisplay();
 		break;
 	case 'Y':
