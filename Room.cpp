@@ -84,6 +84,32 @@ bool pointEnclosed(GLfloat point[2], GLfloat _lowerLeft[2], GLfloat _topRight[2]
 	return false;
 }
 
+bool pointsOverlap(GLfloat lowerLeft[2], GLfloat topRight[2],
+		   GLfloat _lowerLeft[2], GLfloat _topRight[2])
+{
+	if (lowerLeft[0] <= _lowerLeft[0]
+	    && topRight[0] >= _topRight[0]
+	    && lowerLeft[1] >= _lowerLeft[1]
+	    && lowerLeft[1] <= _topRight[1]
+	    && topRight[1] >= _lowerLeft[1]
+	    && topRight[1] <= _topRight[1])
+	{
+		return true;
+	}
+
+	if (lowerLeft[1] <= _lowerLeft[1]
+	    && topRight[1] >= _topRight[1]
+	    && lowerLeft[0] >= _lowerLeft[0]
+	    && lowerLeft[0] <= _topRight[0]
+	    && topRight[0] >= _lowerLeft[0]
+	    && topRight[0] <= _topRight[0])
+	{
+		return true;
+	}
+
+	return false;
+}
+
 // TODO: Simplify tests
 bool Room::checkIfFits()
 {
@@ -91,83 +117,6 @@ bool Room::checkIfFits()
 	for (std::list<Room*>::iterator it=roomList.begin(); it !=roomList.end();
 	     ++it)
 	{
-		/*cout<<"Checking room against: "<<(*it)->lowerLeft[0]<<", "<<(*it)->lowerLeft[1]
-			<<", to "<<(*it)->topRight[0]<<", "<<(*it)->topRight[1]<<endl;*/
-
-		// lowerLeft
-		// Bottom wall
-		/*if ((lowerLeft[1] == (*it)->lowerLeft[1])
-		    && ((lowerLeft[0] > (*it)->lowerLeft[0])
-			&& (lowerLeft[0] < (*it)->topRight[0])))
-		{
-			cout<<"Room does NOT fit. lowerLeft on bottom wall of another room"<<endl;
-			return false;
-		}
-
-		// Left wall
-		if ((lowerLeft[0] == (*it)->lowerLeft[0])
-		    && ((lowerLeft[1] > (*it)->lowerLeft[1])
-			&& (lowerLeft[1] < (*it)->topRight[1])))
-		{
-			cout<<"Room does NOT fit. lowerLeft on left wall of another room"<<endl;
-			return false;
-		}
-
-		// Top wall
-		if ((lowerLeft[1] == (*it)->topRight[1])
-		    && ((lowerLeft[0] > (*it)->lowerLeft[0])
-			&& (lowerLeft[0] < (*it)->topRight[0])))
-		{
-			cout<<"Room does NOT fit. lowerLeft on top wall of another room"<<endl;
-			return false;
-		}
-
-		// Right wall
-		if ((lowerLeft[0] == (*it)->lowerLeft[0])
-		    && ((lowerLeft[1] > (*it)->lowerLeft[1])
-			&& (lowerLeft[1] < (*it)->topRight[1])))
-		{
-			cout<<"Room does NOT fit. lowerLeft on right wall of another room"<<endl;
-			return false;
-		}
-
-		// topRight
-		// Bottom wall
-		if ((topRight[1] == (*it)->lowerLeft[1])
-		    && ((topRight[0] > (*it)->lowerLeft[0])
-			&& (topRight[0] < (*it)->topRight[0])))
-		{
-			cout<<"Room does NOT fit. topRight on bottom wall of another room"<<endl;
-			return false;
-		}
-
-		// Left wall
-		if ((topRight[0] == (*it)->lowerLeft[0])
-		    && ((topRight[1] > (*it)->lowerLeft[1])
-			&& (topRight[1] < (*it)->topRight[1])))
-		{
-			cout<<"Room does NOT fit. topRight on left wall of another room"<<endl;
-			return false;
-		}
-
-		// Top wall
-		if ((topRight[1] == (*it)->topRight[1])
-		    && ((topRight[0] > (*it)->lowerLeft[0])
-			&& (topRight[0] < (*it)->topRight[0])))
-		{
-			cout<<"Room does NOT fit. topRight on top wall of another room"<<endl;
-			return false;
-		}
-
-		// Right wall
-		if ((topRight[0] == (*it)->lowerLeft[0])
-		    && ((topRight[1] > (*it)->lowerLeft[1])
-			&& (topRight[1] < (*it)->topRight[1])))
-		{
-			cout<<"Room does NOT fit. topRight on right wall of another room"<<endl;
-			return false;
-		}*/
-
 		GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
 		GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
 
@@ -196,6 +145,13 @@ bool Room::checkIfFits()
 		    || pointEnclosed(_topLeft, lowerLeft, topRight))
 		{
 			cout<<"Point encloses other points"<<endl;
+			return false;
+		}
+
+		if (pointsOverlap(lowerLeft, topRight,
+				  (*it)->lowerLeft, (*it)->topRight))
+		{
+			cout<<"Rooms overlap"<<endl;
 			return false;
 		}
 	}
