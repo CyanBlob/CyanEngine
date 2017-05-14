@@ -260,7 +260,7 @@ void keyboard(unsigned char key, int x, int y)
 void buildRooms()
 {
 	int i;
-	int MAXROOMS = 50000;
+	int MAXROOMS = 500;
 
 	for (i = 0; i < MAXROOMS; i++) {
 		int _roomLowerLeft[2] = {(4 + rand() % 100 * 2) - 50,

@@ -1,80 +1,16 @@
-#include "Room.h"
+#include <stdlib.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <GL/glut.h>
+#include <stdio.h>
+
 #include "Collision.h"
+#include "Room.h"
 
-list<Room*> initopRightoomList()
-{
-	list<Room*> tmp;
-	return tmp;
-}
-list <Room*> Room::roomList(initopRightoomList());
-
-Room::Room(int _lowerLeft[], int _topRight[], GLfloat wallSize)
-{
-	GLfloat x;
-
-	lowerLeft[0] = _lowerLeft[0];
-	lowerLeft[1] = _lowerLeft[1];
-	topRight[0] = _topRight[0];
-	topRight[1] = _topRight[1];
-
-	//cout<<"Building room from "<<_lowerLeft[0]<<", "<<_lowerLeft[1]<<" to "<<
-		//topRight[0]<<", "<<topRight[1]<<endl;
-
-	if(!Collision::checkCollision(lowerLeft, topRight))
-	{
-		return;
-	}
-	roomBuilt = true;
-
-	GLfloat color[3];
-	Wall::randomColor(color);
-
-	// right and left
-	for (x = lowerLeft[1]; x <= topRight[1]; x += wallSize)
-	{
-		// right wall
-		GLfloat tmpWallCoords[3] = {topRight[0], x, 0.0};
-
-		Wall *wall = new Wall(tmpWallCoords, wallSize, color);
-		wall->addToList(wall);
-
-		// left wall
-		GLfloat tmpWallCoordsLL[3] = {lowerLeft[0], x, 0.0};
-
-		wall = new Wall(tmpWallCoordsLL, wallSize, color);
-		wall->addToList(wall);
-
-	}
-
-	// bottom and top walls
-	for (x = lowerLeft[0]; x <= topRight[0]; x += wallSize)
-	{
-		// bottom wall
-		GLfloat tmpWallCoords[3] = {x, lowerLeft[1], 0.0};
-
-		Wall *wall = new Wall(tmpWallCoords, wallSize, color);
-		wall->addToList(wall);
-
-		// top wall
-		GLfloat tmpWallCoordsLL[3] = {x, topRight[1], 0.0};
-
-		wall = new Wall(tmpWallCoordsLL, wallSize, color);
-		wall->addToList(wall);
-	}
-}
-void Room::addToList(Room *room)
-{
-	if (roomBuilt)
-	{
-		//cout<<"Adding room from: "<<room->lowerLeft[0]<<
-			//", "<<room->lowerLeft[1]<<
-			//", to "<<room->topRight[0]<<
-			//", "<<room->topRight[1]<<endl;
-		Room::roomList.push_front(room);
-	}
-}
-
-/*bool pointEnclosed(GLfloat point[2], GLfloat _lowerLeft[2], GLfloat _topRight[2])
+bool pointEnclosed(GLfloat point[2], GLfloat _lowerLeft[2], GLfloat _topRight[2])
 {
 	if (point[0] >= _lowerLeft[0] && point[0] <= _topRight[0])
 	{
@@ -113,10 +49,11 @@ bool pointsOverlap(GLfloat lowerLeft[2], GLfloat topRight[2],
 }
 
 // TODO: Simplify tests
-bool Room::checkIfFits()
+bool Collision::checkCollision(GLfloat lowerLeft[2], GLfloat topRight[2])
 {
 	// TODO: Research C++ iterators
-	for (std::list<Room*>::iterator it=roomList.begin(); it !=roomList.end();
+	for (std::list<Room*>::iterator it=Room::roomList.begin();
+	     it !=Room::roomList.end();
 	     ++it)
 	{
 		GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
@@ -158,6 +95,6 @@ bool Room::checkIfFits()
 		}
 	}
 	//cout<<"Room fits!"<<endl;
-	roomBuilt = true;
+	//roomBuilt = true;
 	return true;
-}*/
+}
