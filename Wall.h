@@ -17,6 +17,8 @@ class Wall
 {
 public:
 	GLfloat coords[4][3];
+	GLfloat lowerLeft[2];
+	GLfloat topRight[2];
 	GLfloat color[3];
 
 	static list<Wall*> wallList;

@@ -48,7 +48,6 @@ bool pointsOverlap(GLfloat lowerLeft[2], GLfloat topRight[2],
 	return false;
 }
 
-// TODO: Simplify tests
 bool Collision::checkCollision(GLfloat lowerLeft[2], GLfloat topRight[2])
 {
 	// TODO: Research C++ iterators
@@ -60,6 +59,54 @@ bool Collision::checkCollision(GLfloat lowerLeft[2], GLfloat topRight[2])
 		GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
 
 		//TODO: Add check for new room "enclosing" another room
+		if (pointEnclosed(lowerLeft,
+				  (*it)->lowerLeft, (*it)->topRight)
+		    || pointEnclosed(topRight,
+				     (*it)->lowerLeft, (*it)->topRight)
+		    || pointEnclosed(lowerRight,
+				     (*it)->lowerLeft, (*it)->topRight)
+		    || pointEnclosed(topLeft,
+				     (*it)->lowerLeft, (*it)->topRight))
+		{
+			//cout<<"Point enclosed by points"<<endl;
+			return false;
+		}
+
+		GLfloat _lowerRight[2] = {(*it)->topRight[0],
+			(*it)->lowerLeft[1]};
+		GLfloat _topLeft[2] = {(*it)->lowerLeft[0],
+			(*it)->topRight[1]};
+
+		if (pointEnclosed((*it)->lowerLeft, lowerLeft, topRight)
+		    || pointEnclosed((*it)->topRight, lowerLeft, topRight)
+		    || pointEnclosed(_lowerRight, lowerLeft, topRight)
+		    || pointEnclosed(_topLeft, lowerLeft, topRight))
+		{
+			//cout<<"Point encloses other points"<<endl;
+			return false;
+		}
+
+		if (pointsOverlap(lowerLeft, topRight,
+				  (*it)->lowerLeft, (*it)->topRight))
+		{
+			//cout<<"Rooms overlap"<<endl;
+			return false;
+		}
+	}
+	//cout<<"Room fits!"<<endl;
+	//roomBuilt = true;
+	return true;
+}
+bool Collision::checkPlayerCollision(GLfloat lowerLeft[2], GLfloat topRight[2])
+{
+	// TODO: Research C++ iterators
+	for (std::list<Wall*>::iterator it=Wall::wallList.begin();
+	     it != Wall::wallList.end();
+	     ++it)
+	{
+		GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
+		GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
+
 		if (pointEnclosed(lowerLeft,
 				  (*it)->lowerLeft, (*it)->topRight)
 		    || pointEnclosed(topRight,

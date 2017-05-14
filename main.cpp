@@ -211,7 +211,6 @@ void menu(int value)
 	case 'y':
 		yRot += 2;
 		if(yRot > 90)
-			yRot = 90;
 		glutPostRedisplay();
 		break;
 	case 'Y':
@@ -260,7 +259,7 @@ void keyboard(unsigned char key, int x, int y)
 void buildRooms()
 {
 	int i;
-	int MAXROOMS = 500;
+	int MAXROOMS = 5000;
 
 	for (i = 0; i < MAXROOMS; i++) {
 		int _roomLowerLeft[2] = {(4 + rand() % 100 * 2) - 50,

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Collision.h"
 using namespace std;
 
 Player::Player() : mainRect{ // Only works in C++11
@@ -30,9 +31,23 @@ void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
 	}
 }
 
+
+// TODO: Cleanup collision checking code
 void Player::playerAction(bool* keyStates)
 {
-	//cout<<keyStates['w']<<endl;
+	int i, j;
+	GLfloat prevPosition[4][3];
+	GLfloat prevXOffset = xOffset;
+	GLfloat prevYOffset = yOffset;
+
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 3; j++)
+		{
+			prevPosition[i][j] = mainRect[i][j];
+		}
+	}
+
 	if (keyStates['w'])
 	{
 		int i;
@@ -68,6 +83,21 @@ void Player::playerAction(bool* keyStates)
 			mainRect[i][0] += speedRight;
 		}
 		xOffset -= speedRight;
+	}
+
+	// TODO: Don't revert movements on non-blocked axis if two keys are held
+	if (!Collision::checkPlayerCollision(mainRect[3],
+					     mainRect[1]))
+	{
+		for (i = 0; i < 4; i++)
+		{
+			for (j = 0; j < 3; j++)
+			{
+				mainRect[i][j] = prevPosition[i][j];
+			}
+		}
+		xOffset = prevXOffset;
+		yOffset = prevYOffset;
 	}
 
 	if (keyStates[32])
