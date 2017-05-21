@@ -236,15 +236,27 @@ void buildRooms()
 	int MAXROOMS = 50;
 
 	for (i = 0; i < MAXROOMS; i++) {
+		int j = 0;
+		int roomOffset = rand() % Room::roomList.size();
+		std::list<Room*>::iterator it;
+
+		// pick a random room
+		for (it = Room::roomList.begin();
+		     it != Room::roomList.end() && j <= roomOffset; ++it, ++j);
+
+		it--;
+		/*cout<<j<<", "<<(*it)->lowerLeft[0]<<","<<(*it)->lowerLeft[1]
+			<<", "<<(*it)->topRight[0]<<","<<(*it)->topRight[1]
+			<<endl;*/
+
+		// TODO: Pick room location and dimensions based on random room
 		int _roomLowerLeft[2] = {(4 + rand() % 100 * 2) - 50,
 					 (4 + rand() % 100 * 2) - 50};
 		int _roomTopRight[2] = {4 + rand() % 20 * 2 + _roomLowerLeft[0],
 					4 + rand() % 20 * 2 + _roomLowerLeft[1]};
 		Room *_room = new Room(_roomLowerLeft, _roomTopRight, 2);
 		_room->addToList(_room);
-		/*if (i > 0) {
-			cout<<_room->roomList[i].lowerLeft<<endl;
-		}*/
+
 	}
 	int roomLowerLeft[2] = {-8, -8};
 	int roomTopRight[2] = {8, 8};
