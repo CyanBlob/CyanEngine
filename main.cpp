@@ -38,30 +38,6 @@ using namespace std;
 // Stores the status of each key (up/down);
 bool* keyStates = new bool[256];
 
-//Points used as control points
-static GLfloat p0[3] = {-9.0, -9.0, 0.0};
-static GLfloat p1[3] = {-5.0, -8.0, 0.0};
-static GLfloat p2[3] = {-1.0, -6.0, 0.0};
-static GLfloat p3[3] = {-0.0, -0.0, 0.0};
-static GLfloat p4[3] = {1.0,   6.0, 0.0};
-static GLfloat p5[3] = {5.0,   8.0, 0.0};
-static GLfloat p6[3] = {9.0,   9.0, 0.0};
-
-Player player;
-
-//Arrays of control points
-static GLfloat ctrlpoints[4][3] = {
-	{p0[0], p0[1], p0[2]},
-	{p1[0], p1[1], p1[2]},
-	{p2[0], p2[1], p2[2]},
-	{p3[0], p3[1], p3[2]}};
-
-static GLfloat ctrlpoints2[4][3] = {
-	{p3[0], p3[1], p3[2]},
-	{p4[0], p4[1], p4[2]},
-	{p5[0], p5[1], p5[2]},
-	{p6[0], p6[1], p6[2]}};
-
 static float zoom = 40; //Zoom level
 static bool left_button_down = false; //Whether the LMB is pressed
 
@@ -75,6 +51,7 @@ static float yRot = 0;
 
 list<Wall*> wallList;
 Wall *wall;
+Player player;
 
 void init(void)
 {
@@ -82,9 +59,6 @@ void init(void)
 	glShadeModel(GL_FLAT);
 	glEnable(GL_MAP1_VERTEX_3);
 }
-
-//Cursor x, y, and z values
-static GLdouble ox=0.0,oy=0.0,oz=0.0;
 
 //Check which mouse button was pressed
 void mouse(int button, int state, int x, int y)
@@ -106,7 +80,6 @@ void passiveMouseMotion(int x, int y)
 	glutPostRedisplay();
 }
 
-//Check mouse movements, moving points as necessary
 void mouseMotion(int x,int y)
 {
 }
@@ -126,8 +99,8 @@ void display(void)
 
 	glColor3f(player.color[0], player.color[1], player.color[2]);
 	glBegin(GL_POLYGON);
-	for (i = 0; i < (int) (sizeof player.mainRect / sizeof player.mainRect[0]);
-	     i++)
+	for (i = 0; i < (int) (sizeof player.mainRect
+			       / sizeof player.mainRect[0]); i++)
 	{
 		glVertex3fv(&player.mainRect[i][0]);
 	}
@@ -140,8 +113,8 @@ void display(void)
 	{
 	glColor3f((*it)->color[0],(*it)->color[1],(*it)->color[2]);
 	glBegin(GL_POLYGON);
-		for (i = 0; i < (int) (sizeof (*it)->coords / sizeof (*it)->coords[0]);
-		     i++)
+		for (i = 0; i < (int) (sizeof (*it)->coords
+				       / sizeof (*it)->coords[0]); i++)
 		{
 			glVertex3fv(&(*it)->coords[i][0]);
 		}
@@ -260,7 +233,7 @@ void keyboard(unsigned char key, int x, int y)
 void buildRooms()
 {
 	int i;
-	int MAXROOMS = 5000;
+	int MAXROOMS = 50;
 
 	for (i = 0; i < MAXROOMS; i++) {
 		int _roomLowerLeft[2] = {(4 + rand() % 100 * 2) - 50,
@@ -269,6 +242,9 @@ void buildRooms()
 					4 + rand() % 20 * 2 + _roomLowerLeft[1]};
 		Room *_room = new Room(_roomLowerLeft, _roomTopRight, 2);
 		_room->addToList(_room);
+		/*if (i > 0) {
+			cout<<_room->roomList[i].lowerLeft<<endl;
+		}*/
 	}
 	int roomLowerLeft[2] = {-8, -8};
 	int roomTopRight[2] = {8, 8};
