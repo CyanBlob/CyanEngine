@@ -1,20 +1,3 @@
-/*
- * Andrew Thomas
- * CSCE 4230
- * 5/5/2016
- * Program 7
- *
- * COMPILATION AND RUNNING: g++ prog7_Andrew_Thomas.cpp -o prog7_Andrew_Thomas -lGL -lGLU -lglut && ./prog7_Andrew_Thomas
- *
- * CONTROLS: x,X = rotate about x axis
- *           y,Y = rorate about y axis
- *           w,a,s,d = pan
- *           z,Z zoom in/out
- *           esc = quit
- *
- *           click+drag = move point
- */
-
 #include <stdlib.h>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -28,6 +11,7 @@
 #include <cmath>
 #include <list>
 #include <time.h>
+#include <unistd.h> // sleep()
 
 #include "Player.h"
 #include "Room.h"
@@ -38,7 +22,7 @@ using namespace std;
 // Stores the status of each key (up/down);
 bool* keyStates = new bool[256];
 
-static float zoom = 40; //Zoom level
+static float zoom = 180; //Zoom level
 static bool left_button_down = false; //Whether the LMB is pressed
 
 //Translation variables
@@ -52,6 +36,10 @@ static float yRot = 0;
 list<Wall*> wallList;
 Wall *wall;
 Player player;
+
+int build = 1;
+
+void buildRooms();
 
 void init(void)
 {
@@ -135,6 +123,12 @@ void playerAction()
 
 void timer(int value)
 {
+	if (build == 1)
+	{
+		buildRooms();
+		build = 0;
+	}
+
 	playerAction();
 	glutPostRedisplay();
 	glutTimerFunc(16, timer, 1);
@@ -261,8 +255,15 @@ void buildRooms()
 		int wall = rand() % 4;
 		int size = rand() % 20 * 2 + 10;
 
+		bool topDoor = false;
+		bool rightDoor = false;
+		bool bottomDoor = false;
+		bool leftDoor = false;
+
 		if (wall == 0)
 		{
+			(*it)->topDoor = true;
+			bottomDoor = true;
 			_roomLowerLeft[0] = (*it)->lowerLeft[0];
 			_roomLowerLeft[1] = (*it)->topRight[1] + 2;
 			_roomTopRight[0] = (*it)->topRight[0];
@@ -270,6 +271,8 @@ void buildRooms()
 		}
 		else if (wall == 1)
 		{
+			(*it)->rightDoor = true;
+			leftDoor = true;
 			_roomLowerLeft[0] = (*it)->topRight[0] + 2;
 			_roomLowerLeft[1] = (*it)->lowerLeft[1];
 			_roomTopRight[0] = (*it)->topRight[0] + size;
@@ -277,6 +280,8 @@ void buildRooms()
 		}
 		else if (wall == 2)
 		{
+			(*it)->bottomDoor = true;
+			topDoor = true;
 			_roomLowerLeft[0] = (*it)->lowerLeft[0];
 			_roomLowerLeft[1] = (*it)->lowerLeft[1] - size;
 			_roomTopRight[0] = (*it)->topRight[0];
@@ -284,6 +289,8 @@ void buildRooms()
 		}
 		else if (wall == 3)
 		{
+			(*it)->leftDoor = true;
+			rightDoor = true;
 			_roomLowerLeft[0] = (*it)->lowerLeft[0] - size;
 			_roomLowerLeft[1] = (*it)->lowerLeft[1];
 			_roomTopRight[0] = (*it)->lowerLeft[0] - 2;
@@ -291,8 +298,18 @@ void buildRooms()
 		}
 
 		Room *_room = new Room(_roomLowerLeft, _roomTopRight, 2);
+		_room->topDoor = topDoor;
+		_room->rightDoor = rightDoor;
+		_room->bottomDoor = bottomDoor;
+		_room->leftDoor = leftDoor;
 		_room->addToList(_room);
 	}
+	// Build all rooms
+	std::list<Room*>::iterator it;
+	for (it = Room::roomList.begin(); it != Room::roomList.end(); ++it) {
+		(*it)->buildRoom();
+	}
+
 }
 
 int main(int argc, char** argv)
@@ -316,8 +333,6 @@ int main(int argc, char** argv)
 	glutMouseFunc(mouse);
 	glutMotionFunc(mouseMotion);
 	glutPassiveMotionFunc(passiveMouseMotion);
-
-	buildRooms();
 
 	glutMainLoop();
 

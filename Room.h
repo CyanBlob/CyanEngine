@@ -8,9 +8,16 @@ public:
 	// coordinates for LL and TR corners
 	GLfloat lowerLeft[2];
 	GLfloat topRight[2];
+	GLfloat wallSize;
 	list<Wall*> wallList;
 	Room(int*, int*, GLfloat);
 	void addToList(Room*);
+	void buildRoom();
+
+	bool topDoor = false;
+	bool rightDoor = false;
+	bool bottomDoor = false;
+	bool leftDoor = false;
 
 private:
 	// Look through roomList, checking if current room will fit (physically)
