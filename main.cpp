@@ -235,6 +235,12 @@ void buildRooms()
 	int i;
 	int MAXROOMS = 50;
 
+	int roomLowerLeft[2] = {-8, -8};
+	int roomTopRight[2] = {8, 8};
+
+	Room *room = new Room(roomLowerLeft, roomTopRight, 2);
+	room->addToList(room);
+
 	for (i = 0; i < MAXROOMS; i++) {
 		int j = 0;
 		int roomOffset = rand() % Room::roomList.size();
@@ -245,37 +251,48 @@ void buildRooms()
 		     it != Room::roomList.end() && j <= roomOffset; ++it, ++j);
 
 		it--;
-		/*cout<<j<<", "<<(*it)->lowerLeft[0]<<","<<(*it)->lowerLeft[1]
+		cout<<j<<", "<<(*it)->lowerLeft[0]<<","<<(*it)->lowerLeft[1]
 			<<", "<<(*it)->topRight[0]<<","<<(*it)->topRight[1]
-			<<endl;*/
+			<<endl;
 
-		// TODO: Pick room location and dimensions based on random room
-		int _roomLowerLeft[2] = {(4 + rand() % 100 * 2) - 50,
-					 (4 + rand() % 100 * 2) - 50};
-		int _roomTopRight[2] = {4 + rand() % 20 * 2 + _roomLowerLeft[0],
-					4 + rand() % 20 * 2 + _roomLowerLeft[1]};
+		int _roomLowerLeft[2];
+		int _roomTopRight[2];
+
+		int wall = rand() % 4;
+		int size = rand() % 20 * 2 + 10;
+
+		if (wall == 0)
+		{
+			_roomLowerLeft[0] = (*it)->lowerLeft[0];
+			_roomLowerLeft[1] = (*it)->topRight[1] + 2;
+			_roomTopRight[0] = (*it)->topRight[0];
+			_roomTopRight[1] = (*it)->topRight[1] + size;
+		}
+		else if (wall == 1)
+		{
+			_roomLowerLeft[0] = (*it)->topRight[0] + 2;
+			_roomLowerLeft[1] = (*it)->lowerLeft[1];
+			_roomTopRight[0] = (*it)->topRight[0] + size;
+			_roomTopRight[1] = (*it)->topRight[1];
+		}
+		else if (wall == 2)
+		{
+			_roomLowerLeft[0] = (*it)->lowerLeft[0];
+			_roomLowerLeft[1] = (*it)->lowerLeft[1] - size;
+			_roomTopRight[0] = (*it)->topRight[0];
+			_roomTopRight[1] = (*it)->lowerLeft[1] - 2;
+		}
+		else if (wall == 3)
+		{
+			_roomLowerLeft[0] = (*it)->lowerLeft[0] - size;
+			_roomLowerLeft[1] = (*it)->lowerLeft[1];
+			_roomTopRight[0] = (*it)->lowerLeft[0] - 2;
+			_roomTopRight[1] = (*it)->topRight[1];
+		}
+
 		Room *_room = new Room(_roomLowerLeft, _roomTopRight, 2);
 		_room->addToList(_room);
-
 	}
-	int roomLowerLeft[2] = {-8, -8};
-	int roomTopRight[2] = {8, 8};
-
-	Room *room = new Room(roomLowerLeft, roomTopRight, 2);
-	room->addToList(room);
-
-	/*int roomLowerLeft2[2] = {-16, 8};
-	int roomTopRight2[2] = {16, 20};
-
-	room = new Room(roomLowerLeft2, roomTopRight2, 2);
-	room->addToList(room);
-
-
-	int roomLowerLeft3[2] = {-16, 18};
-	int roomTopRight3[2] = {16, 40};
-
-	room = new Room(roomLowerLeft3, roomTopRight3, 2);
-	room->addToList(room);*/
 }
 
 int main(int argc, char** argv)
