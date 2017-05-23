@@ -31,6 +31,23 @@ void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
 	}
 }
 
+bool Player::playerCollision(GLfloat prevPosition[4][3], GLfloat prevXOffset,
+		     GLfloat prevYOffset) {
+	int i, j;
+	// TODO: Don't revert movements on non-blocked axis if two keys are held
+	if (!Collision::checkPlayerCollision(mainRect[3], mainRect[1]))
+	{
+		for (i = 0; i < 4; i++)
+		{
+			for (j = 0; j < 3; j++)
+			{
+				mainRect[i][j] = prevPosition[i][j];
+			}
+		}
+		xOffset = prevXOffset;
+		yOffset = prevYOffset;
+	}
+}
 
 // TODO: Cleanup collision checking code
 void Player::playerAction(bool* keyStates)
@@ -85,20 +102,8 @@ void Player::playerAction(bool* keyStates)
 		xOffset -= speedRight;
 	}
 
-	// TODO: Don't revert movements on non-blocked axis if two keys are held
-	if (!Collision::checkPlayerCollision(mainRect[3],
-					     mainRect[1]))
-	{
-		for (i = 0; i < 4; i++)
-		{
-			for (j = 0; j < 3; j++)
-			{
-				mainRect[i][j] = prevPosition[i][j];
-			}
-		}
-		xOffset = prevXOffset;
-		yOffset = prevYOffset;
-	}
+	playerCollision(prevPosition, prevXOffset, prevYOffset);
+
 
 	if (keyStates[32])
 	{

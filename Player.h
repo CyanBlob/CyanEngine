@@ -33,4 +33,5 @@ private:
 	bool playerAttacking = false;
 	void attack();
 	void stopAttack();
+	bool playerCollision(GLfloat[][3], GLfloat, GLfloat);
 };
