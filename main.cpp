@@ -253,7 +253,7 @@ void buildRooms()
 		int _roomTopRight[2];
 
 		int wall = rand() % 4;
-		int size = rand() % 20 * 2 + 10;
+		int size = rand() % (20 * 2) + 12;
 
 		bool topDoor = false;
 		bool rightDoor = false;
@@ -262,7 +262,6 @@ void buildRooms()
 
 		if (wall == 0)
 		{
-			(*it)->topDoor = true;
 			bottomDoor = true;
 			_roomLowerLeft[0] = (*it)->lowerLeft[0];
 			_roomLowerLeft[1] = (*it)->topRight[1] + 2;
@@ -271,7 +270,6 @@ void buildRooms()
 		}
 		else if (wall == 1)
 		{
-			(*it)->rightDoor = true;
 			leftDoor = true;
 			_roomLowerLeft[0] = (*it)->topRight[0] + 2;
 			_roomLowerLeft[1] = (*it)->lowerLeft[1];
@@ -280,7 +278,6 @@ void buildRooms()
 		}
 		else if (wall == 2)
 		{
-			(*it)->bottomDoor = true;
 			topDoor = true;
 			_roomLowerLeft[0] = (*it)->lowerLeft[0];
 			_roomLowerLeft[1] = (*it)->lowerLeft[1] - size;
@@ -289,7 +286,6 @@ void buildRooms()
 		}
 		else if (wall == 3)
 		{
-			(*it)->leftDoor = true;
 			rightDoor = true;
 			_roomLowerLeft[0] = (*it)->lowerLeft[0] - size;
 			_roomLowerLeft[1] = (*it)->lowerLeft[1];
@@ -298,16 +294,34 @@ void buildRooms()
 		}
 
 		Room *_room = new Room(_roomLowerLeft, _roomTopRight, 2);
-		_room->topDoor = topDoor;
-		_room->rightDoor = rightDoor;
-		_room->bottomDoor = bottomDoor;
-		_room->leftDoor = leftDoor;
-		_room->addToList(_room);
+		if (_room->roomFits) {
+			if (topDoor) {
+				(*it)->bottomDoor = true;
+				_room->topDoor = topDoor;
+			}
+			if (rightDoor) {
+				(*it)->leftDoor = true;
+				_room->rightDoor = rightDoor;
+			}
+			if (bottomDoor) {
+				_room->bottomDoor = bottomDoor;
+				(*it)->topDoor = true;
+			}
+			if (leftDoor) {
+				_room->leftDoor = leftDoor;
+				(*it)->rightDoor = true;
+			}
+
+			_room->addToList(_room);
+		}
 	}
 	// Build all rooms
 	std::list<Room*>::iterator it;
 	for (it = Room::roomList.begin(); it != Room::roomList.end(); ++it) {
 		(*it)->buildRoom();
+		// For debugging/demoing
+		display();
+		usleep(100000);
 	}
 
 }
