@@ -73,3 +73,15 @@ void Wall::addToList(Wall *wall)
 	//cout<<"Adding to wallList"<<endl;
 	Wall::wallList.push_front(wall);
 }
+
+bool Wall::checkCollision(Object *obj)
+{
+	cout<<"Not implemented"<<endl;
+	return false;
+}
+
+void Wall::onCollisionEnter(Object *obj)
+{
+	cout<<"Collided with: "<<obj->lowerLeft[0]<<","<<obj->lowerLeft[1]<<endl;
+}
+//void Wall::destroy() {};

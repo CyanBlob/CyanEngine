@@ -1,24 +1,17 @@
 #include <stdlib.h>
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-#include <GL/glut.h>
-
-#include <stdlib.h>
 #include <iostream>
 #include <cmath>
 #include <list>
 
+#include "Object.h"
+
 using namespace std;
 
-class Wall
+class Wall: public Object
 {
 public:
+	~Wall() {};
 	GLfloat coords[4][3];
-	GLfloat lowerLeft[2];
-	GLfloat topRight[2];
 	GLfloat color[3];
 
 	static list<Wall*> wallList;
@@ -33,5 +26,8 @@ public:
 	void addToList(Wall*);
 
 	static void randomColor(GLfloat[]);
+	bool checkCollision(Object*);
+	void onCollisionEnter(Object*);
+	//void destroy();
 private:
 };

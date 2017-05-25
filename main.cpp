@@ -226,7 +226,7 @@ void keyboard(unsigned char key, int x, int y)
 void buildRooms()
 {
 	int i;
-	int MAXROOMS = 50;
+	int MAXROOMS = 500;
 
 	int roomLowerLeft[2] = {-8, -8};
 	int roomTopRight[2] = {8, 8};
@@ -319,8 +319,8 @@ void buildRooms()
 	for (it = Room::roomList.begin(); it != Room::roomList.end(); ++it) {
 		(*it)->buildRoom();
 		// For debugging/demoing
-		display();
-		usleep(100000);
+		//display();
+		//usleep(100000);
 	}
 
 }
