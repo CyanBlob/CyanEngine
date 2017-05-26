@@ -9,8 +9,14 @@
 #include <stdlib.h>
 #include <iostream>
 #include <cmath>
+#include <string>
 
-class Player
+#ifndef Included_Object_H
+#define Included_Object_H
+#include "Object.h"
+#endif
+
+class Player: public Object
 {
 public:
 	GLfloat xOffset;
@@ -23,6 +29,7 @@ public:
 
 	void playerAction(bool*);
 	void copyGLfloatArray(GLfloat*, GLfloat*);
+	void onCollisionEnter(Object*);
 	Player();
 
 private:

@@ -31,6 +31,7 @@ Wall::Wall(GLfloat _coords[][3])
 
 Wall::Wall(GLfloat _lowerLeft[], GLfloat wallSize, GLfloat _color[3])
 {
+	imageFile = "resources/crawl_tiles/dc-dngn/wall/brick_gray0.png";
 
 	//randomColor(color);
 	color[0] = _color[0];

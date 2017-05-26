@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Collision.h"
+#include "SOIL.h"
 using namespace std;
 
 Player::Player() : mainRect{ // Only works in C++11
@@ -8,11 +9,17 @@ Player::Player() : mainRect{ // Only works in C++11
 		 {1.0, -1.0, 0.0},
 		 {-1.0, -1.0, 0.0}}
 {
+	imageFile = "resources/crawl_tiles/player/transform/lich_form.png";
 	// Player speed
 	speedForward = 0.2f;
 	speedBack = -0.2f;
 	speedRight = 0.2f;
 	speedLeft = -0.2f;
+
+	lowerLeft[0] = mainRect[3][0];
+	lowerLeft[1] = mainRect[3][1];
+	topRight[0] = mainRect[1][0];
+	topRight[1] = mainRect[1][1];
 }
 void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
 {
@@ -147,3 +154,7 @@ void Player::attack()
 	copyGLfloatArray(tmpColor, flashColor);
 }
 
+void Player::onCollisionEnter(Object *obj)
+{
+	cout<<"Collided with: "<<obj->lowerLeft[0]<<","<<obj->lowerLeft[1]<<endl;
+}

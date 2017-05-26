@@ -3,7 +3,11 @@
 #include <cmath>
 #include <list>
 
+#ifndef Included_Object_H
+#define Included_Object_H
 #include "Object.h"
+#endif
+#include "SOIL.h"
 
 using namespace std;
 
@@ -29,5 +33,4 @@ public:
 	bool checkCollision(Object*);
 	void onCollisionEnter(Object*);
 	//void destroy();
-private:
 };

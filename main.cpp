@@ -17,6 +17,8 @@
 #include "Room.h"
 //#include "Wall.h"
 
+#include "SOIL.h"
+
 using namespace std;
 
 // Stores the status of each key (up/down);
@@ -35,7 +37,7 @@ static float yRot = 0;
 
 list<Wall*> wallList;
 Wall *wall;
-Player player;
+Player *player = new Player();
 
 int build = 1;
 
@@ -43,7 +45,7 @@ void buildRooms();
 
 void init(void)
 {
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(58.0 / 255.0, 60.0 / 255.0, 67 / 255.0, 0.0);
 	glShadeModel(GL_FLAT);
 	glEnable(GL_MAP1_VERTEX_3);
 }
@@ -74,40 +76,60 @@ void mouseMotion(int x,int y)
 
 void display(void)
 {
-	int i;
+	glClear(GL_COLOR_BUFFER_BIT);
+	glEnable(GL_TEXTURE_2D);
 
 	glPushMatrix();
+
+	player->render();
 
 	//Translate/rotate
 	glTranslatef(xOffset, yOffset, 0);
 	glRotatef(xRot, 1, 0, 0);
 	glRotatef(yRot, 0, 1, 0);
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	// render walls
+	// TODO: Simplify this (setting up the texture every time is too slow)
+	GLuint tex;
+	glGenTextures(1, &tex);
 
-	glColor3f(player.color[0], player.color[1], player.color[2]);
-	glBegin(GL_POLYGON);
-	for (i = 0; i < (int) (sizeof player.mainRect
-			       / sizeof player.mainRect[0]); i++)
-	{
-		glVertex3fv(&player.mainRect[i][0]);
-	}
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	glEnd();
+	float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
 
-	// TODO: Research C++ iterators
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	int width, height;
+	unsigned char* image =
+		    SOIL_load_image("resources/crawl_tiles/dc-dngn/wall/brick_gray0.png"
+				    ,&width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+		                   GL_UNSIGNED_BYTE, image);
+
+	SOIL_free_image_data(image);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 	for (std::list<Wall*>::iterator it=wall->wallList.begin();
 	     it !=wall->wallList.end(); ++it)
 	{
-	glColor3f((*it)->color[0],(*it)->color[1],(*it)->color[2]);
-	glBegin(GL_POLYGON);
-		for (i = 0; i < (int) (sizeof (*it)->coords
-				       / sizeof (*it)->coords[0]); i++)
-		{
-			glVertex3fv(&(*it)->coords[i][0]);
-		}
-	glEnd();
+		glBegin(GL_QUADS);
+		glTexCoord2f(1.0, 1.0); glVertex3f((*it)->lowerLeft[0],
+						   (*it)->lowerLeft[1], 0.0);
+		glTexCoord2f(1.0, 0.0); glVertex3f((*it)->lowerLeft[0],
+						   (*it)->topRight[1], 0.0);
+		glTexCoord2f(0.0, 0.0); glVertex3f((*it)->topRight[0],
+						   (*it)->topRight[1], 0.0);
+		glTexCoord2f(0.0, 1.0); glVertex3f((*it)->topRight[0],
+						   (*it)->lowerLeft[1], 0.0);
+
+		//(*it)->render(); // Too slow, since each call resets image
+		glEnd();
 	}
+	glFlush();
+	glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 	glutSwapBuffers();
@@ -115,9 +137,9 @@ void display(void)
 
 void playerAction()
 {
-	player.playerAction(keyStates);
-	xOffset = player.xOffset;
-	yOffset = player.yOffset;
+	player->playerAction(keyStates);
+	xOffset = player->xOffset;
+	yOffset = player->yOffset;
 }
 
 void timer(int value)
@@ -244,9 +266,9 @@ void buildRooms()
 		     it != Room::roomList.end() && j <= roomOffset; ++it, ++j);
 
 		it--;
-		cout<<j<<", "<<(*it)->lowerLeft[0]<<","<<(*it)->lowerLeft[1]
+		/*cout<<j<<", "<<(*it)->lowerLeft[0]<<","<<(*it)->lowerLeft[1]
 			<<", "<<(*it)->topRight[0]<<","<<(*it)->topRight[1]
-			<<endl;
+			<<endl;*/
 
 		int _roomLowerLeft[2];
 		int _roomTopRight[2];
