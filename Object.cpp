@@ -8,7 +8,8 @@ int width, height;
 unsigned char* image;
 
 void Object::initRender()
-{glGenTextures(1, &tex);
+{
+	glGenTextures(1, &tex);
 
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
