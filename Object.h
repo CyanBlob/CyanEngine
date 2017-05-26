@@ -18,6 +18,8 @@ public:
 	Object() {};
 	~Object() {};
 	bool checkCollision(Object*);
+
+	void initRender();
 	void render();
 
 	virtual void onCollisionEnter(Object*) = 0;

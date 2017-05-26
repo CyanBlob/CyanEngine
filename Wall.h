@@ -32,5 +32,10 @@ public:
 	static void randomColor(GLfloat[]);
 	bool checkCollision(Object*);
 	void onCollisionEnter(Object*);
+
+	static bool lessThan(Wall *A, Wall *B)
+	{
+		return A->imageFile < B->imageFile;
+	}
 	//void destroy();
 };

@@ -81,6 +81,7 @@ void display(void)
 
 	glPushMatrix();
 
+	player->initRender();
 	player->render();
 
 	//Translate/rotate
@@ -88,45 +89,16 @@ void display(void)
 	glRotatef(xRot, 1, 0, 0);
 	glRotatef(yRot, 0, 1, 0);
 
-	// render walls
-	// TODO: Simplify this (setting up the texture every time is too slow)
-	GLuint tex;
-	glGenTextures(1, &tex);
-
-	glBindTexture(GL_TEXTURE_2D, tex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	int width, height;
-	unsigned char* image =
-		    SOIL_load_image("resources/crawl_tiles/dc-dngn/wall/brick_gray0.png"
-				    ,&width, &height, 0, SOIL_LOAD_RGBA);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
-		                   GL_UNSIGNED_BYTE, image);
-
-	SOIL_free_image_data(image);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	const char *prevImage;
 	for (std::list<Wall*>::iterator it=wall->wallList.begin();
 	     it !=wall->wallList.end(); ++it)
 	{
-		glBegin(GL_QUADS);
-		glTexCoord2f(1.0, 1.0); glVertex3f((*it)->lowerLeft[0],
-						   (*it)->lowerLeft[1], 0.0);
-		glTexCoord2f(1.0, 0.0); glVertex3f((*it)->lowerLeft[0],
-						   (*it)->topRight[1], 0.0);
-		glTexCoord2f(0.0, 0.0); glVertex3f((*it)->topRight[0],
-						   (*it)->topRight[1], 0.0);
-		glTexCoord2f(0.0, 1.0); glVertex3f((*it)->topRight[0],
-						   (*it)->lowerLeft[1], 0.0);
-
-		//(*it)->render(); // Too slow, since each call resets image
-		glEnd();
+		if ((*it)->imageFile != prevImage)
+		{
+			(*it)->initRender();
+			prevImage = (*it)->imageFile;
+		}
+		(*it)->render();
 	}
 	glFlush();
 	glDisable(GL_TEXTURE_2D);
@@ -344,7 +316,7 @@ void buildRooms()
 		//display();
 		//usleep(100000);
 	}
-
+	Wall::wallList.sort(Wall::lessThan);
 }
 
 int main(int argc, char** argv)

@@ -2,16 +2,17 @@
 #include "SOIL.h"
 #include <iostream>
 
-void Object::render()
-{
-	GLuint tex;
-	glGenTextures(1, &tex);
+GLuint tex;
+float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+int width, height;
+unsigned char* image;
+
+void Object::initRender()
+{glGenTextures(1, &tex);
 
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	// background color, for transparent backgrounds
 	glColor3f(58.0 / 255.0, 60.0 / 255.0, 67 / 255.0);
@@ -22,14 +23,17 @@ void Object::render()
 
 	//glGenerateMipMap(GL_TEXTURE_2D);
 
-	int width, height;
-	unsigned char* image =
-		    SOIL_load_image(imageFile, &width, &height, 0, SOIL_LOAD_RGBA);
+	image = SOIL_load_image(imageFile, &width, &height,
+				0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
-		                   GL_UNSIGNED_BYTE, image);
+		     GL_UNSIGNED_BYTE, image);
 
 	SOIL_free_image_data(image);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+
+}
+void Object::render()
+{
 
 	//glBindTexture(GL_TEXTURE_2D, texName);
 	glBegin(GL_QUADS);

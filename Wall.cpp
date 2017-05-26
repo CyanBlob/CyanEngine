@@ -25,13 +25,23 @@ Wall::Wall(GLfloat _coords[][3])
 			coords[i][j] = _coords[i][j];
 		}
 	}
-
-	//wallList.push_front(this);
 }
 
 Wall::Wall(GLfloat _lowerLeft[], GLfloat wallSize, GLfloat _color[3])
 {
-	imageFile = "resources/crawl_tiles/dc-dngn/wall/brick_gray0.png";
+	int i = rand() % 3;
+	if (i == 0)
+	{
+		imageFile = "resources/crawl_tiles/dc-dngn/wall/brick_gray0.png";
+	}
+	else if (i == 1)
+	{
+		imageFile = "resources/crawl_tiles/dc-dngn/wall/brick_gray1.png";
+	}
+	else if (i == 2)
+	{
+		imageFile = "resources/crawl_tiles/dc-dngn/wall/brick_gray2.png";
+	}
 
 	//randomColor(color);
 	color[0] = _color[0];
