@@ -34,6 +34,7 @@
 # Swap files
 *.swp
 *.swo
+*.swn
 
 # Tags
 tags
