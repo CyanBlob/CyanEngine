@@ -1,26 +1,23 @@
-#include "Player.h"
 #include "Collision.h"
 #include "SOIL.h"
 using namespace std;
 
-Player::Player() : mainRect{ // Only works in C++11
-		 {-1.0, 1.0, 0.0},
-		 {1.0, 1.0, 0.0},
-		 {1.0, -1.0, 0.0},
-		 {-1.0, -1.0, 0.0}}
+Player::Player()
 {
 	imageFile = "resources/crawl_tiles/player/transform/lich_form.png";
+
+	lowerLeft[0] = -1.0;
+	lowerLeft[1] = -1.0;
+	topRight[0] = 1.0;
+	topRight[1] = 1.0;
+
 	// Player speed
 	speedForward = 0.2f;
 	speedBack = -0.2f;
 	speedRight = 0.2f;
 	speedLeft = -0.2f;
-
-	lowerLeft[0] = mainRect[3][0];
-	lowerLeft[1] = mainRect[3][1];
-	topRight[0] = mainRect[1][0];
-	topRight[1] = mainRect[1][1];
 }
+
 void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
 {
 	int i;
@@ -38,90 +35,72 @@ void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
 	}
 }
 
-bool Player::playerCollision(GLfloat prevPosition[4][3], GLfloat prevXOffset,
-		     GLfloat prevYOffset) {
-	int i, j;
-	if (!Collision::checkPlayerCollision(mainRect[3], mainRect[1]))
+bool Player::playerCollision(GLfloat prevLowerLeft[2], GLfloat prevTopRight[2],
+			     GLfloat prevXOffset, GLfloat prevYOffset) {
+
+	if (!Collision::checkPlayerCollision(this))
 	{
-		for (i = 0; i < 4; i++)
-		{
-			for (j = 0; j < 3; j++)
-			{
-				mainRect[i][j] = prevPosition[i][j];
-			}
-		}
+		lowerLeft[0] = prevLowerLeft[0];
+		lowerLeft[1] = prevLowerLeft[1];
+		topRight[0] = prevTopRight[0];
+		topRight[1] = prevTopRight[1];
+
 		xOffset = prevXOffset;
 		yOffset = prevYOffset;
 		return true;
 	}
+
 	return false;
 }
 
 // TODO: Cleanup collision checking code
 void Player::playerAction(bool* keyStates)
 {
-	int i, j;
-	GLfloat prevPosition[4][3];
+	GLfloat prevLowerLeft[2] = {lowerLeft[0], lowerLeft[1]};
+	GLfloat prevTopRight[2] = {topRight[0], topRight[1]};
 	GLfloat prevXOffset = xOffset;
 	GLfloat prevYOffset = yOffset;
-
-	for (i = 0; i < 4; i++)
-	{
-		for (j = 0; j < 3; j++)
-		{
-			prevPosition[i][j] = mainRect[i][j];
-		}
-	}
 
 	if (keyStates['w'])
 	{
 		int i;
-		for (i = 0; i < 4; i++)
-		{
-			mainRect[i][1] += speedForward;
-		}
+		lowerLeft[1] += speedForward;
+		topRight[1] += speedForward;
 		yOffset -= speedForward;
 	}
 	else if (keyStates['s'])
 	{
 		int i;
-		for (i = 0; i < 4; i++)
-		{
-			mainRect[i][1] += speedBack;
-		}
+		lowerLeft[1] += speedBack;
+		topRight[1] += speedBack;
 		yOffset -= speedBack;
 	}
-	if (!playerCollision(prevPosition, prevXOffset, prevYOffset)) {
-		for (i = 0; i < 4; i++)
-		{
-			for (j = 0; j < 3; j++)
-			{
-				prevPosition[i][j] = mainRect[i][j];
-			}
-		}
+	if (!playerCollision(prevLowerLeft, prevTopRight,
+			     prevXOffset, prevYOffset)) {
+		prevLowerLeft[0] = lowerLeft[0];
+		prevLowerLeft[1] = lowerLeft[1];
+		prevTopRight[0] = topRight[0];
+		prevTopRight[1] = topRight[1];
+
 		prevYOffset = yOffset;
 	}
 
 	if (keyStates['a'])
 	{
 		int i;
-		for (i = 0; i < 4; i++)
-		{
-			mainRect[i][0] += speedLeft;
-		}
+		lowerLeft[0] += speedLeft;
+		topRight[0] += speedLeft;
 		xOffset -= speedLeft;
 	}
 	else if (keyStates['d'])
 	{
 		int i;
-		for (i = 0; i < 4; i++)
-		{
-			mainRect[i][0] += speedRight;
-		}
+		lowerLeft[0] += speedRight;
+		topRight[0] += speedRight;
 		xOffset -= speedRight;
 	}
 
-	playerCollision(prevPosition, prevXOffset, prevYOffset);
+	playerCollision(prevLowerLeft, prevTopRight, prevXOffset, prevYOffset);
 
 	if (keyStates[32])
 	{
@@ -135,7 +114,6 @@ void Player::playerAction(bool* keyStates)
 			attack();
 		}
 	}
-
 }
 
 void Player::stopAttack()

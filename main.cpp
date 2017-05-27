@@ -50,6 +50,11 @@ void init(void)
 	glClearColor(58.0 / 255.0, 60.0 / 255.0, 67 / 255.0, 0.0);
 	glShadeModel(GL_FLAT);
 	glEnable(GL_MAP1_VERTEX_3);
+
+	// Test items
+	GLfloat tmpLL[2] = {3, 3};
+	GLfloat tmpTR[2] = {5, 5};
+	testItem = new Item(tmpLL, tmpTR);
 }
 
 //Check which mouse button was pressed
@@ -86,16 +91,11 @@ void display(void)
 
 	glPushMatrix();
 
-
-
 	//Translate/rotate
 	glTranslatef(xOffset, yOffset, 0);
 	glRotatef(xRot, 1, 0, 0);
 	glRotatef(yRot, 0, 1, 0);
 
-	GLfloat tmpLL[2] = {-1, -1};
-	GLfloat tmpTR[2] = {1, 1};
-	testItem = new Item(tmpLL, tmpTR);
 	testItem->initRender();
 	testItem->render();
 
@@ -108,9 +108,9 @@ void display(void)
 			(*it)->initRender();
 			prevImage = (*it)->imageFile;
 		}
-	(*it)->render();
+		(*it)->render();
 	}
-	glTranslatef(xOffset * -1, yOffset * -1, 0);
+	//glTranslatef(xOffset * -1, yOffset * -1, 0);
 	player->initRender();
 	player->render();
 	glFlush();
