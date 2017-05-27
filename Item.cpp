@@ -29,5 +29,19 @@ bool Item::checkCollision(Object *obj)
 
 void Item::onCollisionEnter(Object *obj)
 {
-	cout<<"Collided with: "<<obj->lowerLeft[0]<<","<<obj->lowerLeft[1]<<endl;
+	this->destroy();
+}
+
+void Item::destroy()
+{
+	cout<<itemList.size();
+	for (std::list<Item*>::iterator it=Item::itemList.begin();
+	     it != Item::itemList.end(); ++it)
+	{
+		if ((*it) == this)
+		{
+			itemList.erase(it);
+			return;
+		}
+	}
 }

@@ -96,12 +96,19 @@ void display(void)
 	glRotatef(xRot, 1, 0, 0);
 	glRotatef(yRot, 0, 1, 0);
 
-	testItem->initRender();
-	testItem->render();
-
 	const char *prevImage;
 	for (std::list<Wall*>::iterator it=wall->wallList.begin();
 	     it !=wall->wallList.end(); ++it)
+	{
+		if ((*it)->imageFile != prevImage)
+		{
+			(*it)->initRender();
+			prevImage = (*it)->imageFile;
+		}
+		(*it)->render();
+	}
+	for (std::list<Item*>::iterator it=Item::itemList.begin();
+	     it !=Item::itemList.end(); ++it)
 	{
 		if ((*it)->imageFile != prevImage)
 		{
