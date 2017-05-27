@@ -15,6 +15,7 @@
 
 #include "Player.h"
 #include "Room.h"
+#include "Item.h"
 //#include "Wall.h"
 
 #include "SOIL.h"
@@ -38,6 +39,7 @@ static float yRot = 0;
 list<Wall*> wallList;
 Wall *wall;
 Player *player = new Player();
+Item *testItem;
 
 int build = 1;
 
@@ -78,16 +80,24 @@ void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glPushMatrix();
 
-	player->initRender();
-	player->render();
+
 
 	//Translate/rotate
 	glTranslatef(xOffset, yOffset, 0);
 	glRotatef(xRot, 1, 0, 0);
 	glRotatef(yRot, 0, 1, 0);
+
+	GLfloat tmpLL[2] = {-1, -1};
+	GLfloat tmpTR[2] = {1, 1};
+	testItem = new Item(tmpLL, tmpTR);
+	testItem->initRender();
+	testItem->render();
 
 	const char *prevImage;
 	for (std::list<Wall*>::iterator it=wall->wallList.begin();
@@ -98,8 +108,11 @@ void display(void)
 			(*it)->initRender();
 			prevImage = (*it)->imageFile;
 		}
-		(*it)->render();
+	(*it)->render();
 	}
+	glTranslatef(xOffset * -1, yOffset * -1, 0);
+	player->initRender();
+	player->render();
 	glFlush();
 	glDisable(GL_TEXTURE_2D);
 
@@ -326,7 +339,7 @@ int main(int argc, char** argv)
 	cout<<"Running game with seed: "<<timeSeed<<endl;
 
 	glutInit(&argc, argv);
-	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
+	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA);
 	glutInitWindowSize (1000, 1000);
 	glutInitWindowPosition (100, 100);
 	glutCreateWindow (argv[0]);

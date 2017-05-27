@@ -10,19 +10,19 @@ class Object
 {
 public:
 
+	Object() {};
+	~Object() {};
+
 	GLfloat lowerLeft[2];
 	GLfloat topRight[2];
 
 	bool colliderEnabled;
-
-	Object() {};
-	~Object() {};
 	bool checkCollision(Object*);
 
 	void initRender();
 	void render();
 
 	virtual void onCollisionEnter(Object*) = 0;
-	//virtual void destroy();
 	const char *imageFile;
+	//virtual void destroy();
 };

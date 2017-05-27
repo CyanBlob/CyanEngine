@@ -15,8 +15,7 @@ void Object::initRender()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	// background color, for transparent backgrounds
-	glColor3f(58.0 / 255.0, 60.0 / 255.0, 67 / 255.0);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -26,11 +25,13 @@ void Object::initRender()
 
 	image = SOIL_load_image(imageFile, &width, &height,
 				0, SOIL_LOAD_RGBA);
+
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
 		     GL_UNSIGNED_BYTE, image);
 
 	SOIL_free_image_data(image);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	// I'm not 100% what this call does, but it breaks transparency
+	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
 }
 void Object::render()
