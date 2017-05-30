@@ -1,10 +1,22 @@
 Work in progress
 CyanBlob's basic game engine, using OpenGL and Freeglut3
 
-Compilation
+Compilation:
 g++ *.cpp -o CyanEngine.out -lGL -lGLU -lglut -lSOIL -std=c++11 && ./CyanEngine.out
 
 Dependencies:
 openGL
 freeGLUT 3.0
 SOIL (http://lonesock.net/soil.html)
+
+Current features:
+Collision detection (and onCollisionEnter functions)
+Procedural dungeon generation
+Sprite rendering
+Player movement
+
+Upcoming features:
+Attacks
+Binding of Isaac style upgrades (on-hit, on-attack etc. improvements from items)
+Enemies
+Animation
