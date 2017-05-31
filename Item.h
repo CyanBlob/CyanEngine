@@ -16,8 +16,7 @@ public:
 
 	static list<Item*> itemList;
 
-	void onPickUp();
-	bool checkCollision(Object*);
-	void onCollisionEnter(Object*);
-	void destroy();
+	virtual bool checkCollision(Object*) = 0;
+	virtual void onCollisionEnter(Object*) = 0;
+	virtual void destroy() = 0;
 };

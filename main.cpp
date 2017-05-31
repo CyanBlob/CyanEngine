@@ -15,7 +15,7 @@
 
 #include "Player.h"
 #include "Room.h"
-#include "Item.h"
+#include "CyanPotion.h"
 //#include "Wall.h"
 
 #include "SOIL.h"
@@ -25,7 +25,7 @@ using namespace std;
 // Stores the status of each key (up/down);
 bool* keyStates = new bool[256];
 
-static float zoom = 180; //Zoom level
+static float zoom = 35; //Zoom level
 static bool left_button_down = false; //Whether the LMB is pressed
 
 //Translation variables
@@ -39,7 +39,7 @@ static float yRot = 0;
 list<Wall*> wallList;
 Wall *wall;
 Player *player = new Player();
-Item *testItem;
+CyanPotion *testItem;
 
 int build = 1;
 
@@ -54,7 +54,7 @@ void init(void)
 	// Test items
 	GLfloat tmpLL[2] = {3, 3};
 	GLfloat tmpTR[2] = {5, 5};
-	testItem = new Item(tmpLL, tmpTR);
+	testItem = new CyanPotion(tmpLL, tmpTR);
 }
 
 //Check which mouse button was pressed

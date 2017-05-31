@@ -22,6 +22,9 @@ public:
 	GLfloat xOffset;
 	GLfloat yOffset;
 
+	int maxHeath = 100;
+	int health = 50;
+
 	GLfloat color[3] = {0.0, 1.0, 1.0};
 	GLfloat flashColor[3] = {1.0, 0.0, 0.0};
 	// Rect coordinates

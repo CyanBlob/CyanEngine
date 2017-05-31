@@ -20,28 +20,3 @@ Item::Item(GLfloat _lowerLeft[2], GLfloat _topRight[2])
 
 	itemList.push_back(this);
 }
-
-bool Item::checkCollision(Object *obj)
-{
-	cout<<"Not implemented"<<endl;
-	return false;
-}
-
-void Item::onCollisionEnter(Object *obj)
-{
-	this->destroy();
-}
-
-void Item::destroy()
-{
-	cout<<itemList.size();
-	for (std::list<Item*>::iterator it=Item::itemList.begin();
-	     it != Item::itemList.end(); ++it)
-	{
-		if ((*it) == this)
-		{
-			itemList.erase(it);
-			return;
-		}
-	}
-}

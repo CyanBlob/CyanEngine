@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 #endif
 #include <GL/glut.h>
+#include <string>
 
 class Object
 {
@@ -13,6 +14,7 @@ public:
 	Object() {};
 	~Object() {};
 
+	std::string tag = "object";
 	GLfloat lowerLeft[2];
 	GLfloat topRight[2];
 

@@ -4,6 +4,7 @@ using namespace std;
 
 Player::Player()
 {
+	tag = "player";
 	imageFile = "resources/crawl_tiles/player/transform/lich_form.png";
 
 	lowerLeft[0] = -1.0;
