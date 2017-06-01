@@ -97,6 +97,14 @@ bool Collision::checkCollision(GLfloat lowerLeft[2], GLfloat topRight[2])
 	//roomBuilt = true;
 	return true;
 }
+
+// returns squared value for performance reasons
+GLfloat pointDistance(GLfloat a[2], GLfloat b[2])
+{
+	return ((a[0] - b[0]) * (a[0] - b[0])
+		+ (a[1] - b[1]) * (a[1] - b[1]));
+}
+
 bool Collision::checkPlayerCollision(Player *player)
 {
 	GLfloat lowerLeft[2] = {player->lowerLeft[0], player->lowerLeft[1]};
@@ -107,79 +115,86 @@ bool Collision::checkPlayerCollision(Player *player)
 	     it != Wall::wallList.end();
 	     ++it)
 	{
-		GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
-		GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
-
-		if (pointEnclosed(lowerLeft,
-				  (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(topRight,
-				     (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(lowerRight,
-				     (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(topLeft,
-				     (*it)->lowerLeft, (*it)->topRight))
+		if (pointDistance((*it)->lowerLeft, player->lowerLeft) < 5.0)
 		{
-			return false;
-		}
 
-		GLfloat _lowerRight[2] = {(*it)->topRight[0],
-			(*it)->lowerLeft[1]};
-		GLfloat _topLeft[2] = {(*it)->lowerLeft[0],
-			(*it)->topRight[1]};
+			GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
+			GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
 
-		if (pointEnclosed((*it)->lowerLeft, lowerLeft, topRight)
-		    || pointEnclosed((*it)->topRight, lowerLeft, topRight)
-		    || pointEnclosed(_lowerRight, lowerLeft, topRight)
-		    || pointEnclosed(_topLeft, lowerLeft, topRight))
-		{
-			return false;
-		}
+			if (pointEnclosed(lowerLeft,
+					  (*it)->lowerLeft, (*it)->topRight)
+			    || pointEnclosed(topRight,
+					     (*it)->lowerLeft, (*it)->topRight)
+			    || pointEnclosed(lowerRight,
+					     (*it)->lowerLeft, (*it)->topRight)
+			    || pointEnclosed(topLeft,
+					     (*it)->lowerLeft, (*it)->topRight))
+			{
+				return false;
+			}
 
-		if (pointsOverlap(lowerLeft, topRight,
-				  (*it)->lowerLeft, (*it)->topRight))
-		{
-			return false;
+			GLfloat _lowerRight[2] = {(*it)->topRight[0],
+				(*it)->lowerLeft[1]};
+			GLfloat _topLeft[2] = {(*it)->lowerLeft[0],
+				(*it)->topRight[1]};
+
+			if (pointEnclosed((*it)->lowerLeft, lowerLeft, topRight)
+			    || pointEnclosed((*it)->topRight, lowerLeft, topRight)
+			    || pointEnclosed(_lowerRight, lowerLeft, topRight)
+			    || pointEnclosed(_topLeft, lowerLeft, topRight))
+			{
+				return false;
+			}
+
+			if (pointsOverlap(lowerLeft, topRight,
+					  (*it)->lowerLeft, (*it)->topRight))
+			{
+				return false;
+			}
 		}
 	}
 	for (std::list<Item*>::iterator it=Item::itemList.begin();
 	     it != Item::itemList.end();
 	     ++it)
 	{
-		GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
-		GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
-
-		if (pointEnclosed(lowerLeft,
-				  (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(topRight,
-				     (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(lowerRight,
-				     (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(topLeft,
-				     (*it)->lowerLeft, (*it)->topRight))
+		if (pointDistance((*it)->lowerLeft, player->lowerLeft) < 5.0)
 		{
-			(*it)->onCollisionEnter(player);
-			return false;
-		}
+			GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
+			GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
 
-		GLfloat _lowerRight[2] = {(*it)->topRight[0],
-			(*it)->lowerLeft[1]};
-		GLfloat _topLeft[2] = {(*it)->lowerLeft[0],
-			(*it)->topRight[1]};
+			if (pointEnclosed(lowerLeft,
+					  (*it)->lowerLeft, (*it)->topRight)
+			    || pointEnclosed(topRight,
+					     (*it)->lowerLeft, (*it)->topRight)
+			    || pointEnclosed(lowerRight,
+					     (*it)->lowerLeft, (*it)->topRight)
+			    || pointEnclosed(topLeft,
+					     (*it)->lowerLeft, (*it)->topRight))
+			{
+				(*it)->onCollisionEnter(player);
+				return false;
+			}
 
-		if (pointEnclosed((*it)->lowerLeft, lowerLeft, topRight)
-		    || pointEnclosed((*it)->topRight, lowerLeft, topRight)
-		    || pointEnclosed(_lowerRight, lowerLeft, topRight)
-		    || pointEnclosed(_topLeft, lowerLeft, topRight))
-		{
-			(*it)->onCollisionEnter(player);
-			return false;
-		}
+			GLfloat _lowerRight[2] = {(*it)->topRight[0],
+				(*it)->lowerLeft[1]};
+			GLfloat _topLeft[2] = {(*it)->lowerLeft[0],
+				(*it)->topRight[1]};
 
-		if (pointsOverlap(lowerLeft, topRight,
-				  (*it)->lowerLeft, (*it)->topRight))
-		{
-			(*it)->onCollisionEnter(player);
-			return false;
+			if (pointEnclosed((*it)->lowerLeft, lowerLeft, topRight)
+			    || pointEnclosed((*it)->topRight, lowerLeft, topRight)
+			    || pointEnclosed(_lowerRight, lowerLeft, topRight)
+			    || pointEnclosed(_topLeft, lowerLeft, topRight))
+			{
+				(*it)->onCollisionEnter(player);
+				return false;
+			}
+
+			if (pointsOverlap(lowerLeft, topRight,
+					  (*it)->lowerLeft, (*it)->topRight))
+			{
+				(*it)->onCollisionEnter(player);
+				return false;
+			}
 		}
 	}
 	return true;

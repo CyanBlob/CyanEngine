@@ -76,14 +76,16 @@ void Player::playerAction(bool* keyStates)
 		topRight[1] += speedBack;
 		yOffset -= speedBack;
 	}
-	if (!playerCollision(prevLowerLeft, prevTopRight,
-			     prevXOffset, prevYOffset)) {
-		prevLowerLeft[0] = lowerLeft[0];
-		prevLowerLeft[1] = lowerLeft[1];
-		prevTopRight[0] = topRight[0];
-		prevTopRight[1] = topRight[1];
+	if (keyStates['w'] || keyStates['s']) {
+		if (!playerCollision(prevLowerLeft, prevTopRight,
+				     prevXOffset, prevYOffset)) {
+			prevLowerLeft[0] = lowerLeft[0];
+			prevLowerLeft[1] = lowerLeft[1];
+			prevTopRight[0] = topRight[0];
+			prevTopRight[1] = topRight[1];
 
-		prevYOffset = yOffset;
+			prevYOffset = yOffset;
+		}
 	}
 
 	if (keyStates['a'])
@@ -101,7 +103,9 @@ void Player::playerAction(bool* keyStates)
 		xOffset -= speedRight;
 	}
 
-	playerCollision(prevLowerLeft, prevTopRight, prevXOffset, prevYOffset);
+	if (keyStates['a'] || keyStates['d']) {
+		playerCollision(prevLowerLeft, prevTopRight, prevXOffset, prevYOffset);
+	}
 
 	if (keyStates[32])
 	{
