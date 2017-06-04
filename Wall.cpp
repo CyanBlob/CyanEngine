@@ -29,18 +29,22 @@ Wall::Wall(GLfloat _coords[][3])
 
 Wall::Wall(GLfloat _lowerLeft[], GLfloat wallSize, GLfloat _color[3])
 {
-	int i = rand() % 3;
+	int i = rand() % 4;
 	if (i == 0)
 	{
-		imageFile = "resources/crawl_tiles/dc-dngn/wall/brick_gray0.png";
+		imageFile = "resources/crawl_tiles/dc-dngn/wall/stone2_dark0.png";
 	}
 	else if (i == 1)
 	{
-		imageFile = "resources/crawl_tiles/dc-dngn/wall/brick_gray1.png";
+		imageFile = "resources/crawl_tiles/dc-dngn/wall/stone2_dark1.png";
 	}
 	else if (i == 2)
 	{
-		imageFile = "resources/crawl_tiles/dc-dngn/wall/brick_gray2.png";
+		imageFile = "resources/crawl_tiles/dc-dngn/wall/stone2_dark2.png";
+	}
+	else if (i == 3)
+	{
+		imageFile = "resources/crawl_tiles/dc-dngn/wall/stone2_dark3.png";
 	}
 
 	//randomColor(color);

@@ -43,6 +43,9 @@ CyanPotion *testItem;
 
 int build = 1;
 
+GLuint floorTex;
+bool floorTexSet = false;
+
 void buildRooms();
 
 void init(void)
@@ -81,6 +84,56 @@ void mouseMotion(int x,int y)
 {
 }
 
+// TODO: create floor object
+void renderFloor()
+{
+	float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	int width, height;
+	//unsigned char* image;
+	const char* imageFile = "resources/custom/floor_400.png";
+	unsigned char* image;
+	GLfloat lowerLeft[2] = {-400, -400};
+	GLfloat topRight[2] = {400, 400};
+
+	// prevent loading the floor texture every frame (it can be huge)
+	if (!floorTexSet) {
+		floorTexSet = 1;
+
+		glGenTextures(1, &floorTex);
+
+		glBindTexture(GL_TEXTURE_2D, floorTex);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+				GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+				GL_NEAREST);
+
+		image = SOIL_load_image(imageFile, &width, &height,
+					     0, SOIL_LOAD_RGB);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+			     GL_UNSIGNED_BYTE, image);
+
+		SOIL_free_image_data(image);
+	} else {
+		glBindTexture(GL_TEXTURE_2D, floorTex);
+	}
+
+	//glBindTexture(GL_TEXTURE_2D, texName);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0, 1.0); glVertex3f(lowerLeft[0], lowerLeft[1], 0.0);
+	glTexCoord2f(1.0, 0.0); glVertex3f(lowerLeft[0], topRight[1], 0.0);
+	glTexCoord2f(0.0, 0.0); glVertex3f(topRight[0], topRight[1], 0.0);
+	glTexCoord2f(0.0, 1.0); glVertex3f(topRight[0], lowerLeft[1], 0.0);
+	glEnd();
+
+}
+
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -95,6 +148,8 @@ void display(void)
 	glTranslatef(xOffset, yOffset, 0);
 	glRotatef(xRot, 1, 0, 0);
 	glRotatef(yRot, 0, 1, 0);
+
+	renderFloor();
 
 	const char *prevImage;
 	for (std::list<Wall*>::iterator it=wall->wallList.begin();
