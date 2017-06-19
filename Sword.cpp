@@ -26,6 +26,7 @@ void Sword::checkDestroy(Sword *sword)
 		Collision::checkPlayerCollision(sword);
 	}
 	sword->destroy();
+	delete sword;
 }
 
 Sword::Sword(GLfloat _lowerLeft[], GLfloat size)
@@ -42,6 +43,7 @@ Sword::Sword(GLfloat _lowerLeft[], GLfloat size)
 	swordList.push_front(this);
 	Collision::checkPlayerCollision(this);
 
+	// TODO: find cause of segfault in thread
 	std::thread first (checkDestroy, this);
 	first.detach();
 }

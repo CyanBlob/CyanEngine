@@ -9,7 +9,9 @@ unsigned char* image;
 
 void Object::initRender()
 {
-	glGenTextures(1, &tex);
+	// TODO: Figure out why this causes a memory leak,
+	// and why things work without it
+	//glGenTextures(1, &tex);
 
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
