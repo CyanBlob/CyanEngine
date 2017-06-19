@@ -98,5 +98,21 @@ bool Wall::checkCollision(Object *obj)
 void Wall::onCollisionEnter(Object *obj)
 {
 	cout<<"Collided with: "<<obj->lowerLeft[0]<<","<<obj->lowerLeft[1]<<endl;
+	if (obj->tag == "attack")
+	{
+		this->destroy();
+	}
 }
-//void Wall::destroy() {};
+
+void Wall::destroy()
+{
+	for (std::list<Wall*>::iterator it=Wall::wallList.begin();
+	     it != Wall::wallList.end(); ++it)
+	{
+		if ((*it) == this)
+		{
+			wallList.erase(it);
+			return;
+		}
+	}
+};

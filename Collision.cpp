@@ -105,7 +105,7 @@ GLfloat pointDistance(GLfloat a[2], GLfloat b[2])
 		+ (a[1] - b[1]) * (a[1] - b[1]));
 }
 
-bool Collision::checkPlayerCollision(Player *player)
+bool Collision::checkPlayerCollision(Object *player)
 {
 	GLfloat lowerLeft[2] = {player->lowerLeft[0], player->lowerLeft[1]};
 	GLfloat topRight[2] = {player->topRight[0], player->topRight[1]};
@@ -130,6 +130,7 @@ bool Collision::checkPlayerCollision(Player *player)
 			    || pointEnclosed(topLeft,
 					     (*it)->lowerLeft, (*it)->topRight))
 			{
+				(*it)->onCollisionEnter(player);
 				return false;
 			}
 
@@ -143,12 +144,14 @@ bool Collision::checkPlayerCollision(Player *player)
 			    || pointEnclosed(_lowerRight, lowerLeft, topRight)
 			    || pointEnclosed(_topLeft, lowerLeft, topRight))
 			{
+				(*it)->onCollisionEnter(player);
 				return false;
 			}
 
 			if (pointsOverlap(lowerLeft, topRight,
 					  (*it)->lowerLeft, (*it)->topRight))
 			{
+				(*it)->onCollisionEnter(player);
 				return false;
 			}
 		}

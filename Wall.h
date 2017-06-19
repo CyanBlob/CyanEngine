@@ -37,5 +37,5 @@ public:
 	{
 		return A->imageFile < B->imageFile;
 	}
-	//void destroy();
+	void destroy();
 };

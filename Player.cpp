@@ -1,5 +1,8 @@
 #include "Collision.h"
 #include "SOIL.h"
+#include "Wall.h"
+#include "Sword.h"
+
 using namespace std;
 
 Player::Player()
@@ -68,6 +71,7 @@ void Player::playerAction(bool* keyStates)
 		lowerLeft[1] += speedForward;
 		topRight[1] += speedForward;
 		yOffset -= speedForward;
+		heading = 0;
 	}
 	else if (keyStates['s'])
 	{
@@ -75,6 +79,7 @@ void Player::playerAction(bool* keyStates)
 		lowerLeft[1] += speedBack;
 		topRight[1] += speedBack;
 		yOffset -= speedBack;
+		heading = 2;
 	}
 	if (keyStates['w'] || keyStates['s']) {
 		if (!playerCollision(prevLowerLeft, prevTopRight,
@@ -94,6 +99,7 @@ void Player::playerAction(bool* keyStates)
 		lowerLeft[0] += speedLeft;
 		topRight[0] += speedLeft;
 		xOffset -= speedLeft;
+		heading = 3;
 	}
 	else if (keyStates['d'])
 	{
@@ -101,6 +107,7 @@ void Player::playerAction(bool* keyStates)
 		lowerLeft[0] += speedRight;
 		topRight[0] += speedRight;
 		xOffset -= speedRight;
+		heading = 1;
 	}
 
 	if (keyStates['a'] || keyStates['d']) {
@@ -135,6 +142,34 @@ void Player::attack()
 	GLfloat tmpColor[3] = {color[0], color[1], color[2]};
 	copyGLfloatArray(flashColor, color);
 	copyGLfloatArray(tmpColor, flashColor);
+	GLfloat color[3] = {.5, .5, .5};
+	GLfloat position[2];
+	GLfloat size = 2.0;
+
+	switch (heading) {
+	case 0:
+		position[0] = lowerLeft[0];
+		position[1] = lowerLeft[1] + 2;
+		break;
+	case 1:
+		position[0] = lowerLeft[0] + 2;
+		position[1] = lowerLeft[1];
+		break;
+	case 2:
+		position[0] = lowerLeft[0];
+		position[1] = lowerLeft[1] - 2;
+		break;
+	case 3:
+		position[0] = lowerLeft[0] - 2;
+		position[1] = lowerLeft[1];
+		break;
+	default:
+		position[0] = lowerLeft[0];
+		position[1] = lowerLeft[1];
+		break;
+	}
+	Sword *sword = new Sword(position, size);
+	//sword->addToList(sword);
 }
 
 void Player::onCollisionEnter(Object *obj)

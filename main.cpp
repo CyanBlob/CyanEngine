@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "Room.h"
 #include "CyanPotion.h"
+#include "Sword.h"
 #include "DungeonBuilder.h"
 //#include "Wall.h"
 
@@ -155,6 +156,8 @@ void display(void)
 	renderFloor();
 
 	const char *prevImage;
+	// TODO: Generalize this
+	// render walls
 	for (std::list<Wall*>::iterator it=wall->wallList.begin();
 	     it !=wall->wallList.end(); ++it)
 	{
@@ -165,8 +168,20 @@ void display(void)
 		}
 		(*it)->render();
 	}
+	// render items
 	for (std::list<Item*>::iterator it=Item::itemList.begin();
 	     it !=Item::itemList.end(); ++it)
+	{
+		if ((*it)->imageFile != prevImage)
+		{
+			(*it)->initRender();
+			prevImage = (*it)->imageFile;
+		}
+		(*it)->render();
+	}
+	// render attacks
+	for (std::list<Sword*>::iterator it=Sword::swordList.begin();
+	     it !=Sword::swordList.end(); ++it)
 	{
 		if ((*it)->imageFile != prevImage)
 		{
