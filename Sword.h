@@ -18,5 +18,6 @@ public:
 	bool checkCollision(Object*);
 	void onCollisionEnter(Object*);
 
+	static void checkDestroy(Sword*);
 	void destroy();
 };
