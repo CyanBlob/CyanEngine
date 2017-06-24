@@ -12,7 +12,7 @@ public:
 	Sword(GLfloat[2], GLfloat);
 	~Sword() {};
 
-	static list<Sword*> swordList;
+	static std::mutex swordLock;
 	bool colliderEnabled;
 
 	bool checkCollision(Object*);

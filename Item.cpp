@@ -1,12 +1,5 @@
 #include "Item.h"
 
-list<Item*> initItemList()
-{
-	list<Item*> tmp;
-	return tmp;
-}
-
-list <Item*> Item::itemList(initItemList());
 void randomColor(GLfloat _color[]);
 
 Item::Item(GLfloat _lowerLeft[2], GLfloat _topRight[2])
@@ -18,5 +11,5 @@ Item::Item(GLfloat _lowerLeft[2], GLfloat _topRight[2])
 
 	imageFile = "resources/crawl_tiles/item/potion/cyan.png";
 
-	itemList.push_back(this);
+	Object::objectList.push_back(this);
 }

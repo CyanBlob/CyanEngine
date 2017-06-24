@@ -40,7 +40,6 @@ GLfloat yOffset = 0.0;
 static float xRot = 0;
 static float yRot = 0;
 
-list<Wall*> wallList;
 Wall *wall;
 Player *player = new Player();
 CyanPotion *testItem;
@@ -158,8 +157,9 @@ void display(void)
 	const char *prevImage;
 	// TODO: Generalize this
 	// render walls
-	for (std::list<Wall*>::iterator it=wall->wallList.begin();
-	     it !=wall->wallList.end(); ++it)
+	Object::objectLock.lock();
+	for (std::list<Object*>::iterator it=Object::objectList.begin();
+	     it !=Object::objectList.end(); ++it)
 	{
 		if ((*it)->imageFile != prevImage)
 		{
@@ -168,28 +168,8 @@ void display(void)
 		}
 		(*it)->render();
 	}
-	// render items
-	for (std::list<Item*>::iterator it=Item::itemList.begin();
-	     it !=Item::itemList.end(); ++it)
-	{
-		if ((*it)->imageFile != prevImage)
-		{
-			(*it)->initRender();
-			prevImage = (*it)->imageFile;
-		}
-		(*it)->render();
-	}
-	// render attacks
-	for (std::list<Sword*>::iterator it=Sword::swordList.begin();
-	     it !=Sword::swordList.end(); ++it)
-	{
-		if ((*it)->imageFile != prevImage)
-		{
-			(*it)->initRender();
-			prevImage = (*it)->imageFile;
-		}
-		(*it)->render();
-	}
+	Object::objectLock.unlock();
+
 	//glTranslatef(xOffset * -1, yOffset * -1, 0);
 	player->initRender();
 	player->render();

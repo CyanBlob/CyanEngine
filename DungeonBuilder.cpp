@@ -99,5 +99,5 @@ void DungeonBuilder::buildRooms(int maxRooms)
 		//display();
 		//usleep(100000);
 	}
-	Wall::wallList.sort(Wall::lessThan);
+	Object::objectList.sort(Object::lessThan);
 }

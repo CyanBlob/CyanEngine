@@ -6,13 +6,17 @@
 #endif
 #include <GL/glut.h>
 #include <string>
+#include <mutex>
+#include <list>
 
 class Object
 {
 public:
 
-	Object() {};
+	Object();
 	~Object() {};
+	static std::mutex objectLock;
+	static std::list<Object*> objectList;
 
 	std::string tag = "object";
 	GLfloat lowerLeft[2];
@@ -26,5 +30,10 @@ public:
 
 	virtual void onCollisionEnter(Object*) = 0;
 	const char *imageFile;
+
+	static bool lessThan(Object *A, Object *B)
+	{
+		return A->imageFile < B->imageFile;
+	}
 	//virtual void destroy();
 };

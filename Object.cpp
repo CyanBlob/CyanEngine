@@ -7,6 +7,19 @@ float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 int width, height;
 unsigned char* image;
 
+std::mutex Object::objectLock;
+
+std::list<Object*> initObjectList()
+{
+	std::list<Object*> tmp;
+	return tmp;
+}
+
+std::list <Object*> Object::objectList(initObjectList());
+
+Object::Object()
+{
+}
 void Object::initRender()
 {
 	// TODO: Figure out why this causes a memory leak,

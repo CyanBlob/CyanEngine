@@ -28,12 +28,12 @@ void CyanPotion::onCollisionEnter(Object *obj)
 
 void CyanPotion::destroy()
 {
-	for (std::list<Item*>::iterator it=Item::itemList.begin();
-	     it != Item::itemList.end(); ++it)
+	for (std::list<Object*>::iterator it=Object::objectList.begin();
+	     it != Object::objectList.end(); ++it)
 	{
 		if ((*it) == this)
 		{
-			itemList.erase(it);
+			Object::objectList.erase(it);
 			return;
 		}
 	}

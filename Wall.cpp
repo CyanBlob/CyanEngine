@@ -2,13 +2,6 @@
 
 using namespace std;
 
-list<Wall*> initWallList()
-{
-	list<Wall*> tmp;
-	return tmp;
-}
-
-list <Wall*> Wall::wallList(initWallList());
 void randomColor(GLfloat _color[]);
 
 Wall::Wall(GLfloat _coords[][3])
@@ -85,8 +78,7 @@ void Wall::randomColor(GLfloat _color[])
 
 void Wall::addToList(Wall *wall)
 {
-	//cout<<"Adding to wallList"<<endl;
-	Wall::wallList.push_front(wall);
+	Object::objectList.push_front(this);
 }
 
 bool Wall::checkCollision(Object *obj)
@@ -106,13 +98,15 @@ void Wall::onCollisionEnter(Object *obj)
 
 void Wall::destroy()
 {
-	for (std::list<Wall*>::iterator it=Wall::wallList.begin();
-	     it != Wall::wallList.end(); ++it)
+	//Object::objectLock.lock();
+	for (std::list<Object*>::iterator it=Object::objectList.begin();
+	     it != Object::objectList.end(); ++it)
 	{
 		if ((*it) == this)
 		{
-			wallList.erase(it);
-			return;
+			Object::objectList.erase(it);
+			break;
 		}
 	}
+	//Object::objectLock.unlock();
 };

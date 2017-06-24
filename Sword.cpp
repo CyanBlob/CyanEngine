@@ -5,14 +5,6 @@
 #include <thread>
 #include <sys/wait.h>
 
-list<Sword*> initSwordList()
-{
-	list<Sword*> tmp;
-	return tmp;
-}
-
-list <Sword*> Sword::swordList(initSwordList());
-
 void Sword::checkDestroy(Sword *sword)
 {
 	int duration = 1;
@@ -40,7 +32,7 @@ Sword::Sword(GLfloat _lowerLeft[], GLfloat size)
 	topRight[1] = _lowerLeft[1] + size;
 
 
-	swordList.push_front(this);
+	Object::objectList.push_front(this);
 	Collision::checkPlayerCollision(this);
 
 	// TODO: find cause of segfault in thread
@@ -59,13 +51,15 @@ void Sword::onCollisionEnter(Object *obj)
 
 void Sword::destroy()
 {
-	for (std::list<Sword*>::iterator it=Sword::swordList.begin();
-	     it != Sword::swordList.end(); ++it)
+	Object::objectLock.lock();
+	for (std::list<Object*>::iterator it=Object::objectList.begin();
+	     it != Object::objectList.end(); ++it)
 	{
 		if ((*it) == this)
 		{
-			swordList.erase(it);
-			return;
+			Object::objectList.erase(it);
+			break;
 		}
 	}
+	Object::objectLock.unlock();
 };

@@ -18,7 +18,6 @@ public:
 	GLfloat coords[4][3];
 	GLfloat color[3];
 
-	static list<Wall*> wallList;
 	bool colliderEnabled;
 
 	// Pass in all 4 coordinates
