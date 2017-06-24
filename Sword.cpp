@@ -32,10 +32,11 @@ Sword::Sword(GLfloat _lowerLeft[], GLfloat size)
 	topRight[1] = _lowerLeft[1] + size;
 
 
+	Object::objectLock.lock();
 	Object::objectList.push_front(this);
+	Object::objectLock.unlock();
 	Collision::checkPlayerCollision(this);
 
-	// TODO: find cause of segfault in thread
 	std::thread first (checkDestroy, this);
 	first.detach();
 }

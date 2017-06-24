@@ -99,5 +99,7 @@ void DungeonBuilder::buildRooms(int maxRooms)
 		//display();
 		//usleep(100000);
 	}
+	Object::objectLock.lock();
 	Object::objectList.sort(Object::lessThan);
+	Object::objectLock.unlock();
 }

@@ -129,8 +129,8 @@ bool Collision::checkPlayerCollision(Object *player)
 			    || pointEnclosed(topLeft,
 					     (*it)->lowerLeft, (*it)->topRight))
 			{
-				Object::objectLock.unlock();
 				(*it)->onCollisionEnter(player);
+				Object::objectLock.unlock();
 				return false;
 			}
 
@@ -144,16 +144,16 @@ bool Collision::checkPlayerCollision(Object *player)
 			    || pointEnclosed(_lowerRight, lowerLeft, topRight)
 			    || pointEnclosed(_topLeft, lowerLeft, topRight))
 			{
-				Object::objectLock.unlock();
 				(*it)->onCollisionEnter(player);
+				Object::objectLock.unlock();
 				return false;
 			}
 
 			if (pointsOverlap(lowerLeft, topRight,
 					  (*it)->lowerLeft, (*it)->topRight))
 			{
-				Object::objectLock.unlock();
 				(*it)->onCollisionEnter(player);
+				Object::objectLock.unlock();
 				return false;
 			}
 		}

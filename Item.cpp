@@ -11,5 +11,7 @@ Item::Item(GLfloat _lowerLeft[2], GLfloat _topRight[2])
 
 	imageFile = "resources/crawl_tiles/item/potion/cyan.png";
 
+	Object::objectLock.lock();
 	Object::objectList.push_back(this);
+	Object::objectLock.unlock();
 }

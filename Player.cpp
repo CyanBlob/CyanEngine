@@ -169,7 +169,6 @@ void Player::attack()
 		break;
 	}
 	Sword *sword = new Sword(position, size);
-	//sword->addToList(sword);
 }
 
 void Player::onCollisionEnter(Object *obj)

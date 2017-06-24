@@ -28,13 +28,15 @@ void CyanPotion::onCollisionEnter(Object *obj)
 
 void CyanPotion::destroy()
 {
+	//Object::objectLock.lock();
 	for (std::list<Object*>::iterator it=Object::objectList.begin();
 	     it != Object::objectList.end(); ++it)
 	{
 		if ((*it) == this)
 		{
 			Object::objectList.erase(it);
-			return;
+			break;
 		}
 	}
+	//Object::objectLock.unlock();
 }

@@ -10,7 +10,7 @@ public:
 	GLfloat lowerLeft[2];
 	GLfloat topRight[2];
 	GLfloat wallSize;
-	list<Wall*> wallList;
+	//list<Wall*> wallList;
 
 	Room(int*, int*, GLfloat);
 
