@@ -22,6 +22,8 @@ Wall::Wall(GLfloat _coords[][3])
 
 Wall::Wall(GLfloat _lowerLeft[], GLfloat wallSize, GLfloat _color[3])
 {
+	tag = "wall";
+
 	int i = rand() % 4;
 	if (i == 0)
 	{
@@ -89,7 +91,6 @@ bool Wall::checkCollision(Object *obj)
 
 void Wall::onCollisionEnter(Object *obj)
 {
-	cout<<"Collided with: "<<obj->lowerLeft[0]<<","<<obj->lowerLeft[1]<<endl;
 	if (obj->tag == "attack")
 	{
 		this->destroy();

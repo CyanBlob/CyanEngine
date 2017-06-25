@@ -2,6 +2,7 @@
 #include "SOIL.h"
 #include "Wall.h"
 #include "Sword.h"
+#include <chrono>
 
 using namespace std;
 
@@ -138,6 +139,14 @@ void Player::stopAttack()
 
 void Player::attack()
 {
+	if (std::chrono::system_clock::now().time_since_epoch().count()
+	       < attackTime + attackDelay)
+	{
+		return;
+	}
+	attackTime =
+		std::chrono::system_clock::now().time_since_epoch().count();
+
 	playerAttacking = true;
 	GLfloat tmpColor[3] = {color[0], color[1], color[2]};
 	copyGLfloatArray(flashColor, color);

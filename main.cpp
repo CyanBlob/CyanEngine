@@ -22,7 +22,7 @@
 
 #include "SOIL.h"
 
-#define MAXROOMS 250
+#define MAXROOMS 100
 
 using namespace std;
 

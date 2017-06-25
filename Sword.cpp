@@ -7,15 +7,15 @@
 
 void Sword::checkDestroy(Sword *sword)
 {
-	int duration = 1;
-	std::chrono::time_point<std::chrono::system_clock> start;
-	start = std::chrono::system_clock::now();
-	std::time_t startTime = std::chrono::system_clock::to_time_t(start);
+	int duration = 500000000;
+	long startTime =
+		std::chrono::system_clock::now().time_since_epoch().count();
 
-	while (std::chrono::system_clock::to_time_t(
-			std::chrono::system_clock::now()) < startTime + duration)
+	while (std::chrono::system_clock::now().time_since_epoch().count()
+	       < startTime + duration)
 	{
 		Collision::checkPlayerCollision(sword);
+		usleep(1000);
 	}
 	sword->destroy();
 	delete sword;

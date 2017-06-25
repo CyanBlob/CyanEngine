@@ -42,6 +42,8 @@ private:
 	GLfloat speedLeft;
 	GLfloat speedRight;
 	bool playerAttacking = false;
+	long attackTime = 0;
+	int attackDelay = 500000000;
 	void attack();
 	void stopAttack();
 	bool playerCollision(GLfloat[2], GLfloat[2], GLfloat, GLfloat);

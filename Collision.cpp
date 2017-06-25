@@ -105,17 +105,23 @@ GLfloat pointDistance(GLfloat a[2], GLfloat b[2])
 		+ (a[1] - b[1]) * (a[1] - b[1]));
 }
 
-bool Collision::checkPlayerCollision(Object *player)
+// TODO: support multiple collisions
+bool Collision::checkPlayerCollision(Object *obj)
 {
-	GLfloat lowerLeft[2] = {player->lowerLeft[0], player->lowerLeft[1]};
-	GLfloat topRight[2] = {player->topRight[0], player->topRight[1]};
+	GLfloat lowerLeft[2] = {obj->lowerLeft[0], obj->lowerLeft[1]};
+	GLfloat topRight[2] = {obj->topRight[0], obj->topRight[1]};
 
 	Object::objectLock.lock();
 	for (std::list<Object*>::iterator it=Object::objectList.begin();
 	     it != Object::objectList.end();
 	     ++it)
 	{
-		if (pointDistance((*it)->lowerLeft, player->lowerLeft) < 5.0)
+		// objects shouldn't collide with themselves
+		if (obj == (*it)) {
+			continue;
+		}
+
+		if (pointDistance((*it)->lowerLeft, obj->lowerLeft) < 5.0)
 		{
 			GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
 			GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
@@ -129,7 +135,8 @@ bool Collision::checkPlayerCollision(Object *player)
 			    || pointEnclosed(topLeft,
 					     (*it)->lowerLeft, (*it)->topRight))
 			{
-				(*it)->onCollisionEnter(player);
+				//std::cout<<"Collision"<<obj->tag<<std::endl;
+				(*it)->onCollisionEnter(obj);
 				Object::objectLock.unlock();
 				return false;
 			}
@@ -144,7 +151,8 @@ bool Collision::checkPlayerCollision(Object *player)
 			    || pointEnclosed(_lowerRight, lowerLeft, topRight)
 			    || pointEnclosed(_topLeft, lowerLeft, topRight))
 			{
-				(*it)->onCollisionEnter(player);
+				//std::cout<<"Collision"<<obj->tag<<std::endl;
+				(*it)->onCollisionEnter(obj);
 				Object::objectLock.unlock();
 				return false;
 			}
@@ -152,7 +160,8 @@ bool Collision::checkPlayerCollision(Object *player)
 			if (pointsOverlap(lowerLeft, topRight,
 					  (*it)->lowerLeft, (*it)->topRight))
 			{
-				(*it)->onCollisionEnter(player);
+				//std::cout<<"Collision: "<<obj->tag<<std::endl;
+				(*it)->onCollisionEnter(obj);
 				Object::objectLock.unlock();
 				return false;
 			}
