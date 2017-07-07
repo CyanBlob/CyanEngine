@@ -19,10 +19,10 @@
 class Player: public Object
 {
 public:
-	GLfloat xOffset;
-	GLfloat yOffset;
+	GLfloat xOffset = 0.0;
+	GLfloat yOffset = 0.0;
 
-	int maxHeath = 100;
+	int maxHealth = 100;
 	int health = 50;
 	int heading = 0;
 
