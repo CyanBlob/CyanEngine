@@ -1,9 +1,9 @@
 #include "Sword.h"
 #include <chrono>
 #include "Collision.h"
-#include <unistd.h> // fork()
+//#include <unistd.h> // fork()
 #include <thread>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 
 void Sword::checkDestroy(Sword *sword)
 {
@@ -15,7 +15,7 @@ void Sword::checkDestroy(Sword *sword)
 	       < startTime + duration)
 	{
 		Collision::checkPlayerCollision(sword);
-		usleep(1000);
+		//usleep(1000);
 	}
 	sword->destroy();
 	delete sword;
