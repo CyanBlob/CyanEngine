@@ -11,7 +11,7 @@
 #include <cmath>
 #include <list>
 #include <time.h>
-#include <unistd.h> // sleep()
+//#include <unistd.h> // sleep()
 
 #include "Player.h"
 #include "Room.h"
@@ -27,7 +27,7 @@
 using namespace std;
 
 // Stores the status of each key (up/down);
-bool* keyStates = new bool[256];
+bool keyStates[256] = {false};
 
 static float zoom = 35; //Zoom level
 static bool left_button_down = false; //Whether the LMB is pressed
@@ -154,7 +154,7 @@ void display(void)
 
 	renderFloor();
 
-	const char *prevImage;
+	const char *prevImage = 0;
 	// TODO: Generalize this
 	// render walls
 	Object::objectLock.lock();
