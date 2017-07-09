@@ -68,7 +68,6 @@ void Player::playerAction(bool* keyStates)
 
 	if (keyStates['w'])
 	{
-		int i;
 		lowerLeft[1] += speedForward;
 		topRight[1] += speedForward;
 		yOffset -= speedForward;
@@ -76,7 +75,6 @@ void Player::playerAction(bool* keyStates)
 	}
 	else if (keyStates['s'])
 	{
-		int i;
 		lowerLeft[1] += speedBack;
 		topRight[1] += speedBack;
 		yOffset -= speedBack;
@@ -96,7 +94,6 @@ void Player::playerAction(bool* keyStates)
 
 	if (keyStates['a'])
 	{
-		int i;
 		lowerLeft[0] += speedLeft;
 		topRight[0] += speedLeft;
 		xOffset -= speedLeft;
@@ -104,7 +101,6 @@ void Player::playerAction(bool* keyStates)
 	}
 	else if (keyStates['d'])
 	{
-		int i;
 		lowerLeft[0] += speedRight;
 		topRight[0] += speedRight;
 		xOffset -= speedRight;

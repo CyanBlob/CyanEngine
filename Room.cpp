@@ -8,7 +8,7 @@ list<Room*> initopRightoomList()
 }
 list <Room*> Room::roomList(initopRightoomList());
 
-Room::Room(int _lowerLeft[], int _topRight[], GLfloat _wallSize)
+Room::Room(GLfloat _lowerLeft[], GLfloat _topRight[], GLfloat _wallSize)
 {
 
 	lowerLeft[0] = _lowerLeft[0];
@@ -33,15 +33,15 @@ void Room::buildRoom()
 	Wall::randomColor(color);
 
 	// TODO: Slap myself, and then fix these variable names
-	GLfloat leftRightMiddle = ((topRight[1] - lowerLeft[1]) / 2)
+	GLfloat leftRightMiddle = ((topRight[1] - lowerLeft[1]) / 2.0f)
 		+ lowerLeft[1];
-	GLfloat leftRightMiddleLeft = leftRightMiddle - 2.5;
-	GLfloat leftRightMiddleRight = leftRightMiddle + 2.5;
+	GLfloat leftRightMiddleLeft = leftRightMiddle - 2.5f;
+	GLfloat leftRightMiddleRight = leftRightMiddle + 2.5f;
 
-	GLfloat topBottomMiddle = ((topRight[0] - lowerLeft[0]) / 2)
+	GLfloat topBottomMiddle = ((topRight[0] - lowerLeft[0]) / 2.0f)
 		+ lowerLeft[0];
-	GLfloat topBottomMiddleLeft = topBottomMiddle - 2.5;
-	GLfloat topBottomMiddleRight = topBottomMiddle + 2.5;
+	GLfloat topBottomMiddleLeft = topBottomMiddle - 2.5f;
+	GLfloat topBottomMiddleRight = topBottomMiddle + 2.5f;
 
 
 	// right and left
