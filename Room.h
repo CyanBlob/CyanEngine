@@ -12,7 +12,7 @@ public:
 	GLfloat wallSize;
 	//list<Wall*> wallList;
 
-	Room(int*, int*, GLfloat);
+	Room(GLfloat*, GLfloat*, GLfloat);
 
 	void addToList(Room*);
 	void buildRoom();
