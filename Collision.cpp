@@ -105,6 +105,20 @@ GLfloat pointDistance(GLfloat a[2], GLfloat b[2])
 		+ (a[1] - b[1]) * (a[1] - b[1]));
 }
 
+bool handleCollision(Object *obj1, Object *obj2) {
+	int collide1 = obj1->colliderType & obj2->collidesWith;
+	int collide2 = obj2->colliderType & obj1->collidesWith;
+
+	if ((collide1 > 0) || (collide2 > 0)) {
+		obj1->onCollisionEnter(obj2);
+		obj2->onCollisionEnter(obj1);
+		Object::objectLock.unlock();
+		return false;
+	}
+	Object::objectLock.unlock();
+	return true;
+}
+
 // TODO: support multiple collisions
 bool Collision::checkPlayerCollision(Object *obj)
 {
@@ -135,10 +149,7 @@ bool Collision::checkPlayerCollision(Object *obj)
 			    || pointEnclosed(topLeft,
 					     (*it)->lowerLeft, (*it)->topRight))
 			{
-				//std::cout<<"Collision"<<obj->tag<<std::endl;
-				(*it)->onCollisionEnter(obj);
-				Object::objectLock.unlock();
-				return false;
+				return handleCollision((*it), obj);
 			}
 
 			GLfloat _lowerRight[2] = {(*it)->topRight[0],
@@ -151,19 +162,13 @@ bool Collision::checkPlayerCollision(Object *obj)
 			    || pointEnclosed(_lowerRight, lowerLeft, topRight)
 			    || pointEnclosed(_topLeft, lowerLeft, topRight))
 			{
-				//std::cout<<"Collision"<<obj->tag<<std::endl;
-				(*it)->onCollisionEnter(obj);
-				Object::objectLock.unlock();
-				return false;
+				return handleCollision((*it), obj);
 			}
 
 			if (pointsOverlap(lowerLeft, topRight,
 					  (*it)->lowerLeft, (*it)->topRight))
 			{
-				//std::cout<<"Collision: "<<obj->tag<<std::endl;
-				(*it)->onCollisionEnter(obj);
-				Object::objectLock.unlock();
-				return false;
+				return handleCollision((*it), obj);
 			}
 		}
 	}

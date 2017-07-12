@@ -1,6 +1,6 @@
-#ifndef Included_Player_H
-#define Included_Player_H
-#include "Player.h"
+#ifndef Included_Object_H
+#define Included_Object_H
+#include "Object.h"
 #endif
 
 class Collision

@@ -9,6 +9,14 @@
 #include <mutex>
 #include <list>
 
+#define PLAYER 1
+#define PLAYER_ATTACK 2
+#define ENEMY 4
+#define ENEMY_ATTACK 8
+#define ENVIRONMENT 16
+#define ITEM 32
+
+
 class Object
 {
 public:
@@ -21,6 +29,9 @@ public:
 	std::string tag = "object";
 	GLfloat lowerLeft[2];
 	GLfloat topRight[2];
+
+	int colliderType = 0;
+	int collidesWith = 0;
 
 	bool colliderEnabled;
 	bool checkCollision(Object*);

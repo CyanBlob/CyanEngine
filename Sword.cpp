@@ -25,6 +25,8 @@ Sword::Sword(GLfloat _lowerLeft[], GLfloat size)
 {
 	imageFile = "resources/crawl_tiles/spells/air/chain_lightning.png";
 	tag = "attack";
+	colliderType = PLAYER_ATTACK;
+	collidesWith = ENVIRONMENT | ENEMY;
 
 	lowerLeft[0] = _lowerLeft[0];
 	lowerLeft[1] = _lowerLeft[1];

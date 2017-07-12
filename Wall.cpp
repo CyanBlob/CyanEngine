@@ -23,6 +23,7 @@ Wall::Wall(GLfloat _coords[][3])
 Wall::Wall(GLfloat _lowerLeft[], GLfloat wallSize, GLfloat _color[3])
 {
 	tag = "wall";
+	colliderType = ENVIRONMENT;
 
 	int i = rand() % 4;
 	if (i == 0)

@@ -2,6 +2,7 @@
 #include "SOIL.h"
 #include "Wall.h"
 #include "Sword.h"
+#include "Player.h"
 #include <chrono>
 
 using namespace std;
@@ -10,6 +11,8 @@ Player::Player()
 {
 	tag = "player";
 	imageFile = "resources/crawl_tiles/player/transform/lich_form.png";
+	colliderType = PLAYER;
+	collidesWith = ITEM | ENVIRONMENT;
 
 	lowerLeft[0] = -1.0;
 	lowerLeft[1] = -1.0;
@@ -178,5 +181,5 @@ void Player::attack()
 
 void Player::onCollisionEnter(Object *obj)
 {
-	cout<<"Collided with: "<<obj->lowerLeft[0]<<","<<obj->lowerLeft[1]<<endl;
+	//cout<<"Collided with: "<<obj->lowerLeft[0]<<","<<obj->lowerLeft[1]<<endl;
 }

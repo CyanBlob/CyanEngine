@@ -10,6 +10,8 @@ Item::Item(GLfloat _lowerLeft[2], GLfloat _topRight[2])
 	topRight[1] = _topRight[1];
 
 	imageFile = "resources/crawl_tiles/item/potion/cyan.png";
+	colliderType = ITEM;
+
 
 	Object::objectLock.lock();
 	Object::objectList.push_back(this);

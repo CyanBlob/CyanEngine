@@ -1,4 +1,7 @@
+#ifndef Included_Object_H
+#define Included_Object_H
 #include "Object.h"
+#endif
 #include "SOIL.h"
 #include <iostream>
 
