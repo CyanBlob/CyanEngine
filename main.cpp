@@ -22,10 +22,9 @@
 
 #include "SOIL.h"
 
-#define MAXROOMS 100
-
 using namespace std;
 
+int maxRooms = 100;
 // Stores the status of each key (up/down);
 bool keyStates[256] = {false};
 
@@ -56,6 +55,8 @@ void init(void)
 	glClearColor(58.0 / 255.0, 60.0 / 255.0, 67 / 255.0, 0.0);
 	glShadeModel(GL_FLAT);
 	glEnable(GL_MAP1_VERTEX_3);
+
+	buildRooms();
 
 	// Test items
 	GLfloat tmpLL[2] = {3, 3};
@@ -201,12 +202,6 @@ void playerAction()
 
 void timer(int value)
 {
-	if (build == 1)
-	{
-		buildRooms();
-		build = 0;
-	}
-
 	playerAction();
 	glutPostRedisplay();
 	glutTimerFunc(16, timer, 1);
@@ -304,11 +299,23 @@ void keyboard(unsigned char key, int x, int y)
 //TODO: Don't add rooms to roomList if they didn't fit
 void buildRooms()
 {
-	DungeonBuilder::buildRooms(MAXROOMS);
+	DungeonBuilder::buildRooms(maxRooms);
 }
 
 int main(int argc, char** argv)
 {
+	char c;
+	while (--argc > 0 && (*++argv)[0] == '-') {
+		c = *++argv[0];
+		switch (c) {
+		case 'n':
+			--argc;
+			maxRooms = atoi(*++argv);
+			break;
+		default:
+			break;
+		}
+	}
 	time_t timeSeed = time(NULL);
 	srand(timeSeed);
 	cout<<"Running game with seed: "<<timeSeed<<endl;
