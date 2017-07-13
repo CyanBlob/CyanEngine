@@ -113,14 +113,14 @@ bool handleCollision(Object *obj1, Object *obj2) {
 		obj1->onCollisionEnter(obj2);
 		obj2->onCollisionEnter(obj1);
 		Object::objectLock.unlock();
-		return false;
+		return true;
 	}
 	Object::objectLock.unlock();
-	return true;
+	return false;
 }
 
 // TODO: support multiple collisions
-bool Collision::checkPlayerCollision(Object *obj)
+bool Collision::checkCollision(Object *obj)
 {
 	GLfloat lowerLeft[2] = {obj->lowerLeft[0], obj->lowerLeft[1]};
 	GLfloat topRight[2] = {obj->topRight[0], obj->topRight[1]};
@@ -149,7 +149,9 @@ bool Collision::checkPlayerCollision(Object *obj)
 			    || pointEnclosed(topLeft,
 					     (*it)->lowerLeft, (*it)->topRight))
 			{
-				return handleCollision((*it), obj);
+				 if (handleCollision((*it), obj)) {
+					 return true;
+				 }
 			}
 
 			GLfloat _lowerRight[2] = {(*it)->topRight[0],
@@ -162,16 +164,20 @@ bool Collision::checkPlayerCollision(Object *obj)
 			    || pointEnclosed(_lowerRight, lowerLeft, topRight)
 			    || pointEnclosed(_topLeft, lowerLeft, topRight))
 			{
-				return handleCollision((*it), obj);
+				 if (handleCollision((*it), obj)) {
+					 return true;
+				 }
 			}
 
 			if (pointsOverlap(lowerLeft, topRight,
 					  (*it)->lowerLeft, (*it)->topRight))
 			{
-				return handleCollision((*it), obj);
+				 if (handleCollision((*it), obj)) {
+					 return true;
+				 }
 			}
 		}
 	}
 	Object::objectLock.unlock();
-	return true;
+	return false;
 }

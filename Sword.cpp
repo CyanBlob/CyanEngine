@@ -14,7 +14,7 @@ void Sword::checkDestroy(Sword *sword)
 	while (std::chrono::system_clock::now().time_since_epoch().count()
 	       < startTime + duration)
 	{
-		Collision::checkPlayerCollision(sword);
+		Collision::checkCollision(sword);
 		usleep(1000);
 	}
 	sword->destroy();
@@ -37,7 +37,7 @@ Sword::Sword(GLfloat _lowerLeft[], GLfloat size)
 	Object::objectLock.lock();
 	Object::objectList.push_front(this);
 	Object::objectLock.unlock();
-	Collision::checkPlayerCollision(this);
+	Collision::checkCollision(this);
 
 	std::thread first (checkDestroy, this);
 	first.detach();

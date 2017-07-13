@@ -46,7 +46,7 @@ void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
 bool Player::playerCollision(GLfloat prevLowerLeft[2], GLfloat prevTopRight[2],
 			     GLfloat prevXOffset, GLfloat prevYOffset) {
 
-	if (!Collision::checkPlayerCollision(this))
+	if (Collision::checkCollision(this))
 	{
 		lowerLeft[0] = prevLowerLeft[0];
 		lowerLeft[1] = prevLowerLeft[1];
