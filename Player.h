@@ -34,6 +34,7 @@ public:
 	void playerAction(bool*);
 	void copyGLfloatArray(GLfloat*, GLfloat*);
 	void onCollisionEnter(Object*);
+	void addHealth(int);
 	Player();
 
 private:

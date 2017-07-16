@@ -15,12 +15,14 @@ bool CyanPotion::checkCollision(Object *obj)
 
 void CyanPotion::onCollisionEnter(Object *obj)
 {
-	std::cout<<obj->tag<<std::endl;
-	if (obj->tag == "player")
+	// TODO: If player doesn't pick up potion, they shouldn't collide
+	if (obj->tag == "player"
+	    && dynamic_cast<Player*>(obj)->health
+	    != dynamic_cast<Player*>(obj)->maxHealth)
 	{
 		Player *player = dynamic_cast<Player*>(obj);
 		std::cout<<player->health<<std::endl;
-		player->health += 10;
+		player->addHealth(10);
 		std::cout<<player->health<<std::endl;
 		this->destroy();
 	}

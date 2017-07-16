@@ -179,6 +179,15 @@ void Player::attack()
 	Sword *sword = new Sword(position, size);
 }
 
+void Player::addHealth(int amount) {
+	health += amount;
+	if (health > maxHealth) {
+		health = maxHealth;
+	} else if (health <= 0) {
+		// dead
+	}
+}
+
 void Player::onCollisionEnter(Object *obj)
 {
 	//cout<<"Collided with: "<<obj->lowerLeft[0]<<","<<obj->lowerLeft[1]<<endl;
