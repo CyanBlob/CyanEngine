@@ -12,11 +12,11 @@
 
 using namespace std;
 
-class CyanPotion: public Item
+class MagentaPotion: public Item
 {
 public:
-	CyanPotion(GLfloat[2], GLfloat[2]);
-	~CyanPotion(){};
+	MagentaPotion(GLfloat[2], GLfloat[2]);
+	~MagentaPotion(){};
 
 	bool checkCollision(Object*);
 	void onCollisionEnter(Object*);

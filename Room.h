@@ -14,7 +14,7 @@ public:
 
 	Room(GLfloat*, GLfloat*, GLfloat);
 
-	void addToList(Room*);
+	static void addToList(Room*);
 	void buildRoom();
 
 	bool topDoor = false;

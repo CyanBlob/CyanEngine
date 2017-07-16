@@ -23,7 +23,6 @@ public:
 	GLfloat yOffset = 0.0;
 
 	int maxHealth = 100;
-	int health = 50;
 	int heading = 0;
 
 	GLfloat color[3] = {0.0, 1.0, 1.0};
@@ -35,6 +34,9 @@ public:
 	void copyGLfloatArray(GLfloat*, GLfloat*);
 	void onCollisionEnter(Object*);
 	void addHealth(int);
+	int getHealth();
+	void addStr(int);
+	int getStr();
 	Player();
 
 private:
@@ -42,6 +44,8 @@ private:
 	GLfloat speedBack;
 	GLfloat speedLeft;
 	GLfloat speedRight;
+	int health = 50;
+	int strength = 0;
 	bool playerAttacking = false;
 	long attackTime = 0;
 	int attackDelay = 500000000;

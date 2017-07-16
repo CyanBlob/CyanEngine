@@ -1,34 +1,32 @@
 #include "Player.h"
-#include "CyanPotion.h"
+#include "MagentaPotion.h"
 
-CyanPotion::CyanPotion(GLfloat _lowerLeft[2], GLfloat _topRight[2]) :
+MagentaPotion::MagentaPotion(GLfloat _lowerLeft[2], GLfloat _topRight[2]) :
 	   Item(_lowerLeft, _topRight)
 {
-	imageFile = "resources/crawl_tiles/item/potion/cyan.png";
+	imageFile = "resources/crawl_tiles/item/potion/magenta.png";
 }
 
-bool CyanPotion::checkCollision(Object *obj)
+bool MagentaPotion::checkCollision(Object *obj)
 {
 	cout<<"Not implemented"<<endl;
 	return false;
 }
 
-void CyanPotion::onCollisionEnter(Object *obj)
+void MagentaPotion::onCollisionEnter(Object *obj)
 {
 	// TODO: If player doesn't pick up potion, they shouldn't collide
-	if (obj->tag == "player"
-	    && dynamic_cast<Player*>(obj)->getHealth()
-	    != dynamic_cast<Player*>(obj)->maxHealth)
+	if (obj->tag == "player")
 	{
 		Player *player = dynamic_cast<Player*>(obj);
-		std::cout<<player->getHealth()<<std::endl;
-		player->addHealth(10);
-		std::cout<<player->getHealth()<<std::endl;
+		std::cout<<player->getStr()<<std::endl;
+		player->addStr(1);
+		std::cout<<player->getStr()<<std::endl;
 		this->destroy();
 	}
 }
 
-void CyanPotion::destroy()
+void MagentaPotion::destroy()
 {
 	// only called from Collision.cpp, which already locked ObjectLock
 	for (std::list<Object*>::iterator it=Object::objectList.begin();

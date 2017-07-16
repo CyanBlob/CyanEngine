@@ -9,7 +9,7 @@ void DungeonBuilder::buildRooms(int maxRooms)
 	GLfloat roomTopRight[2] = {8.0, 8.0};
 
 	Room *room = new Room(roomLowerLeft, roomTopRight, 2.0f);
-	room->addToList(room);
+	Room::addToList(room);
 
 	for (i = 0; i < maxRooms; i++) {
 		int j = 0;
@@ -89,7 +89,9 @@ void DungeonBuilder::buildRooms(int maxRooms)
 				(*it)->rightDoor = true;
 			}
 
-			_room->addToList(_room);
+			Room::addToList(_room);
+		} else {
+			delete(_room);
 		}
 	}
 	// Build all rooms

@@ -254,6 +254,17 @@ void menu(int value)
 		glutPostRedisplay();
 		break;
 	case 27:
+		for (std::list<Room*>::iterator it=Room::roomList.begin();
+		     it !=Room::roomList.end(); ++it) {
+			delete(*it);
+		}
+		Object::objectLock.lock();
+		for (std::list<Object*>::iterator it=Object::objectList.begin();
+		     it !=Object::objectList.end(); ++it)
+		{
+			delete(*it);
+		}
+		Object::objectLock.unlock();
 		exit(0);
 	}
 }

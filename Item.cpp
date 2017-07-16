@@ -1,10 +1,16 @@
-#include <stdlib.h>
+#include "stdlib.h"
 #include "CyanPotion.h"
+#include "MagentaPotion.h"
 
 void randomColor(GLfloat _color[]);
 
 Object* Item::randomPotion(GLfloat _lowerLeft[2], GLfloat _topRight[2]) {
-	new CyanPotion(_lowerLeft, _topRight);
+	int randInt = rand() % 10;
+	if (randInt == 0) {
+		new MagentaPotion(_lowerLeft, _topRight);
+	} else {
+		new CyanPotion(_lowerLeft, _topRight);
+	}
 }
 
 Item::Item(GLfloat _lowerLeft[2], GLfloat _topRight[2])

@@ -22,7 +22,7 @@ class Object
 public:
 
 	Object();
-	~Object() {};
+	virtual ~Object() {};
 	static std::mutex objectLock;
 	static std::list<Object*> objectList;
 

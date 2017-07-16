@@ -188,6 +188,18 @@ void Player::addHealth(int amount) {
 	}
 }
 
+int Player::getHealth() {
+	return health;
+}
+
+void Player::addStr(int amount) {
+	strength += amount;
+}
+
+int Player::getStr() {
+	return strength;
+}
+
 void Player::onCollisionEnter(Object *obj)
 {
 	//cout<<"Collided with: "<<obj->lowerLeft[0]<<","<<obj->lowerLeft[1]<<endl;

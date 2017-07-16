@@ -45,6 +45,7 @@ void Room::addItems() {
 	tr[0] = ll[0] + 2.0;
 	tr[1] = ll[1] + 2.0;
 	Item::randomPotion(ll, tr);
+	delete[] _lowerLeft;
 }
 
 void Room::buildRoom()
@@ -116,7 +117,7 @@ void Room::buildRoom()
 }
 void Room::addToList(Room *room)
 {
-	if (roomFits)
+	if (room->roomFits)
 	{
 		Room::roomList.push_back(room);
 	}
