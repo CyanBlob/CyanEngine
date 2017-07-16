@@ -304,7 +304,9 @@ void buildRooms()
 
 int main(int argc, char** argv)
 {
+	time_t timeSeed = time(NULL);
 	char c;
+
 	while (--argc > 0 && (*++argv)[0] == '-') {
 		c = *++argv[0];
 		switch (c) {
@@ -312,11 +314,14 @@ int main(int argc, char** argv)
 			--argc;
 			maxRooms = atoi(*++argv);
 			break;
+		case 's':
+			--argc;
+			timeSeed = atoi(*++argv);
+			break;
 		default:
 			break;
 		}
 	}
-	time_t timeSeed = time(NULL);
 	srand(timeSeed);
 	cout<<"Running game with seed: "<<timeSeed<<endl;
 

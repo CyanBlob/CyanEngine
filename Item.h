@@ -14,6 +14,7 @@ public:
 	Item(GLfloat[2], GLfloat[2]);
 	~Item(){};
 
+	static Object* randomPotion(GLfloat[2], GLfloat[2]);
 	virtual bool checkCollision(Object*) = 0;
 	virtual void onCollisionEnter(Object*) = 0;
 	virtual void destroy() = 0;

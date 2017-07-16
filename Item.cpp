@@ -1,6 +1,11 @@
-#include "Item.h"
+#include <stdlib.h>
+#include "CyanPotion.h"
 
 void randomColor(GLfloat _color[]);
+
+Object* Item::randomPotion(GLfloat _lowerLeft[2], GLfloat _topRight[2]) {
+	new CyanPotion(_lowerLeft, _topRight);
+}
 
 Item::Item(GLfloat _lowerLeft[2], GLfloat _topRight[2])
 {

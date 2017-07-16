@@ -1,5 +1,7 @@
+#include "stdlib.h"
 #include "Room.h"
 #include "Collision.h"
+#include "CyanPotion.h"
 
 list<Room*> initopRightoomList()
 {
@@ -24,6 +26,25 @@ Room::Room(GLfloat _lowerLeft[], GLfloat _topRight[], GLfloat _wallSize)
 	}
 
 	roomFits = true;
+}
+
+GLfloat* Room::randomLocationInRoom() {
+	GLfloat *ll = new GLfloat[2];
+	ll[0] = rand() % (int)(((topRight[0]) - 2.0) - ((lowerLeft[0] + 2.0)));
+	ll[1] = rand() % (int)(((topRight[1] - 2.0)) - ((lowerLeft[1] + 2.0)));
+	ll[0] += lowerLeft[0] + 2.0;
+	ll[1] += lowerLeft[1] + 2.0;
+	return ll;
+}
+
+void Room::addItems() {
+	// TODO: simplify this (why do I need _lowerLeft, not just ll = rand...)
+	GLfloat *_lowerLeft = randomLocationInRoom();
+	GLfloat ll[2] = {_lowerLeft[0], _lowerLeft[1]};
+	GLfloat tr[2];
+	tr[0] = ll[0] + 2.0;
+	tr[1] = ll[1] + 2.0;
+	Item::randomPotion(ll, tr);
 }
 
 void Room::buildRoom()
@@ -91,6 +112,7 @@ void Room::buildRoom()
 			wall->addToList(wall);
 		}
 	}
+	this->addItems();
 }
 void Room::addToList(Room *room)
 {
