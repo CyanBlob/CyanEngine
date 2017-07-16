@@ -15,7 +15,6 @@
 
 #include "Player.h"
 #include "Room.h"
-#include "CyanPotion.h"
 #include "Sword.h"
 #include "DungeonBuilder.h"
 //#include "Wall.h"
@@ -41,7 +40,6 @@ static float yRot = 0;
 
 Wall *wall;
 Player *player = new Player();
-CyanPotion *testItem;
 
 int build = 1;
 
@@ -57,11 +55,6 @@ void init(void)
 	glEnable(GL_MAP1_VERTEX_3);
 
 	buildRooms();
-
-	// Test items
-	GLfloat tmpLL[2] = {3, 3};
-	GLfloat tmpTR[2] = {5, 5};
-	testItem = new CyanPotion(tmpLL, tmpTR);
 }
 
 //Check which mouse button was pressed
