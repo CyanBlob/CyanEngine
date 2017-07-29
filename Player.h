@@ -51,5 +51,5 @@ private:
 	int attackDelay = 500000000;
 	void attack();
 	void stopAttack();
-	bool playerCollision(GLfloat[2], GLfloat[2], GLfloat, GLfloat);
+	bool playerCollision(location, GLfloat, GLfloat);
 };

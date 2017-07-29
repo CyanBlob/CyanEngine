@@ -19,6 +19,8 @@ Player::Player()
 	topRight[0] = 1.0;
 	topRight[1] = 1.0;
 
+	position = {{-1.0, -1.0}, {1.0, 1.0}};
+
 	// Player speed
 	speedForward = 0.2f;
 	speedBack = -0.2f;
@@ -43,15 +45,12 @@ void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
 	}
 }
 
-bool Player::playerCollision(GLfloat prevLowerLeft[2], GLfloat prevTopRight[2],
+bool Player::playerCollision(location prevPosition,
 			     GLfloat prevXOffset, GLfloat prevYOffset) {
 
 	if (Collision::checkCollision(this))
 	{
-		lowerLeft[0] = prevLowerLeft[0];
-		lowerLeft[1] = prevLowerLeft[1];
-		topRight[0] = prevTopRight[0];
-		topRight[1] = prevTopRight[1];
+		position = prevPosition;
 
 		xOffset = prevXOffset;
 		yOffset = prevYOffset;
@@ -64,32 +63,28 @@ bool Player::playerCollision(GLfloat prevLowerLeft[2], GLfloat prevTopRight[2],
 // TODO: Cleanup collision checking code
 void Player::playerAction(bool* keyStates)
 {
-	GLfloat prevLowerLeft[2] = {lowerLeft[0], lowerLeft[1]};
-	GLfloat prevTopRight[2] = {topRight[0], topRight[1]};
+	location prevPosition = position;
 	GLfloat prevXOffset = xOffset;
 	GLfloat prevYOffset = yOffset;
 
 	if (keyStates['w'])
 	{
-		lowerLeft[1] += speedForward;
-		topRight[1] += speedForward;
+		position.lowerLeft.y += speedForward;
+		position.topRight.y += speedForward;
 		yOffset -= speedForward;
 		heading = 0;
 	}
 	else if (keyStates['s'])
 	{
-		lowerLeft[1] += speedBack;
-		topRight[1] += speedBack;
+		position.lowerLeft.y += speedBack;
+		position.topRight.y += speedBack;
 		yOffset -= speedBack;
 		heading = 2;
 	}
 	if (keyStates['w'] || keyStates['s']) {
-		if (!playerCollision(prevLowerLeft, prevTopRight,
+		if (!playerCollision(prevPosition,
 				     prevXOffset, prevYOffset)) {
-			prevLowerLeft[0] = lowerLeft[0];
-			prevLowerLeft[1] = lowerLeft[1];
-			prevTopRight[0] = topRight[0];
-			prevTopRight[1] = topRight[1];
+			prevPosition = position;
 
 			prevYOffset = yOffset;
 		}
@@ -97,21 +92,22 @@ void Player::playerAction(bool* keyStates)
 
 	if (keyStates['a'])
 	{
-		lowerLeft[0] += speedLeft;
-		topRight[0] += speedLeft;
+		position.lowerLeft.x += speedLeft;
+		position.topRight.x += speedLeft;
 		xOffset -= speedLeft;
 		heading = 3;
 	}
 	else if (keyStates['d'])
 	{
-		lowerLeft[0] += speedRight;
-		topRight[0] += speedRight;
+		position.lowerLeft.x += speedRight;
+		position.topRight.x += speedRight;
 		xOffset -= speedRight;
 		heading = 1;
 	}
 
 	if (keyStates['a'] || keyStates['d']) {
-		playerCollision(prevLowerLeft, prevTopRight, prevXOffset, prevYOffset);
+		playerCollision(prevPosition,
+				prevXOffset, prevYOffset);
 	}
 
 	if (keyStates[32])
@@ -150,33 +146,30 @@ void Player::attack()
 	GLfloat tmpColor[3] = {color[0], color[1], color[2]};
 	copyGLfloatArray(flashColor, color);
 	copyGLfloatArray(tmpColor, flashColor);
-	GLfloat color[3] = {.5, .5, .5};
-	GLfloat position[2];
-	GLfloat size = 2.0;
+	location attackPos = position;
 
 	switch (heading) {
 	case 0:
-		position[0] = lowerLeft[0];
-		position[1] = lowerLeft[1] + 2;
+		attackPos.lowerLeft.y += 2;
+		attackPos.topRight.y += 2;
 		break;
 	case 1:
-		position[0] = lowerLeft[0] + 2;
-		position[1] = lowerLeft[1];
+		attackPos.topRight.x += 2;
+		attackPos.lowerLeft.x += 2;
 		break;
 	case 2:
-		position[0] = lowerLeft[0];
-		position[1] = lowerLeft[1] - 2;
+		attackPos.topRight.y -= 2;
+		attackPos.lowerLeft.y -= 2;
 		break;
 	case 3:
-		position[0] = lowerLeft[0] - 2;
-		position[1] = lowerLeft[1];
+		attackPos.topRight.x -= 2;
+		attackPos.lowerLeft.x -= 2;
 		break;
 	default:
-		position[0] = lowerLeft[0];
-		position[1] = lowerLeft[1];
 		break;
 	}
-	Sword *sword = new Sword(position, size);
+	// TODO: free this
+	Sword *sword = new Sword(attackPos);
 }
 
 void Player::addHealth(int amount) {

@@ -7,12 +7,13 @@ public:
 	static list<Room*> roomList;
 
 	// coordinates for LL and TR corners
+	location position;
 	GLfloat lowerLeft[2];
 	GLfloat topRight[2];
 	GLfloat wallSize;
 	//list<Wall*> wallList;
 
-	Room(GLfloat*, GLfloat*, GLfloat);
+	Room(location, GLfloat);
 
 	static void addToList(Room*);
 	void buildRoom();
@@ -29,5 +30,5 @@ private:
 	// should likely be called by constructor
 	bool checkIfFits();
 	void addItems();
-	GLfloat* randomLocationInRoom();
+	location randomLocationInRoom();
 };

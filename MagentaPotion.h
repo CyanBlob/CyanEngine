@@ -15,7 +15,7 @@ using namespace std;
 class MagentaPotion: public Item
 {
 public:
-	MagentaPotion(GLfloat[2], GLfloat[2]);
+	MagentaPotion(location);
 	~MagentaPotion(){};
 
 	bool checkCollision(Object*);

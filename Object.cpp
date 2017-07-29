@@ -23,6 +23,7 @@ std::list <Object*> Object::objectList(initObjectList());
 Object::Object()
 {
 }
+
 void Object::initRender()
 {
 	// TODO: Figure out why this causes a memory leak,
@@ -63,15 +64,20 @@ void Object::initRender()
 	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
 }
+
 void Object::render()
 {
 
 	//glBindTexture(GL_TEXTURE_2D, texName);
 	glBegin(GL_QUADS);
-	glTexCoord2f(1.0, 1.0); glVertex3f(lowerLeft[0], lowerLeft[1], 0.0);
-	glTexCoord2f(1.0, 0.0); glVertex3f(lowerLeft[0], topRight[1], 0.0);
-	glTexCoord2f(0.0, 0.0); glVertex3f(topRight[0], topRight[1], 0.0);
-	glTexCoord2f(0.0, 1.0); glVertex3f(topRight[0], lowerLeft[1], 0.0);
+	glTexCoord2f(1.0, 1.0); glVertex3f(position.lowerLeft.x,
+					   position.lowerLeft.y, 0.0);
+	glTexCoord2f(1.0, 0.0); glVertex3f(position.lowerLeft.x,
+					   position.topRight.y, 0.0);
+	glTexCoord2f(0.0, 0.0); glVertex3f(position.topRight.x,
+					   position.topRight.y, 0.0);
+	glTexCoord2f(0.0, 1.0); glVertex3f(position.topRight.x,
+					   position.lowerLeft.y, 0.0);
 
 	glEnd();
 }

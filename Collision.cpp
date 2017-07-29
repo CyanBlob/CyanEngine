@@ -11,37 +11,71 @@
 #include "Room.h"
 #include "Item.h"
 
-bool pointEnclosed(GLfloat point[2], GLfloat _lowerLeft[2], GLfloat _topRight[2])
+bool pointEnclosed(location pos1, location pos2)
 {
-	if (point[0] >= _lowerLeft[0] && point[0] <= _topRight[0])
+	if (pos1.lowerLeft.x >= pos2.lowerLeft.x
+	    && pos1.lowerLeft.x <= pos2.topRight.x)
 	{
-		if (point[1] >= _lowerLeft[1] && point[1] <= _topRight[1])
+		if (pos1.lowerLeft.y >= pos2.lowerLeft.y
+		    && pos1.lowerLeft.y <= pos2.topRight.y)
 		{
 			return true;
 		}
 	}
+
+	if (pos1.topRight.x >= pos2.lowerLeft.x
+	    && pos1.topRight.x <= pos2.topRight.x)
+	{
+		if (pos1.topRight.y >= pos2.lowerLeft.y
+		    && pos1.topRight.y <= pos2.topRight.y)
+		{
+			return true;
+		}
+	}
+
+	pos1 = {{pos1 .topRight.x, pos1.lowerLeft.y},
+		{pos1.lowerLeft.x, pos1.topRight.y}};
+	if (pos1.lowerLeft.x >= pos2.lowerLeft.x
+	    && pos1.lowerLeft.x <= pos2.topRight.x)
+	{
+		if (pos1.lowerLeft.y >= pos2.lowerLeft.y
+		    && pos1.lowerLeft.y <= pos2.topRight.y)
+		{
+			return true;
+		}
+	}
+
+	if (pos1.topRight.x >= pos2.lowerLeft.x
+	    && pos1.topRight.x <= pos2.topRight.x)
+	{
+		if (pos1.topRight.y >= pos2.lowerLeft.y
+		    && pos1.topRight.y <= pos2.topRight.y)
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 
-bool pointsOverlap(GLfloat lowerLeft[2], GLfloat topRight[2],
-		   GLfloat _lowerLeft[2], GLfloat _topRight[2])
+bool pointsOverlap(location pos1, location pos2)
 {
-	if (lowerLeft[0] <= _lowerLeft[0]
-	    && topRight[0] >= _topRight[0]
-	    && lowerLeft[1] >= _lowerLeft[1]
-	    && lowerLeft[1] <= _topRight[1]
-	    && topRight[1] >= _lowerLeft[1]
-	    && topRight[1] <= _topRight[1])
+	if (pos1.lowerLeft.x <= pos2.lowerLeft.x
+	    && pos1.topRight.x >= pos2.topRight.x
+	    && pos1.lowerLeft.y >= pos2.lowerLeft.y
+	    && pos1.lowerLeft.y <= pos2.topRight.y
+	    && pos1.topRight.y >= pos2.lowerLeft.y
+	    && pos1.topRight.y <= pos2.topRight.y)
 	{
 		return true;
 	}
 
-	if (lowerLeft[1] <= _lowerLeft[1]
-	    && topRight[1] >= _topRight[1]
-	    && lowerLeft[0] >= _lowerLeft[0]
-	    && lowerLeft[0] <= _topRight[0]
-	    && topRight[0] >= _lowerLeft[0]
-	    && topRight[0] <= _topRight[0])
+	if (pos1.lowerLeft.y <= pos2.lowerLeft.y
+	    && pos1.topRight.y >= pos2.topRight.y
+	    && pos1.lowerLeft.x >= pos2.lowerLeft.x
+	    && pos1.lowerLeft.x <= pos2.topRight.x
+	    && pos1.topRight.x >= pos2.lowerLeft.x
+	    && pos1.topRight.x <= pos2.topRight.x)
 	{
 		return true;
 	}
@@ -49,60 +83,37 @@ bool pointsOverlap(GLfloat lowerLeft[2], GLfloat topRight[2],
 	return false;
 }
 
-bool Collision::checkCollision(GLfloat lowerLeft[2], GLfloat topRight[2])
+bool Collision::checkCollision(location position)
 {
 	for (std::list<Room*>::iterator it=Room::roomList.begin();
 	     it !=Room::roomList.end();
 	     ++it)
 	{
-		GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
-		GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
-
-		//TODO: Add check for new room "enclosing" another room
-		if (pointEnclosed(lowerLeft,
-				  (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(topRight,
-				     (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(lowerRight,
-				     (*it)->lowerLeft, (*it)->topRight)
-		    || pointEnclosed(topLeft,
-				     (*it)->lowerLeft, (*it)->topRight))
+		if (pointEnclosed(position, (*it)->position))
 		{
-			//cout<<"Point enclosed by points"<<endl;
 			return false;
 		}
 
-		GLfloat _lowerRight[2] = {(*it)->topRight[0],
-			(*it)->lowerLeft[1]};
-		GLfloat _topLeft[2] = {(*it)->lowerLeft[0],
-			(*it)->topRight[1]};
-
-		if (pointEnclosed((*it)->lowerLeft, lowerLeft, topRight)
-		    || pointEnclosed((*it)->topRight, lowerLeft, topRight)
-		    || pointEnclosed(_lowerRight, lowerLeft, topRight)
-		    || pointEnclosed(_topLeft, lowerLeft, topRight))
+		if (pointEnclosed((*it)->position, position))
 		{
-			//cout<<"Point encloses other points"<<endl;
 			return false;
 		}
 
-		if (pointsOverlap(lowerLeft, topRight,
-				  (*it)->lowerLeft, (*it)->topRight))
+		if (pointsOverlap(position, (*it)->position))
 		{
-			//cout<<"Rooms overlap"<<endl;
 			return false;
 		}
 	}
-	//cout<<"Room fits!"<<endl;
-	//roomBuilt = true;
 	return true;
 }
 
 // returns squared value for performance reasons
-GLfloat pointDistance(GLfloat a[2], GLfloat b[2])
+GLfloat pointDistance(location a, location b)
 {
-	return ((a[0] - b[0]) * (a[0] - b[0])
-		+ (a[1] - b[1]) * (a[1] - b[1]));
+	return ((a.lowerLeft.x - b.lowerLeft.x)
+		* (a.lowerLeft.x - b.lowerLeft.x)
+		+ (a.lowerLeft.y - b.lowerLeft.y)
+		* (a.lowerLeft.y - b.lowerLeft.y));
 }
 
 bool handleCollision(Object *obj1, Object *obj2) {
@@ -122,9 +133,6 @@ bool handleCollision(Object *obj1, Object *obj2) {
 // TODO: support multiple collisions
 bool Collision::checkCollision(Object *obj)
 {
-	GLfloat lowerLeft[2] = {obj->lowerLeft[0], obj->lowerLeft[1]};
-	GLfloat topRight[2] = {obj->topRight[0], obj->topRight[1]};
-
 	Object::objectLock.lock();
 	for (std::list<Object*>::iterator it=Object::objectList.begin();
 	     it != Object::objectList.end();
@@ -135,46 +143,27 @@ bool Collision::checkCollision(Object *obj)
 			continue;
 		}
 
-		if (pointDistance((*it)->lowerLeft, obj->lowerLeft) < 5.0)
+		if (pointDistance((*it)->position, obj->position) < 5.0)
 		{
-			GLfloat lowerRight[2] = {topRight[0], lowerLeft[1]};
-			GLfloat topLeft[2] = {lowerLeft[0], topRight[1]};
-
-			if (pointEnclosed(lowerLeft,
-					  (*it)->lowerLeft, (*it)->topRight)
-			    || pointEnclosed(topRight,
-					     (*it)->lowerLeft, (*it)->topRight)
-			    || pointEnclosed(lowerRight,
-					     (*it)->lowerLeft, (*it)->topRight)
-			    || pointEnclosed(topLeft,
-					     (*it)->lowerLeft, (*it)->topRight))
+			if (pointEnclosed(obj->position, (*it)->position))
 			{
-				 if (handleCollision((*it), obj)) {
-					 return true;
-				 }
+				if (handleCollision((*it), obj)) {
+					return true;
+				}
 			}
 
-			GLfloat _lowerRight[2] = {(*it)->topRight[0],
-				(*it)->lowerLeft[1]};
-			GLfloat _topLeft[2] = {(*it)->lowerLeft[0],
-				(*it)->topRight[1]};
-
-			if (pointEnclosed((*it)->lowerLeft, lowerLeft, topRight)
-			    || pointEnclosed((*it)->topRight, lowerLeft, topRight)
-			    || pointEnclosed(_lowerRight, lowerLeft, topRight)
-			    || pointEnclosed(_topLeft, lowerLeft, topRight))
+			if (pointEnclosed((*it)->position, obj->position))
 			{
-				 if (handleCollision((*it), obj)) {
-					 return true;
-				 }
+				if (handleCollision((*it), obj)) {
+					return true;
+				}
 			}
 
-			if (pointsOverlap(lowerLeft, topRight,
-					  (*it)->lowerLeft, (*it)->topRight))
+			if (pointsOverlap(obj->position, (*it)->position))
 			{
-				 if (handleCollision((*it), obj)) {
-					 return true;
-				 }
+				if (handleCollision((*it), obj)) {
+					return true;
+				}
 			}
 		}
 	}

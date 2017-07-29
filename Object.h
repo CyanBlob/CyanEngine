@@ -16,6 +16,17 @@
 #define ENVIRONMENT 16
 #define ITEM 32
 
+struct coordinate
+{
+	GLfloat x;
+	GLfloat y;
+};
+
+struct location
+{
+	coordinate lowerLeft;
+	coordinate topRight;
+};
 
 class Object
 {
@@ -27,6 +38,9 @@ public:
 	static std::list<Object*> objectList;
 
 	std::string tag = "object";
+
+	location position;
+
 	GLfloat lowerLeft[2];
 	GLfloat topRight[2];
 

@@ -1,8 +1,8 @@
 #include "Player.h"
 #include "CyanPotion.h"
 
-CyanPotion::CyanPotion(GLfloat _lowerLeft[2], GLfloat _topRight[2]) :
-	   Item(_lowerLeft, _topRight)
+CyanPotion::CyanPotion(location _position) :
+	   Item(_position)
 {
 	imageFile = "resources/crawl_tiles/item/potion/cyan.png";
 }

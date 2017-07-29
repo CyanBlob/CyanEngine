@@ -15,7 +15,7 @@ using namespace std;
 class CyanPotion: public Item
 {
 public:
-	CyanPotion(GLfloat[2], GLfloat[2]);
+	CyanPotion(location);
 	~CyanPotion(){};
 
 	bool checkCollision(Object*);

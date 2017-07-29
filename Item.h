@@ -11,10 +11,10 @@ using namespace std;
 class Item: public Object
 {
 public:
-	Item(GLfloat[2], GLfloat[2]);
+	Item(location);
 	~Item(){};
 
-	static Object* randomPotion(GLfloat[2], GLfloat[2]);
+	static Object* randomPotion(location);
 	virtual bool checkCollision(Object*) = 0;
 	virtual void onCollisionEnter(Object*) = 0;
 	virtual void destroy() = 0;

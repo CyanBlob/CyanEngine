@@ -1,8 +1,8 @@
 #include "Player.h"
 #include "MagentaPotion.h"
 
-MagentaPotion::MagentaPotion(GLfloat _lowerLeft[2], GLfloat _topRight[2]) :
-	   Item(_lowerLeft, _topRight)
+MagentaPotion::MagentaPotion(location _position) :
+	   Item(_position)
 {
 	imageFile = "resources/crawl_tiles/item/potion/magenta.png";
 }
