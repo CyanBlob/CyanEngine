@@ -2,7 +2,7 @@
 #include <chrono>
 #include "Collision.h"
 #include <unistd.h> // fork()
-#include <thread>
+#include <boost/thread.hpp> // boost::thread works on Windows
 #include <sys/wait.h>
 
 void Sword::checkDestroy(Sword *sword)
@@ -35,7 +35,7 @@ Sword::Sword(location _position)
 	Object::objectLock.unlock();
 	Collision::checkCollision(this);
 
-	std::thread first (checkDestroy, this);
+	boost::thread first (checkDestroy, this);
 	first.detach();
 }
 
