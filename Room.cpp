@@ -1,5 +1,7 @@
+#include "stdlib.h"
 #include "Room.h"
 #include "Collision.h"
+#include "CyanPotion.h"
 
 list<Room*> initopRightoomList()
 {
@@ -8,22 +10,37 @@ list<Room*> initopRightoomList()
 }
 list <Room*> Room::roomList(initopRightoomList());
 
-Room::Room(GLfloat _lowerLeft[], GLfloat _topRight[], GLfloat _wallSize)
+Room::Room(location _position, GLfloat _wallSize = 2.0)
 {
-
-	lowerLeft[0] = _lowerLeft[0];
-	lowerLeft[1] = _lowerLeft[1];
-	topRight[0] = _topRight[0];
-	topRight[1] = _topRight[1];
-
+	position = _position;
 	wallSize = _wallSize;
 
-	if(!Collision::checkCollision(lowerLeft, topRight))
+	if(!Collision::checkCollision(position))
 	{
 		return;
 	}
 
 	roomFits = true;
+}
+
+location Room::randomLocationInRoom() {
+	location pos;
+	pos.lowerLeft.x = rand() %
+		(int)(((position.topRight.x) - 2.0)
+		      - ((position.lowerLeft.x + 2.0)));
+	pos.lowerLeft.y = rand() %
+		(int)(((position.topRight.y - 2.0))
+		      - ((position.lowerLeft.y + 2.0)));
+	pos.lowerLeft.x += position.lowerLeft.x + 2.0;
+	pos.lowerLeft.y += position.lowerLeft.y + 2.0;
+	pos.topRight.x = pos.lowerLeft.x + 2.0;
+	pos.topRight.y = pos.lowerLeft.y + 2.0;
+	return pos;
+}
+
+void Room::addItems() {
+	location randomPosition = randomLocationInRoom();
+	Item::randomPotion(randomPosition);
 }
 
 void Room::buildRoom()
@@ -33,68 +50,83 @@ void Room::buildRoom()
 	Wall::randomColor(color);
 
 	// TODO: Slap myself, and then fix these variable names
-	GLfloat leftRightMiddle = ((topRight[1] - lowerLeft[1]) / 2.0f)
-		+ lowerLeft[1];
+	GLfloat leftRightMiddle = ((position.topRight.y - position.lowerLeft.y)
+				   / 2.0f) + position.lowerLeft.y;
 	GLfloat leftRightMiddleLeft = leftRightMiddle - 2.5f;
 	GLfloat leftRightMiddleRight = leftRightMiddle + 2.5f;
 
-	GLfloat topBottomMiddle = ((topRight[0] - lowerLeft[0]) / 2.0f)
-		+ lowerLeft[0];
+	GLfloat topBottomMiddle = ((position.topRight.x - position.lowerLeft.x)
+				   / 2.0f) + position.lowerLeft.x;
 	GLfloat topBottomMiddleLeft = topBottomMiddle - 2.5f;
 	GLfloat topBottomMiddleRight = topBottomMiddle + 2.5f;
 
 
 	// right and left
-	for (x = lowerLeft[1]; x <= topRight[1]; x += wallSize)
+	for (x = position.lowerLeft.y; x <= position.topRight.y; x += wallSize)
 	{
 		Wall *wall;
 
 		// right wall
 		if (!rightDoor || x < leftRightMiddleLeft
-		    || x > leftRightMiddleRight) {
-			GLfloat tmpWallCoords[3] = {topRight[0], x, 0.0};
+		    || x > leftRightMiddleRight)
+		{
+			location wallPosition =
+			{{position.topRight.x, x},
+			{position.topRight.x + wallSize, x + wallSize}};
 
-			wall = new Wall(tmpWallCoords, wallSize, color);
+			wall = new Wall(wallPosition);
 			wall->addToList(wall);
 
 		}
 		// left wall
 		if (!leftDoor || x < leftRightMiddleLeft
-		    || x > leftRightMiddleRight) {
-			GLfloat tmpWallCoordsLL[3] = {lowerLeft[0], x, 0.0};
+		    || x > leftRightMiddleRight)
+		{
+			location wallPosition =
+			{{position.lowerLeft.x, x},
+			{position.lowerLeft.x + wallSize, x + wallSize}};
 
-			wall = new Wall(tmpWallCoordsLL, wallSize, color);
+			wall = new Wall(wallPosition);
 			wall->addToList(wall);
 		}
 
 	}
 
 	// bottom and top walls
-	for (x = lowerLeft[0]; x <= topRight[0]; x += wallSize)
+	for (x = position.lowerLeft.x; x <= position.topRight.x; x += wallSize)
 	{
 		Wall *wall;
 		// bottom wall
 		if (!bottomDoor || x < topBottomMiddleLeft
-		    || x > topBottomMiddleRight) {
-		GLfloat tmpWallCoords[3] = {x, lowerLeft[1], 0.0};
+		    || x > topBottomMiddleRight)
+		{
+			location wallPosition =
+			{{x, position.lowerLeft.y},
+			{x + wallSize, position.lowerLeft.y + wallSize}};
 
-		wall = new Wall(tmpWallCoords, wallSize, color);
-		wall->addToList(wall);
+			wall = new Wall(wallPosition);
+			wall->addToList(wall);
+
 		}
 
 		// top wall
 		if (!topDoor || x < topBottomMiddleLeft
-		    || x > topBottomMiddleRight) {
-			GLfloat tmpWallCoordsLL[3] = {x, topRight[1], 0.0};
+		    || x > topBottomMiddleRight)
+		{
+			location wallPosition =
+			{{x, position.topRight.y},
+			{x + wallSize, position.topRight.y + wallSize}};
 
-			wall = new Wall(tmpWallCoordsLL, wallSize, color);
+			wall = new Wall(wallPosition);
 			wall->addToList(wall);
+
 		}
 	}
+	this->addItems();
 }
 void Room::addToList(Room *room)
 {
-	if (roomFits)
+	if (room->roomFits)
 	{
 		Room::roomList.push_back(room);
 	}

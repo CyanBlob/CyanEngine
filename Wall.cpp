@@ -20,9 +20,10 @@ Wall::Wall(GLfloat _coords[][3])
 	}
 }
 
-Wall::Wall(GLfloat _lowerLeft[], GLfloat wallSize, GLfloat _color[3])
+Wall::Wall(location _position)
 {
 	tag = "wall";
+	colliderType = ENVIRONMENT;
 
 	int i = rand() % 4;
 	if (i == 0)
@@ -42,33 +43,18 @@ Wall::Wall(GLfloat _lowerLeft[], GLfloat wallSize, GLfloat _color[3])
 		imageFile = "resources/crawl_tiles/dc-dngn/wall/stone2_dark3.png";
 	}
 
-	//randomColor(color);
-	color[0] = _color[0];
-	color[1] = _color[1];
-	color[2] = _color[2];
-
-	coords[0][0] = _lowerLeft[0];
-	coords[0][1] = _lowerLeft[1];
-	coords[0][2] = _lowerLeft[2];
-
-	coords[1][0] = _lowerLeft[0];
-	coords[1][1] = _lowerLeft[1] + wallSize;
-	coords[1][2] = _lowerLeft[2];
-
-	coords[2][0] = _lowerLeft[0] + wallSize;
-	coords[2][1] = _lowerLeft[1] + wallSize;
-	coords[2][2] = _lowerLeft[2];
-
-	coords[3][0] = _lowerLeft[0] + wallSize;
-	coords[3][1] = _lowerLeft[1];
-	coords[3][2] = _lowerLeft[2];
-	//wallList.push_front(this);
-
-	lowerLeft[0] = _lowerLeft[0];
+	/*lowerLeft[0] = _lowerLeft[0];
 	lowerLeft[1] = _lowerLeft[1];
 
 	topRight[0] = _lowerLeft[0] + wallSize;
-	topRight[1] = _lowerLeft[1] + wallSize;
+	topRight[1] = _lowerLeft[1] + wallSize;*/
+
+	/*position.lowerLeft.x = lowerLeft[0];
+	position.lowerLeft.y = lowerLeft[1];
+	position.topRight.x = topRight[0];
+	position.topRight.y = topRight[1];*/
+
+	position = _position;
 }
 
 void Wall::randomColor(GLfloat _color[])

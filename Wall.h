@@ -24,7 +24,7 @@ public:
 	Wall(GLfloat[][3]);
 
 	// Pass in LL coordinate + size of wall
-	Wall(GLfloat[3], GLfloat wallSize, GLfloat[3]);
+	Wall(location);
 
 	void addToList(Wall*);
 

@@ -9,7 +9,7 @@ using namespace std;
 class Sword: public Object
 {
 public:
-	Sword(GLfloat[2], GLfloat);
+	Sword(location);
 	~Sword() {};
 
 	static std::mutex swordLock;
