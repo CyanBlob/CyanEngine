@@ -2,6 +2,7 @@
 #include <chrono>
 #include "Collision.h"
 #include <unistd.h> // fork()
+#include <boost/chrono.hpp>
 #include <boost/thread.hpp> // boost::thread works on Windows
 #include <sys/wait.h>
 
@@ -15,7 +16,8 @@ void Sword::checkDestroy(Sword *sword)
 	       < startTime + duration)
 	{
 		Collision::checkCollision(sword);
-		usleep(1000);
+		boost::this_thread::sleep_for(
+				      boost::chrono::microseconds(1000));
 	}
 	sword->destroy();
 	delete sword;
