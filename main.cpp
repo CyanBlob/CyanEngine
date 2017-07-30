@@ -15,17 +15,15 @@
 
 #include "Player.h"
 #include "Room.h"
-#include "CyanPotion.h"
 #include "Sword.h"
 #include "DungeonBuilder.h"
 //#include "Wall.h"
 
 #include "SOIL.h"
 
-#define MAXROOMS 100
-
 using namespace std;
 
+int maxRooms = 100;
 // Stores the status of each key (up/down);
 bool keyStates[256] = {false};
 
@@ -42,7 +40,6 @@ static float yRot = 0;
 
 Wall *wall;
 Player *player = new Player();
-CyanPotion *testItem;
 
 int build = 1;
 
@@ -57,10 +54,7 @@ void init(void)
 	glShadeModel(GL_FLAT);
 	glEnable(GL_MAP1_VERTEX_3);
 
-	// Test items
-	GLfloat tmpLL[2] = {3, 3};
-	GLfloat tmpTR[2] = {5, 5};
-	testItem = new CyanPotion(tmpLL, tmpTR);
+	buildRooms();
 }
 
 //Check which mouse button was pressed
@@ -105,16 +99,28 @@ void renderFloor()
 		glGenTextures(1, &floorTex);
 
 		glBindTexture(GL_TEXTURE_2D, floorTex);
+
+		// generate mipmaps
+		glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+
+		// TODO: Test if filtering is working
+		GLfloat fLargest;
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &fLargest);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT,
+				fLargest);
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-				GL_NEAREST);
+				GL_NEAREST_MIPMAP_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-				GL_NEAREST);
+				GL_NEAREST_MIPMAP_NEAREST);
 
 		image = SOIL_load_image(imageFile, &width, &height,
 					     0, SOIL_LOAD_RGB);
@@ -189,12 +195,6 @@ void playerAction()
 
 void timer(int value)
 {
-	if (build == 1)
-	{
-		buildRooms();
-		build = 0;
-	}
-
 	playerAction();
 	glutPostRedisplay();
 	glutTimerFunc(16, timer, 1);
@@ -254,6 +254,17 @@ void menu(int value)
 		glutPostRedisplay();
 		break;
 	case 27:
+		for (std::list<Room*>::iterator it=Room::roomList.begin();
+		     it !=Room::roomList.end(); ++it) {
+			delete(*it);
+		}
+		Object::objectLock.lock();
+		for (std::list<Object*>::iterator it=Object::objectList.begin();
+		     it !=Object::objectList.end(); ++it)
+		{
+			delete(*it);
+		}
+		Object::objectLock.unlock();
 		exit(0);
 	}
 }
@@ -292,12 +303,29 @@ void keyboard(unsigned char key, int x, int y)
 //TODO: Don't add rooms to roomList if they didn't fit
 void buildRooms()
 {
-	DungeonBuilder::buildRooms(MAXROOMS);
+	DungeonBuilder::buildRooms(maxRooms);
 }
 
 int main(int argc, char** argv)
 {
 	time_t timeSeed = time(NULL);
+	char c;
+
+	while (--argc > 0 && (*++argv)[0] == '-') {
+		c = *++argv[0];
+		switch (c) {
+		case 'n':
+			--argc;
+			maxRooms = atoi(*++argv);
+			break;
+		case 's':
+			--argc;
+			timeSeed = atoi(*++argv);
+			break;
+		default:
+			break;
+		}
+	}
 	srand(timeSeed);
 	cout<<"Running game with seed: "<<timeSeed<<endl;
 

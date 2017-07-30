@@ -1,9 +1,9 @@
 #include "Sword.h"
 #include <chrono>
 #include "Collision.h"
-//#include <unistd.h> // fork()
-#include <thread>
-//#include <sys/wait.h>
+#include <unistd.h> // fork()
+#include <boost/thread.hpp> // boost::thread works on Windows
+#include <sys/wait.h>
 
 void Sword::checkDestroy(Sword *sword)
 {
@@ -14,30 +14,28 @@ void Sword::checkDestroy(Sword *sword)
 	while (std::chrono::system_clock::now().time_since_epoch().count()
 	       < startTime + duration)
 	{
-		Collision::checkPlayerCollision(sword);
-		//usleep(1000);
+		Collision::checkCollision(sword);
+		usleep(1000);
 	}
 	sword->destroy();
 	delete sword;
 }
 
-Sword::Sword(GLfloat _lowerLeft[], GLfloat size)
+Sword::Sword(location _position)
 {
 	imageFile = "resources/crawl_tiles/spells/air/chain_lightning.png";
 	tag = "attack";
+	colliderType = PLAYER_ATTACK;
+	collidesWith = ENVIRONMENT | ENEMY;
 
-	lowerLeft[0] = _lowerLeft[0];
-	lowerLeft[1] = _lowerLeft[1];
-	topRight[0] = _lowerLeft[0] + size;
-	topRight[1] = _lowerLeft[1] + size;
-
+	position = _position;
 
 	Object::objectLock.lock();
 	Object::objectList.push_front(this);
 	Object::objectLock.unlock();
-	Collision::checkPlayerCollision(this);
+	Collision::checkCollision(this);
 
-	std::thread first (checkDestroy, this);
+	boost::thread first (checkDestroy, this);
 	first.detach();
 }
 

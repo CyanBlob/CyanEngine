@@ -1,12 +1,12 @@
-#ifndef Included_Player_H
-#define Included_Player_H
-#include "Player.h"
+#ifndef Included_Object_H
+#define Included_Object_H
+#include "Object.h"
 #endif
 
 class Collision
 {
 public:
 	// TODO: Generalize these
-	static bool checkCollision(GLfloat[2], GLfloat[2]);
-	static bool checkPlayerCollision(Object*);
+	static bool checkCollision(location);
+	static bool checkCollision(Object*);
 };
