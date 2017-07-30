@@ -1,6 +1,0 @@
-﻿  main.cpp
-main.cpp(53): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
-main.cpp(110): warning C4101: 'fLargest': unreferenced local variable
-main.cpp(329): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  CyanEngine.vcxproj -> C:\Users\Andre\Development\CyanEngine\Debug\CyanEngine.exe
-  CyanEngine.vcxproj -> C:\Users\Andre\Development\CyanEngine\Debug\CyanEngine.pdb (Partial PDB)
