@@ -17,7 +17,7 @@ Item::Item(location _position)
 {
 	position = _position;
 
-	imageFile = "resources/crawl_tiles/item/potion/cyan.png";
+	//imageFile = "resources/crawl_tiles/item/potion/cyan.png";
 	colliderType = ITEM;
 
 

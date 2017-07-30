@@ -17,7 +17,4 @@ public:
 	~Material(){};
 	static void randomMaterial(location);
 	void addToInventory();
-	bool checkCollision(Object*);
-	void onCollisionEnter(Object*);
-	void destroy();
 };

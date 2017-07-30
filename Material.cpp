@@ -20,13 +20,3 @@ void Material::randomMaterial(location _position) {
 		new Crystal(_position);
 	}
 }
-
-bool Material::checkCollision(Object *obj)
-{
-}
-void Material::onCollisionEnter(Object *obj)
-{
-}
-void Material::destroy()
-{
-}
