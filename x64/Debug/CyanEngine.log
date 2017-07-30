@@ -1,0 +1,18 @@
+﻿cl : Command line warning D9030: '/Gm' is incompatible with multiprocessing; ignoring /MP switch
+  Wall.cpp
+  Sword.cpp
+  Room.cpp
+  Player.cpp
+  Object.cpp
+c:\users\andre\development\cyanengine\object.cpp(36): error C2065: 'GL_GENERATE_MIPMAP': undeclared identifier
+c:\users\andre\development\cyanengine\object.cpp(43): error C2065: 'GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT': undeclared identifier
+c:\users\andre\development\cyanengine\object.cpp(44): error C2065: 'GL_TEXTURE_MAX_ANISOTROPY_EXT': undeclared identifier
+  main.cpp
+c:\users\andre\development\cyanengine\main.cpp(104): error C2065: 'GL_GENERATE_MIPMAP': undeclared identifier
+c:\users\andre\development\cyanengine\main.cpp(111): error C2065: 'GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT': undeclared identifier
+c:\users\andre\development\cyanengine\main.cpp(112): error C2065: 'GL_TEXTURE_MAX_ANISOTROPY_EXT': undeclared identifier
+  Item.cpp
+  DungeonBuilder.cpp
+  CyanPotion.cpp
+  Collision.cpp
+  Generating Code...

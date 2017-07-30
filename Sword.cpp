@@ -1,10 +1,8 @@
 #include "Sword.h"
 #include <chrono>
 #include "Collision.h"
-#include <unistd.h> // fork()
 #include <boost/chrono.hpp>
 #include <boost/thread.hpp> // boost::thread works on Windows
-#include <sys/wait.h>
 
 void Sword::checkDestroy(Sword *sword)
 {

@@ -101,16 +101,16 @@ void renderFloor()
 		glBindTexture(GL_TEXTURE_2D, floorTex);
 
 		// generate mipmaps
-		glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 
 		// TODO: Test if filtering is working
 		GLfloat fLargest;
-		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &fLargest);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT,
-				fLargest);
+		//glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &fLargest);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT,
+		//		fLargest);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -158,7 +158,7 @@ void display(void)
 	glRotatef(xRot, 1, 0, 0);
 	glRotatef(yRot, 0, 1, 0);
 
-	renderFloor();
+	//renderFloor();
 
 	const char *prevImage = 0;
 	// TODO: Generalize this

@@ -84,14 +84,14 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Andre\Development\CyanEngine\include\Simple OpenGL Image Library\src;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Andre\Development\CyanEngine\include\Simple OpenGL Image Library\src;C:\Users\Andre\Development\CyanEngine\include\boost_1_64_0;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\Andre\Development\CyanEngine\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Andre\Development\CyanEngine\include\boost_1_64_0\stage\lib;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -100,7 +100,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Users\Andre\Development\CyanEngine\include\Simple OpenGL Image Library\src;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Andre\Development\CyanEngine\include\Simple OpenGL Image Library\src;C:\Users\Andre\Development\CyanEngine\include\boost_1_64_0;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -109,25 +109,25 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\Andre\Development\CyanEngine\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Andre\Development\CyanEngine\include\boost_1_64_0\stage\lib;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Andre\Development\CyanEngine\include\Simple OpenGL Image Library\src;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Andre\Development\CyanEngine\include\Simple OpenGL Image Library\src;C:\Users\Andre\Development\CyanEngine\include\boost_1_64_0;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\Andre\Development\CyanEngine\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Andre\Development\CyanEngine\include\boost_1_64_0\stage\lib;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Andre\Development\CyanEngine\include\Simple OpenGL Image Library\src;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Andre\Development\CyanEngine\include\Simple OpenGL Image Library\src;C:\Users\Andre\Development\CyanEngine\include\boost_1_64_0;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\Andre\Development\CyanEngine\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Andre\Development\CyanEngine\include\boost_1_64_0\stage\lib;C:\Users\Andre\Development\CyanEngine\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -137,6 +137,7 @@
     <ClCompile Include="include\simple opengl image library\src\image_DXT.c" />
     <ClCompile Include="include\simple opengl image library\src\image_helper.c" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="MagentaPotion.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -160,7 +161,10 @@
     <ClInclude Include="include\simple opengl image library\src\stbi_DDS_aug.h" />
     <ClInclude Include="include\simple opengl image library\src\stbi_DDS_aug_c.h" />
     <ClInclude Include="include\simple opengl image library\src\stb_image_aug.h" />
+    <ClInclude Include="InventoryManager.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="MagentaPotion.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Room.h" />
