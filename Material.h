@@ -15,5 +15,6 @@ class Material: public Item
 public:
 	Material(location);
 	~Material(){};
+	static void randomMaterial(location);
 	void addToInventory();
 };
