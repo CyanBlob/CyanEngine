@@ -1,3 +1,7 @@
+#ifndef Included_Material_H
+#define Included_Material_H
+#include "Material.h"
+#endif
 #include "stdlib.h"
 #include "Room.h"
 #include "Collision.h"
@@ -41,6 +45,11 @@ location Room::randomLocationInRoom() {
 void Room::addItems() {
 	location randomPosition = randomLocationInRoom();
 	Item::randomPotion(randomPosition);
+}
+
+void Room::addMaterials() {
+	location randomPosition = randomLocationInRoom();
+	Material::randomMaterial(randomPosition);
 }
 
 void Room::buildRoom()
@@ -123,6 +132,7 @@ void Room::buildRoom()
 		}
 	}
 	this->addItems();
+	this->addMaterials();
 }
 void Room::addToList(Room *room)
 {

@@ -1,6 +1,6 @@
 #ifndef Included_Material_H
 #define Included_Material_H
-#include "../Material.h"
+#include "Material.h"
 #endif
 
 using namespace std;
@@ -10,8 +10,4 @@ class Crystal: public Material
 public:
 	Crystal(location);
 	~Crystal(){};
-
-	bool checkCollision(Object*);
-	void onCollisionEnter(Object*);
-	void destroy();
 };

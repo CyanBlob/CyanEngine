@@ -4,9 +4,13 @@
 #endif
 #ifndef Included_Crystal_H
 #define Included_Crystal_H
-#include "Materials/Crystal.h"
+#include "Crystal.h"
 #endif
 #include "stdlib.h"
+
+Material::Material(location _position) : Item(_position)
+{
+}
 
 void Material::randomMaterial(location _position) {
 	int randInt = rand() % 10;
@@ -15,4 +19,14 @@ void Material::randomMaterial(location _position) {
 	} else {
 		new Crystal(_position);
 	}
+}
+
+bool Material::checkCollision(Object *obj)
+{
+}
+void Material::onCollisionEnter(Object *obj)
+{
+}
+void Material::destroy()
+{
 }

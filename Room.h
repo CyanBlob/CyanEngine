@@ -30,5 +30,6 @@ private:
 	// should likely be called by constructor
 	bool checkIfFits();
 	void addItems();
+	void addMaterials();
 	location randomLocationInRoom();
 };
