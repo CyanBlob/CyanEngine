@@ -14,7 +14,7 @@ public:
 	Item(location);
 	~Item(){};
 
-	static Object* randomPotion(location);
+	static void randomPotion(location);
 	virtual bool checkCollision(Object*) = 0;
 	virtual void onCollisionEnter(Object*) = 0;
 	virtual void destroy() = 0;

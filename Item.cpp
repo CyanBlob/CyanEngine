@@ -4,7 +4,7 @@
 
 void randomColor(GLfloat _color[]);
 
-Object* Item::randomPotion(location _position) {
+void Item::randomPotion(location _position) {
 	int randInt = rand() % 10;
 	if (randInt == 0) {
 		new MagentaPotion(_position);
