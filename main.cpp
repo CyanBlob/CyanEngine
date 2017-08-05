@@ -29,7 +29,7 @@ Player *_player = Player::getPlayer();
 
 int build = 1;
 
-const unsigned int UPDATE_STEP = 20;
+const unsigned int UPDATE_STEP = 15;
 
 unsigned int total_time = 0;
 unsigned int current_time = 0;
