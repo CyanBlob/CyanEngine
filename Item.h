@@ -2,7 +2,6 @@
 #define Included_Object_H
 #include "Object.h"
 #endif
-
 #include <iostream>
 #include <list>
 

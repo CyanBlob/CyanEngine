@@ -14,10 +14,8 @@ Player::Player()
 	colliderType = PLAYER;
 	collidesWith = ITEM | ENVIRONMENT;
 
-	lowerLeft[0] = -1.0;
-	lowerLeft[1] = -1.0;
-	topRight[0] = 1.0;
-	topRight[1] = 1.0;
+	xOffset = 0.0;
+	yOffset = 0.0;
 
 	position = {{-1.0, -1.0}, {1.0, 1.0}};
 
@@ -26,6 +24,8 @@ Player::Player()
 	speedBack = -0.2f;
 	speedRight = 0.2f;
 	speedLeft = -0.2f;
+
+	thisRef = this;
 }
 
 void Player::copyGLfloatArray(GLfloat array1[], GLfloat array2[])
@@ -170,6 +170,16 @@ void Player::attack()
 	}
 	// TODO: free this
 	Sword *sword = new Sword(attackPos);
+}
+
+Player* Player::getPlayer()
+{
+
+	if (thisRef == nullptr)
+	{
+		thisRef = new Player();
+	}
+	return static_cast<Player*>(thisRef);
 }
 
 void Player::addHealth(int amount) {

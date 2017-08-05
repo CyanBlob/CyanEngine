@@ -16,11 +16,13 @@
 #include "Object.h"
 #endif
 
+static Object* thisRef = nullptr;
+
 class Player: public Object
 {
 public:
-	GLfloat xOffset = 0.0;
-	GLfloat yOffset = 0.0;
+	GLfloat xOffset;
+	GLfloat yOffset;
 
 	int maxHealth = 100;
 	int heading = 0;
@@ -37,9 +39,10 @@ public:
 	int getHealth();
 	void addStr(int);
 	int getStr();
-	Player();
+	static Player* getPlayer();
 
 private:
+	Player();
 	GLfloat speedForward;
 	GLfloat speedBack;
 	GLfloat speedLeft;
