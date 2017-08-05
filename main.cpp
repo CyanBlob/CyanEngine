@@ -29,6 +29,11 @@ Player *_player = Player::getPlayer();
 
 int build = 1;
 
+const unsigned int UPDATE_STEP = 20;
+
+unsigned int total_time = 0;
+unsigned int current_time = 0;
+
 void buildRooms();
 
 void init(void)
@@ -77,9 +82,23 @@ void playerAction()
 
 void timer(int value)
 {
-	playerAction();
+	unsigned int new_time = glutGet(GLUT_ELAPSED_TIME);
+	unsigned int frame_time = new_time - current_time;
+	current_time = new_time;
+	total_time += frame_time;
+
+	// perform as many playerAction()s as should have occured while
+	// rendering
+	while (total_time >= UPDATE_STEP)
+	{
+		playerAction();
+		total_time -= UPDATE_STEP;
+	}
+
 	glutPostRedisplay();
-	glutTimerFunc(16, timer, 1);
+	boost::this_thread::sleep_for(boost::chrono::milliseconds(16));
+	//TODO: figure out why I need this call, instead of using a while(true)
+	glutTimerFunc(0, timer, 1);
 }
 
 void menu(int value)
