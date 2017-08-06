@@ -32,7 +32,9 @@ class Object
 {
 public:
 
-	Object();
+	//Object();
+	Object() = default;
+	Object(location);
 	virtual ~Object() {};
 	static std::mutex objectLock;
 	static std::list<Object*> objectList;
@@ -40,9 +42,6 @@ public:
 	std::string tag = "object";
 
 	location position;
-
-	GLfloat lowerLeft[2];
-	GLfloat topRight[2];
 
 	int colliderType = 0;
 	int collidesWith = 0;

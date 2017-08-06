@@ -20,8 +20,13 @@ std::list<Object*> initObjectList()
 
 std::list <Object*> Object::objectList(initObjectList());
 
-Object::Object()
+Object::Object(location _position)
 {
+	position = _position;
+
+	Object::objectLock.lock();
+	Object::objectList.push_back(this);
+	Object::objectLock.unlock();
 }
 
 void Object::initRender()

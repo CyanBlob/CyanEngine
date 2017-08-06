@@ -23,18 +23,13 @@ void Sword::checkDestroy(Sword *sword)
 	delete sword;
 }
 
-Sword::Sword(location _position)
+Sword::Sword(location _position) : Object(_position)
 {
 	imageFile = "resources/crawl_tiles/spells/air/chain_lightning.png";
 	tag = "attack";
 	colliderType = PLAYER_ATTACK;
 	collidesWith = ENVIRONMENT | ENEMY;
 
-	position = _position;
-
-	Object::objectLock.lock();
-	Object::objectList.push_front(this);
-	Object::objectLock.unlock();
 	Collision::checkCollision(this);
 
 	boost::thread first (checkDestroy, this);

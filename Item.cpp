@@ -13,15 +13,7 @@ void Item::randomPotion(location _position) {
 	}
 }
 
-Item::Item(location _position)
+Item::Item(location _position) : Object(_position)
 {
-	position = _position;
-
-	//imageFile = "resources/crawl_tiles/item/potion/cyan.png";
 	colliderType = ITEM;
-
-
-	Object::objectLock.lock();
-	Object::objectList.push_back(this);
-	Object::objectLock.unlock();
 }

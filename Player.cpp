@@ -17,7 +17,7 @@ Player::Player()
 	xOffset = 0.0;
 	yOffset = 0.0;
 
-	position = {{-1.0, -1.0}, {1.0, 1.0}};
+	position = {{-1.0,-1.0},{1.0,1.0}};
 
 	// Player speed
 	speedForward = 0.2f;

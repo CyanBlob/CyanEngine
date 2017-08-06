@@ -164,7 +164,6 @@ void keyboard(unsigned char key, int x, int y)
 	keyStates[key] = true;
 }
 
-//TODO: Don't add rooms to roomList if they didn't fit
 void buildRooms()
 {
 	DungeonBuilder::buildRooms(maxRooms);

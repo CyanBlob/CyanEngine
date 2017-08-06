@@ -4,23 +4,7 @@ using namespace std;
 
 void randomColor(GLfloat _color[]);
 
-Wall::Wall(GLfloat _coords[][3])
-{
-
-	int i, j;
-
-	randomColor(color);
-
-	for (i = 0; i < 4; i++)
-	{
-		for (j = 0; j < 3; j++)
-		{
-			coords[i][j] = _coords[i][j];
-		}
-	}
-}
-
-Wall::Wall(location _position)
+Wall::Wall(location _position) : Object(_position)
 {
 	tag = "wall";
 	colliderType = ENVIRONMENT;
@@ -42,19 +26,6 @@ Wall::Wall(location _position)
 	{
 		imageFile = "resources/crawl_tiles/dc-dngn/wall/stone2_dark3.png";
 	}
-
-	/*lowerLeft[0] = _lowerLeft[0];
-	lowerLeft[1] = _lowerLeft[1];
-
-	topRight[0] = _lowerLeft[0] + wallSize;
-	topRight[1] = _lowerLeft[1] + wallSize;*/
-
-	/*position.lowerLeft.x = lowerLeft[0];
-	position.lowerLeft.y = lowerLeft[1];
-	position.topRight.x = topRight[0];
-	position.topRight.y = topRight[1];*/
-
-	position = _position;
 }
 
 void Wall::randomColor(GLfloat _color[])
@@ -66,7 +37,7 @@ void Wall::randomColor(GLfloat _color[])
 
 void Wall::addToList(Wall *wall)
 {
-	Object::objectList.push_front(this);
+	//Object::objectList.push_front(this);
 }
 
 bool Wall::checkCollision(Object *obj)
