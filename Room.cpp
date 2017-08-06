@@ -16,10 +16,10 @@ list <Room*> Room::roomList(initopRightoomList());
 
 Room::Room(location _position, GLfloat _wallSize = 2.0)
 {
-	position = _position;
+	pos = _position;
 	wallSize = _wallSize;
 
-	if(!Collision::checkCollision(position))
+	if(!Collision::checkCollision(pos))
 	{
 		return;
 	}
@@ -28,18 +28,18 @@ Room::Room(location _position, GLfloat _wallSize = 2.0)
 }
 
 location Room::randomLocationInRoom() {
-	location pos;
-	pos.lowerLeft.x = rand() %
-		(int)(((position.topRight.x) - 2.0)
-		      - ((position.lowerLeft.x + 2.0)));
-	pos.lowerLeft.y = rand() %
-		(int)(((position.topRight.y - 2.0))
-		      - ((position.lowerLeft.y + 2.0)));
-	pos.lowerLeft.x += position.lowerLeft.x + 2.0;
-	pos.lowerLeft.y += position.lowerLeft.y + 2.0;
-	pos.topRight.x = pos.lowerLeft.x + 2.0;
-	pos.topRight.y = pos.lowerLeft.y + 2.0;
-	return pos;
+    location _pos;
+    _pos.ll.x = rand() %
+        (int)(((pos.tr.x) - 2.0)
+              - ((pos.ll.x + 2.0)));
+    _pos.ll.y = rand() %
+        (int)(((pos.tr.y - 2.0))
+              - ((pos.ll.y + 2.0)));
+    _pos.ll.x += pos.ll.x + 2.0;
+    _pos.ll.y += pos.ll.y + 2.0;
+    _pos.tr.x = _pos.ll.x + 2.0;
+    _pos.tr.y = _pos.ll.y + 2.0;
+    return _pos;
 }
 
 void Room::addItems() {
@@ -59,19 +59,19 @@ void Room::buildRoom()
 	Wall::randomColor(color);
 
 	// TODO: Slap myself, and then fix these variable names
-	GLfloat leftRightMiddle = ((position.topRight.y - position.lowerLeft.y)
-				   / 2.0f) + position.lowerLeft.y;
+	GLfloat leftRightMiddle = ((pos.tr.y - pos.ll.y)
+				   / 2.0f) + pos.ll.y;
 	GLfloat leftRightMiddleLeft = leftRightMiddle - 2.5f;
 	GLfloat leftRightMiddleRight = leftRightMiddle + 2.5f;
 
-	GLfloat topBottomMiddle = ((position.topRight.x - position.lowerLeft.x)
-				   / 2.0f) + position.lowerLeft.x;
+	GLfloat topBottomMiddle = ((pos.tr.x - pos.ll.x)
+				   / 2.0f) + pos.ll.x;
 	GLfloat topBottomMiddleLeft = topBottomMiddle - 2.5f;
 	GLfloat topBottomMiddleRight = topBottomMiddle + 2.5f;
 
 
 	// right and left
-	for (x = position.lowerLeft.y; x <= position.topRight.y; x += wallSize)
+	for (x = pos.ll.y; x <= pos.tr.y; x += wallSize)
 	{
 		Wall *wall;
 
@@ -80,8 +80,8 @@ void Room::buildRoom()
 		    || x > leftRightMiddleRight)
 		{
 			location wallPosition =
-			{{position.topRight.x, x},
-			{position.topRight.x + wallSize, x + wallSize}};
+			{{pos.tr.x, x},
+			{pos.tr.x + wallSize, x + wallSize}};
 
 			wall = new Wall(wallPosition);
 			wall->addToList(wall);
@@ -92,8 +92,8 @@ void Room::buildRoom()
 		    || x > leftRightMiddleRight)
 		{
 			location wallPosition =
-			{{position.lowerLeft.x, x},
-			{position.lowerLeft.x + wallSize, x + wallSize}};
+			{{pos.ll.x, x},
+			{pos.ll.x + wallSize, x + wallSize}};
 
 			wall = new Wall(wallPosition);
 			wall->addToList(wall);
@@ -102,7 +102,7 @@ void Room::buildRoom()
 	}
 
 	// bottom and top walls
-	for (x = position.lowerLeft.x; x <= position.topRight.x; x += wallSize)
+	for (x = pos.ll.x; x <= pos.tr.x; x += wallSize)
 	{
 		Wall *wall;
 		// bottom wall
@@ -110,8 +110,8 @@ void Room::buildRoom()
 		    || x > topBottomMiddleRight)
 		{
 			location wallPosition =
-			{{x, position.lowerLeft.y},
-			{x + wallSize, position.lowerLeft.y + wallSize}};
+			{{x, pos.ll.y},
+			{x + wallSize, pos.ll.y + wallSize}};
 
 			wall = new Wall(wallPosition);
 			wall->addToList(wall);
@@ -123,8 +123,8 @@ void Room::buildRoom()
 		    || x > topBottomMiddleRight)
 		{
 			location wallPosition =
-			{{x, position.topRight.y},
-			{x + wallSize, position.topRight.y + wallSize}};
+			{{x, pos.tr.y},
+			{x + wallSize, pos.tr.y + wallSize}};
 
 			wall = new Wall(wallPosition);
 			wall->addToList(wall);

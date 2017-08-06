@@ -6,7 +6,7 @@
 
 Crystal::Crystal(location _position) : Material(_position)
 {
-	position = _position;
+	pos = _position;
 
 	imageFile = "resources/crawl_tiles/item/misc/misc_crystal.png";
 	colliderType = ITEM;

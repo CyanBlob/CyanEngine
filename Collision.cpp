@@ -13,43 +13,43 @@
 
 bool pointEnclosed(location pos1, location pos2)
 {
-	if (pos1.lowerLeft.x >= pos2.lowerLeft.x
-	    && pos1.lowerLeft.x <= pos2.topRight.x)
+	if (pos1.ll.x >= pos2.ll.x
+	    && pos1.ll.x <= pos2.tr.x)
 	{
-		if (pos1.lowerLeft.y >= pos2.lowerLeft.y
-		    && pos1.lowerLeft.y <= pos2.topRight.y)
+		if (pos1.ll.y >= pos2.ll.y
+		    && pos1.ll.y <= pos2.tr.y)
 		{
 			return true;
 		}
 	}
 
-	if (pos1.topRight.x >= pos2.lowerLeft.x
-	    && pos1.topRight.x <= pos2.topRight.x)
+	if (pos1.tr.x >= pos2.ll.x
+	    && pos1.tr.x <= pos2.tr.x)
 	{
-		if (pos1.topRight.y >= pos2.lowerLeft.y
-		    && pos1.topRight.y <= pos2.topRight.y)
+		if (pos1.tr.y >= pos2.ll.y
+		    && pos1.tr.y <= pos2.tr.y)
 		{
 			return true;
 		}
 	}
 
-	pos1 = {{pos1 .topRight.x, pos1.lowerLeft.y},
-		{pos1.lowerLeft.x, pos1.topRight.y}};
-	if (pos1.lowerLeft.x >= pos2.lowerLeft.x
-	    && pos1.lowerLeft.x <= pos2.topRight.x)
+	pos1 = {{pos1 .tr.x, pos1.ll.y},
+		{pos1.ll.x, pos1.tr.y}};
+	if (pos1.ll.x >= pos2.ll.x
+	    && pos1.ll.x <= pos2.tr.x)
 	{
-		if (pos1.lowerLeft.y >= pos2.lowerLeft.y
-		    && pos1.lowerLeft.y <= pos2.topRight.y)
+		if (pos1.ll.y >= pos2.ll.y
+		    && pos1.ll.y <= pos2.tr.y)
 		{
 			return true;
 		}
 	}
 
-	if (pos1.topRight.x >= pos2.lowerLeft.x
-	    && pos1.topRight.x <= pos2.topRight.x)
+	if (pos1.tr.x >= pos2.ll.x
+	    && pos1.tr.x <= pos2.tr.x)
 	{
-		if (pos1.topRight.y >= pos2.lowerLeft.y
-		    && pos1.topRight.y <= pos2.topRight.y)
+		if (pos1.tr.y >= pos2.ll.y
+		    && pos1.tr.y <= pos2.tr.y)
 		{
 			return true;
 		}
@@ -60,22 +60,22 @@ bool pointEnclosed(location pos1, location pos2)
 
 bool pointsOverlap(location pos1, location pos2)
 {
-	if (pos1.lowerLeft.x <= pos2.lowerLeft.x
-	    && pos1.topRight.x >= pos2.topRight.x
-	    && pos1.lowerLeft.y >= pos2.lowerLeft.y
-	    && pos1.lowerLeft.y <= pos2.topRight.y
-	    && pos1.topRight.y >= pos2.lowerLeft.y
-	    && pos1.topRight.y <= pos2.topRight.y)
+	if (pos1.ll.x <= pos2.ll.x
+	    && pos1.tr.x >= pos2.tr.x
+	    && pos1.ll.y >= pos2.ll.y
+	    && pos1.ll.y <= pos2.tr.y
+	    && pos1.tr.y >= pos2.ll.y
+	    && pos1.tr.y <= pos2.tr.y)
 	{
 		return true;
 	}
 
-	if (pos1.lowerLeft.y <= pos2.lowerLeft.y
-	    && pos1.topRight.y >= pos2.topRight.y
-	    && pos1.lowerLeft.x >= pos2.lowerLeft.x
-	    && pos1.lowerLeft.x <= pos2.topRight.x
-	    && pos1.topRight.x >= pos2.lowerLeft.x
-	    && pos1.topRight.x <= pos2.topRight.x)
+	if (pos1.ll.y <= pos2.ll.y
+	    && pos1.tr.y >= pos2.tr.y
+	    && pos1.ll.x >= pos2.ll.x
+	    && pos1.ll.x <= pos2.tr.x
+	    && pos1.tr.x >= pos2.ll.x
+	    && pos1.tr.x <= pos2.tr.x)
 	{
 		return true;
 	}
@@ -83,23 +83,23 @@ bool pointsOverlap(location pos1, location pos2)
 	return false;
 }
 
-bool Collision::checkCollision(location position)
+bool Collision::checkCollision(location pos)
 {
 	for (std::list<Room*>::iterator it=Room::roomList.begin();
 	     it !=Room::roomList.end();
 	     ++it)
 	{
-		if (pointEnclosed(position, (*it)->position))
+        if (pointEnclosed(pos, (*it)->pos))
 		{
 			return false;
 		}
 
-		if (pointEnclosed((*it)->position, position))
+        if (pointEnclosed((*it)->pos, pos))
 		{
 			return false;
 		}
 
-		if (pointsOverlap(position, (*it)->position))
+        if (pointsOverlap(pos, (*it)->pos))
 		{
 			return false;
 		}
@@ -110,10 +110,10 @@ bool Collision::checkCollision(location position)
 // returns squared value for performance reasons
 GLfloat pointDistance(location a, location b)
 {
-	return ((a.lowerLeft.x - b.lowerLeft.x)
-		* (a.lowerLeft.x - b.lowerLeft.x)
-		+ (a.lowerLeft.y - b.lowerLeft.y)
-		* (a.lowerLeft.y - b.lowerLeft.y));
+	return ((a.ll.x - b.ll.x)
+		* (a.ll.x - b.ll.x)
+		+ (a.ll.y - b.ll.y)
+		* (a.ll.y - b.ll.y));
 }
 
 bool handleCollision(Object *obj1, Object *obj2) {
@@ -143,23 +143,23 @@ bool Collision::checkCollision(Object *obj)
 			continue;
 		}
 
-		if (pointDistance((*it)->position, obj->position) < 5.0)
+        if (pointDistance((*it)->pos, obj->pos) < 5.0)
 		{
-			if (pointEnclosed(obj->position, (*it)->position))
+            if (pointEnclosed(obj->pos, (*it)->pos))
 			{
 				if (handleCollision((*it), obj)) {
 					return true;
 				}
 			}
 
-			if (pointEnclosed((*it)->position, obj->position))
+            if (pointEnclosed((*it)->pos, obj->pos))
 			{
 				if (handleCollision((*it), obj)) {
 					return true;
 				}
 			}
 
-			if (pointsOverlap(obj->position, (*it)->position))
+            if (pointsOverlap(obj->pos, (*it)->pos))
 			{
 				if (handleCollision((*it), obj)) {
 					return true;

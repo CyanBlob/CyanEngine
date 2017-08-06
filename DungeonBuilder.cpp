@@ -35,42 +35,42 @@ void DungeonBuilder::buildRooms(int maxRooms)
 		if (wall == 0)
 		{
 			bottomDoor = true;
-			_roomPosition.lowerLeft.x = (*it)->position.lowerLeft.x;
-			_roomPosition.lowerLeft.y =
-				(*it)->position.topRight.y + 2.0f;
-			_roomPosition.topRight.x = (*it)->position.topRight.x;
-			_roomPosition.topRight.y =
-				(*it)->position.topRight.y + size;
+            _roomPosition.ll.x = (*it)->pos.ll.x;
+            _roomPosition.ll.y =
+                (*it)->pos.tr.y + 2.0f;
+            _roomPosition.tr.x = (*it)->pos.tr.x;
+            _roomPosition.tr.y =
+                (*it)->pos.tr.y + size;
 		}
 		else if (wall == 1)
 		{
 			leftDoor = true;
-			_roomPosition.lowerLeft.x =
-				(*it)->position.topRight.x + 2.0f;
-			_roomPosition.lowerLeft.y = (*it)->position.lowerLeft.y;
-			_roomPosition.topRight.x =
-				(*it)->position.topRight.x + size;
-			_roomPosition.topRight.y = (*it)->position.topRight.y;
+            _roomPosition.ll.x =
+                (*it)->pos.tr.x + 2.0f;
+            _roomPosition.ll.y = (*it)->pos.ll.y;
+            _roomPosition.tr.x =
+                (*it)->pos.tr.x + size;
+            _roomPosition.tr.y = (*it)->pos.tr.y;
 		}
 		else if (wall == 2)
 		{
 			topDoor = true;
-			_roomPosition.lowerLeft.x = (*it)->position.lowerLeft.x;
-			_roomPosition.lowerLeft.y =
-				(*it)->position.lowerLeft.y - size;
-			_roomPosition.topRight.x = (*it)->position.topRight.x;
-			_roomPosition.topRight.y =
-				(*it)->position.lowerLeft.y - 2.0f;
+            _roomPosition.ll.x = (*it)->pos.ll.x;
+            _roomPosition.ll.y =
+                (*it)->pos.ll.y - size;
+            _roomPosition.tr.x = (*it)->pos.tr.x;
+            _roomPosition.tr.y =
+                (*it)->pos.ll.y - 2.0f;
 		}
 		else if (wall == 3)
 		{
 			rightDoor = true;
-			_roomPosition.lowerLeft.x =
-				(*it)->position.lowerLeft.x - size;
-			_roomPosition.lowerLeft.y = (*it)->position.lowerLeft.y;
-			_roomPosition.topRight.x =
-				(*it)->position.lowerLeft.x - 2.0f;
-			_roomPosition.topRight.y = (*it)->position.topRight.y;
+            _roomPosition.ll.x =
+                (*it)->pos.ll.x - size;
+            _roomPosition.ll.y = (*it)->pos.ll.y;
+            _roomPosition.tr.x =
+                (*it)->pos.ll.x - 2.0f;
+            _roomPosition.tr.y = (*it)->pos.tr.y;
 		}
 
 		Room *_room = new Room(_roomPosition, 2.0);

@@ -22,7 +22,7 @@ std::list <Object*> Object::objectList(initObjectList());
 
 Object::Object(location _position)
 {
-	position = _position;
+	pos = _position;
 
 	Object::objectLock.lock();
 	Object::objectList.push_back(this);
@@ -75,14 +75,14 @@ void Object::render()
 
 	//glBindTexture(GL_TEXTURE_2D, texName);
 	glBegin(GL_QUADS);
-	glTexCoord2f(1.0, 1.0); glVertex3f(position.lowerLeft.x,
-					   position.lowerLeft.y, 0.0);
-	glTexCoord2f(1.0, 0.0); glVertex3f(position.lowerLeft.x,
-					   position.topRight.y, 0.0);
-	glTexCoord2f(0.0, 0.0); glVertex3f(position.topRight.x,
-					   position.topRight.y, 0.0);
-	glTexCoord2f(0.0, 1.0); glVertex3f(position.topRight.x,
-					   position.lowerLeft.y, 0.0);
+	glTexCoord2f(1.0, 1.0); glVertex3f(pos.ll.x,
+					   pos.ll.y, 0.0);
+	glTexCoord2f(1.0, 0.0); glVertex3f(pos.ll.x,
+					   pos.tr.y, 0.0);
+	glTexCoord2f(0.0, 0.0); glVertex3f(pos.tr.x,
+					   pos.tr.y, 0.0);
+	glTexCoord2f(0.0, 1.0); glVertex3f(pos.tr.x,
+					   pos.ll.y, 0.0);
 
 	glEnd();
 }

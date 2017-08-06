@@ -24,8 +24,8 @@ struct coordinate
 
 struct location
 {
-	coordinate lowerLeft;
-	coordinate topRight;
+    coordinate ll;
+    coordinate tr;
 };
 
 class Object
@@ -41,7 +41,7 @@ public:
 
 	std::string tag = "object";
 
-	location position;
+    location pos;
 
 	int colliderType = 0;
 	int collidesWith = 0;

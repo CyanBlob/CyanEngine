@@ -17,7 +17,7 @@ Player::Player()
 	xOffset = 0.0;
 	yOffset = 0.0;
 
-	position = {{-1.0,-1.0},{1.0,1.0}};
+	pos = {{-1.0,-1.0},{1.0,1.0}};
 
 	// Player speed
 	speedForward = 0.2f;
@@ -50,7 +50,7 @@ bool Player::playerCollision(location prevPosition,
 
 	if (Collision::checkCollision(this))
 	{
-		position = prevPosition;
+		pos = prevPosition;
 
 		xOffset = prevXOffset;
 		yOffset = prevYOffset;
@@ -63,28 +63,28 @@ bool Player::playerCollision(location prevPosition,
 // TODO: Cleanup collision checking code
 void Player::playerAction(bool* keyStates)
 {
-	location prevPosition = position;
+	location prevPosition = pos;
 	GLfloat prevXOffset = xOffset;
 	GLfloat prevYOffset = yOffset;
 
 	if (keyStates['w'])
 	{
-		position.lowerLeft.y += speedForward;
-		position.topRight.y += speedForward;
+		pos.ll.y += speedForward;
+		pos.tr.y += speedForward;
 		yOffset -= speedForward;
 		heading = 0;
 	}
 	else if (keyStates['s'])
 	{
-		position.lowerLeft.y += speedBack;
-		position.topRight.y += speedBack;
+		pos.ll.y += speedBack;
+		pos.tr.y += speedBack;
 		yOffset -= speedBack;
 		heading = 2;
 	}
 	if (keyStates['w'] || keyStates['s']) {
 		if (!playerCollision(prevPosition,
 				     prevXOffset, prevYOffset)) {
-			prevPosition = position;
+			prevPosition = pos;
 
 			prevYOffset = yOffset;
 		}
@@ -92,15 +92,15 @@ void Player::playerAction(bool* keyStates)
 
 	if (keyStates['a'])
 	{
-		position.lowerLeft.x += speedLeft;
-		position.topRight.x += speedLeft;
+		pos.ll.x += speedLeft;
+		pos.tr.x += speedLeft;
 		xOffset -= speedLeft;
 		heading = 3;
 	}
 	else if (keyStates['d'])
 	{
-		position.lowerLeft.x += speedRight;
-		position.topRight.x += speedRight;
+		pos.ll.x += speedRight;
+		pos.tr.x += speedRight;
 		xOffset -= speedRight;
 		heading = 1;
 	}
@@ -146,24 +146,24 @@ void Player::attack()
 	GLfloat tmpColor[3] = {color[0], color[1], color[2]};
 	copyGLfloatArray(flashColor, color);
 	copyGLfloatArray(tmpColor, flashColor);
-	location attackPos = position;
+	location attackPos = pos;
 
 	switch (heading) {
 	case 0:
-		attackPos.lowerLeft.y += 2;
-		attackPos.topRight.y += 2;
+		attackPos.ll.y += 2;
+		attackPos.tr.y += 2;
 		break;
 	case 1:
-		attackPos.topRight.x += 2;
-		attackPos.lowerLeft.x += 2;
+		attackPos.tr.x += 2;
+		attackPos.ll.x += 2;
 		break;
 	case 2:
-		attackPos.topRight.y -= 2;
-		attackPos.lowerLeft.y -= 2;
+		attackPos.tr.y -= 2;
+		attackPos.ll.y -= 2;
 		break;
 	case 3:
-		attackPos.topRight.x -= 2;
-		attackPos.lowerLeft.x -= 2;
+		attackPos.tr.x -= 2;
+		attackPos.ll.x -= 2;
 		break;
 	default:
 		break;
