@@ -33,6 +33,9 @@ const unsigned int UPDATE_STEP = 15;
 
 unsigned int total_time = 0;
 unsigned int current_time = 0;
+int frame_counter = 0;
+unsigned int render_start = 0;
+unsigned int render_total = 0;
 
 void buildRooms();
 
@@ -83,6 +86,10 @@ void playerAction()
 void timer(int value)
 {
 	unsigned int new_time = glutGet(GLUT_ELAPSED_TIME);
+	if (frame_counter == 0)
+	{
+		render_start = new_time;
+	}
 	unsigned int frame_time = new_time - current_time;
 	current_time = new_time;
 	total_time += frame_time;
@@ -96,7 +103,16 @@ void timer(int value)
 	}
 
 	glutPostRedisplay();
-	boost::this_thread::sleep_for(boost::chrono::milliseconds(16));
+	if (++frame_counter == 10)
+	{
+		unsigned int render_time = glutGet(GLUT_ELAPSED_TIME)
+			- render_start;
+		frame_counter = 0;
+		// 10000.0 (not 1000.0) because we're summing 10 frames
+		std::cout<<10000.0 / render_time<<std::endl;
+	}
+	boost::this_thread::sleep_for(boost::chrono::milliseconds(8));
+
 	//TODO: figure out why I need this call, instead of using a while(true)
 	glutTimerFunc(0, timer, 1);
 }
