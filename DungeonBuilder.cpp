@@ -35,42 +35,42 @@ void DungeonBuilder::buildRooms(int maxRooms)
 		if (wall == 0)
 		{
 			bottomDoor = true;
-            _roomPosition.ll.x = (*it)->pos.ll.x;
-            _roomPosition.ll.y =
-                (*it)->pos.tr.y + 2.0f;
-            _roomPosition.tr.x = (*it)->pos.tr.x;
-            _roomPosition.tr.y =
-                (*it)->pos.tr.y + size;
+			_roomPosition.ll.x = (*it)->pos.ll.x;
+			_roomPosition.ll.y =
+				(*it)->pos.tr.y + 2.0f;
+			_roomPosition.tr.x = (*it)->pos.tr.x;
+			_roomPosition.tr.y =
+				(*it)->pos.tr.y + size;
 		}
 		else if (wall == 1)
 		{
 			leftDoor = true;
-            _roomPosition.ll.x =
-                (*it)->pos.tr.x + 2.0f;
-            _roomPosition.ll.y = (*it)->pos.ll.y;
-            _roomPosition.tr.x =
-                (*it)->pos.tr.x + size;
-            _roomPosition.tr.y = (*it)->pos.tr.y;
+			_roomPosition.ll.x =
+				(*it)->pos.tr.x + 2.0f;
+			_roomPosition.ll.y = (*it)->pos.ll.y;
+			_roomPosition.tr.x =
+				(*it)->pos.tr.x + size;
+			_roomPosition.tr.y = (*it)->pos.tr.y;
 		}
 		else if (wall == 2)
 		{
 			topDoor = true;
-            _roomPosition.ll.x = (*it)->pos.ll.x;
-            _roomPosition.ll.y =
-                (*it)->pos.ll.y - size;
-            _roomPosition.tr.x = (*it)->pos.tr.x;
-            _roomPosition.tr.y =
-                (*it)->pos.ll.y - 2.0f;
+			_roomPosition.ll.x = (*it)->pos.ll.x;
+			_roomPosition.ll.y =
+				(*it)->pos.ll.y - size;
+			_roomPosition.tr.x = (*it)->pos.tr.x;
+			_roomPosition.tr.y =
+				(*it)->pos.ll.y - 2.0f;
 		}
 		else if (wall == 3)
 		{
 			rightDoor = true;
-            _roomPosition.ll.x =
-                (*it)->pos.ll.x - size;
-            _roomPosition.ll.y = (*it)->pos.ll.y;
-            _roomPosition.tr.x =
-                (*it)->pos.ll.x - 2.0f;
-            _roomPosition.tr.y = (*it)->pos.tr.y;
+			_roomPosition.ll.x =
+				(*it)->pos.ll.x - size;
+			_roomPosition.ll.y = (*it)->pos.ll.y;
+			_roomPosition.tr.x =
+				(*it)->pos.ll.x - 2.0f;
+			_roomPosition.tr.y = (*it)->pos.tr.y;
 		}
 
 		Room *_room = new Room(_roomPosition, 2.0);

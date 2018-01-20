@@ -93,6 +93,15 @@ void renderFloor()
 
 }
 
+// returns squared value for performance reasons
+GLfloat distance(location a, location b)
+{
+	return ((a.ll.x - b.ll.x)
+		* (a.ll.x - b.ll.x)
+		+ (a.ll.y - b.ll.y)
+		* (a.ll.y - b.ll.y));
+}
+
 void Renderer::render()
 {
 	xOffset = player->xOffset;
@@ -120,6 +129,10 @@ void Renderer::render()
 	for (std::list<Object*>::iterator it=Object::objectList.begin();
 	     it !=Object::objectList.end(); ++it)
 	{
+		if (distance(player->pos, (*it)->pos) > 5000)
+		{
+			continue;
+		}
 		if ((*it)->imageFile != prevImage)
 		{
 			(*it)->initRender();

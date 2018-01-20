@@ -7,7 +7,7 @@ Aside from the threading used, this compiles+runs on Windows, as long as
 the depencies are set up properly. My primary focus is the Linux build.
 
 Compilation and running:
-g++ *.cpp -o CyanEngine.out -lGL -lGLU -lglut -lSOIL -lpthread -std=c++11
+g++ *.cpp -o CyanEngine.out -lGL -lGLU -lglut -lSOIL -lpthread -lboost_system -lboost_thread -std=c++11
 ./CyanEngine
 
 Dependencies:

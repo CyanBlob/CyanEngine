@@ -37,6 +37,8 @@ int frame_counter = 0;
 unsigned int render_start = 0;
 unsigned int render_total = 0;
 
+bool show_fps = false;
+
 void buildRooms();
 
 void init(void)
@@ -103,7 +105,8 @@ void timer(int value)
 	}
 
 	glutPostRedisplay();
-	if (++frame_counter == 10)
+
+	if (show_fps && ++frame_counter == 10)
 	{
 		unsigned int render_time = glutGet(GLUT_ELAPSED_TIME)
 			- render_start;
@@ -201,6 +204,8 @@ int main(int argc, char** argv)
 			--argc;
 			timeSeed = atoi(*++argv);
 			break;
+		case 'f':
+			show_fps = true;
 		default:
 			break;
 		}
